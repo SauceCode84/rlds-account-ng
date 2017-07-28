@@ -1,0 +1,14 @@
+<div *ngIf="message" class="flash-pos">
+  <div class="flash" [ngClass]="{ 'flash-success': message.type === 'success', 'flash-error': message.type === 'error' }">
+    <h2>Success!</h2>
+    <p>{{ message.text }}</p>
+    <div class="icon">
+      <i class="fa" [ngClass]="{ 'fa-check': message.type === 'success', 'fa-times': message.type === 'error' }" aria-hidden="true"></i>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="message" class="alert alert-dismissible alert-danger">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Oh snap!</strong> <a href="#" class="alert-link">Change a few things up</a> and try submitting again.
+</div>
