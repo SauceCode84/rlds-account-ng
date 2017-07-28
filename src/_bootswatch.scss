@@ -1,11 +1,10 @@
-// Darkly 4.0.0
+// Flatly 4.0.0
 // Bootswatch
 
-
-//$web-font-path: "https://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700|PT+Sans:400,400i,700,700i" !default;
+//$web-font-path: "https://fonts.googleapis.com/css?family=Lato:400,700,400italic" !default;
 //@import url($web-font-path);
 
-// Navbar ======================================================================
+// Navbar =======================================================================
 
 .bg-inverse {
   background-color: $brand-success !important;
@@ -33,15 +32,7 @@
 
 // Buttons =====================================================================
 
-
 // Typography ==================================================================
-
-.blockquote {
-  &-footer {
-    color: $gray-lighter;
-  }
-}
-
 
 // Tables ======================================================================
 
@@ -61,29 +52,17 @@
 
 // Forms =======================================================================
 
-.input-group-addon {
-  color: #fff;
-}
-
-
 // Navs ========================================================================
 
-.nav-tabs,
-.nav-pills {
-
-  .nav-link,
+.nav-tabs {
   .nav-link.active,
   .nav-link.active:focus,
   .nav-link.active:hover, 
   .nav-item.open .nav-link,
   .nav-item.open .nav-link:focus,
   .nav-item.open .nav-link:hover {
-    color: #fff;
+    color: $brand-primary;
   }
-}
-
-.breadcrumb a {
-  color: #fff;
 }
 
 .pagination {
@@ -125,18 +104,3 @@
 }
 
 // Containers ==================================================================
-
-
-.list-group-item-action {
-  color: #fff;
-
-  &:hover,
-  &:focus {
-    background-color: $gray-light;
-    color: #fff;
-  }
-
-  .list-group-item-heading {
-    color: #fff;
-  }
-}
