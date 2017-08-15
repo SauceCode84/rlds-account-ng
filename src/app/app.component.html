@@ -14,7 +14,7 @@
         <th>Balance</th>
     </thead>
     <tbody>
-      <tr *ngFor="let line of statement">
+      <tr *ngFor="let line of statement.lines">
         <td>{{ line.date | date:'dd MMM yyyy' }}</td>
         <td>{{ line.details }}</td>
         <td class="text-right">{{ line.debit | number:'1.2-2' }}</td>
@@ -25,9 +25,9 @@
   </table>
   <hr/>
   <div>
-    Amount {{ currentBalance >= 0 ? 'Due' : 'Owed' }}:<br/>
-    {{ currentBalance | number:'1.2-2' }}<br/>
-    Total Invoiced: {{ totalInvoiced | number:'1.2-2' }}<br/>
-    Total Payments: {{ totalPayments | number:'1.2-2' }}<br/>
+    Amount {{ statement.currentBalance >= 0 ? 'Due' : 'Owed' }}:<br/>
+    {{ statement.currentBalance | number:'1.2-2' }}<br/>
+    Total Invoiced: {{ statement.totalInvoiced | number:'1.2-2' }}<br/>
+    Total Payments: {{ statement.totalPayments | number:'1.2-2' }}<br/>
   </div>
 </div>

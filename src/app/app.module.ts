@@ -7,6 +7,7 @@ import { RouterModule } from "@angular/router";
 import { AppComponent } from "./app.component";
 import { AlertComponent } from "components/alert/alert.component";
 import { AlertService } from "providers/alert.service";
+import { StatementService } from "providers/statement.service";
 
 import { MultiLevelMenuComponent } from "components/ml-menu/ml-menu.component";
 import { MenuComponent } from "components/ml-menu/menu/menu.component";
@@ -28,7 +29,8 @@ import { MenuItemComponent } from "components/ml-menu/menu-item/menu-item.compon
     RouterModule.forRoot([])
   ],
   providers: [
-    AlertService
+    AlertService,
+    StatementService
   ],
   bootstrap: [AppComponent]
 })
