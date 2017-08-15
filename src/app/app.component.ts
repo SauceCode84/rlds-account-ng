@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from "@angular/platform-browser";
 
 import { AlertService } from "providers/alert.service";
 
@@ -36,6 +37,10 @@ const sum = <T>(array: T[], selectorFn: (item: T) => number, initalValue: number
 })
 export class AppComponent implements OnInit {
   
+  student = {
+    name: "Andrea Hummerstone"
+  };
+
   statement: StatementLine[] = [
     {
       date: new Date("2017-01-03"),
@@ -163,7 +168,8 @@ export class AppComponent implements OnInit {
   totalPayments: number = 0.0;
   currentBalance: number;
 
-  constructor(private alertService: AlertService) {
+  constructor(private alertService: AlertService, private title: Title) {
+    this.title.setTitle(this.student.name + " - Statement");
   }
 
   ngOnInit() {
