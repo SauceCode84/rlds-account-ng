@@ -1,3 +1,4 @@
+<ml-menu></ml-menu>
 <div class="container">
   <h2>Andrea Hummerstone</h2>
   <!--<button class="btn btn-success" (click)="onSuccess()">Success</button>
@@ -25,6 +26,8 @@
   <hr/>
   <div>
     Amount {{ currentBalance >= 0 ? 'Due' : 'Owed' }}:<br/>
-    {{ currentBalance | number:'1.2-2' }}
+    {{ currentBalance | number:'1.2-2' }}<br/>
+    Total Invoiced: {{ totalInvoiced | number:'1.2-2' }}<br/>
+    Total Payments: {{ totalPayments | number:'1.2-2' }}<br/>
   </div>
 </div>

@@ -2,12 +2,31 @@ import { Component, OnInit } from '@angular/core';
 
 import { AlertService } from "providers/alert.service";
 
+enum LineType {
+  ClassFees,
+  ExamFees,
+  Payment
+}
+
 interface StatementLine {
   date: Date;
   details: string;
+  type?: LineType;
   debit?: number;
   credit?: number;
   balance?: number;
+}
+
+const sum = <T>(array: T[], selectorFn: (item: T) => number, initalValue: number = 0): number => {
+  return array.reduce((total: number, current: T) => {
+    let value = selectorFn(current);
+    
+    if (value) {
+      total += value;
+    }
+
+    return total;
+  }, initalValue);
 }
 
 @Component({
@@ -18,10 +37,6 @@ interface StatementLine {
 export class AppComponent implements OnInit {
   
   statement: StatementLine[] = [
-    {
-      date: new Date("2017-01-01"),
-      details: "Balance Brought Forward"
-    },
     {
       date: new Date("2017-01-03"),
       details: "Payment Received - Thank you!",
@@ -112,33 +127,84 @@ export class AppComponent implements OnInit {
       details: "Payment Received - Thank You!",
       credit: 930.00
     },
-    /*
-
-26 Apr 2017	Class Fees Grade 3 (May)	 R 410.00 	
-	Private Lessons - Half Hour (May)	 R 520.00 	
-02 May 2017	Payment Received - Thank You!		 R 930.00 
-25 May 2017	Class Fees Grade 3 (Jun)	 R 410.00 	
-	Private Lessons - Half Hour (Jun)	 R 520.00 	
-25 May 2017	Piano Fees 2017	 R 300.00 	
-
-
-    */
+    {
+      date: new Date("2017-04-26"),
+      details: "Class Fees Grade 3 (May)",
+      debit: 410.00
+    },
+    {
+      date: new Date("2017-04-26"),
+      details: "Private Lessons - Half Hour (May)",
+      debit: 520.00
+    },
+    {
+      date: new Date("2017-05-02"),
+      details: "Payment Received - Thank You!",
+      credit: 930.00
+    },
+    {
+      date: new Date("2017-05-25"),
+      details: "Class Fees Grade 3 (Jun)",
+      debit: 410.00
+    },
+    {
+      date: new Date("2017-05-25"),
+      details: "Private Lessons - Half Hour (Jun)",
+      debit: 520.00
+    },
+    {
+      date: new Date("2017-05-25"),
+      details: "Piano Fees 2017",
+      debit: 300.00
+    }
   ];
+
+  totalInvoiced: number = 0.0;
+  totalPayments: number = 0.0;
   currentBalance: number;
 
   constructor(private alertService: AlertService) {
-    
   }
 
   ngOnInit() {
-    this.currentBalance = this.statement.reduce((balance: number, currentLine) => {
-      balance += currentLine.debit || 0;
-      balance -= currentLine.credit || 0;
+    this.totalInvoiced = sum(this.statement, line => line.debit);
+    this.totalPayments = sum(this.statement, line => line.credit);
 
-      currentLine.balance = balance;
+    let fromDate = new Date("2017-04-18");
+    
+    let lines = this.statement.filter(line => line.date <= fromDate);
+    let balance = lines.reduce(this.calcBalance, 0);
+
+    this.statement.splice(0, lines.length);
+
+    let balanceLine = {
+      date: fromDate,
+      details: "Balance Brought Forward",
+      balance: balance
+    };
+
+    this.statement.unshift(balanceLine);
+    
+    this.currentBalance = this.statement.reduce(this.calcBalance, 0);
+  }
+
+  private debitsOnly(line: StatementLine): boolean {
+    return line.debit !== undefined && line.debit !== null;
+  }
+
+  private creditsOnly(line: StatementLine): boolean {
+    return line.credit !== undefined && line.credit !== null;
+  }
+
+  private calcBalance(balance: number, currentLine: StatementLine) {
+    balance += currentLine.balance || 0;
+
+    balance += currentLine.debit || 0;
+    balance -= currentLine.credit || 0;
+
+    currentLine.balance = balance;
       
-      return balance;
-    }, 0);
+    return balance;
   }
 
   onSuccess() {
