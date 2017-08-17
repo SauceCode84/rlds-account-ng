@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from "@angular/router";
 
+import { TypeaheadModule } from "ngx-bootstrap";
+
 import { AppComponent } from "./app.component";
 import { AlertComponent } from "components/alert/alert.component";
 import { AlertService } from "providers/alert.service";
@@ -26,7 +28,8 @@ import { MenuItemComponent } from "components/ml-menu/menu-item/menu-item.compon
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot([])
+    RouterModule.forRoot([]),
+    TypeaheadModule.forRoot()
   ],
   providers: [
     AlertService,

@@ -23,6 +23,13 @@
     <li class="breadcrumb-item"><a href="#">Home</a></li>
     <li class="breadcrumb-item active">Statements</li>
   </ol>
+
+  <pre>{{ selected | json }}</pre>
+  <div class="input-group">
+    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+    <input [(ngModel)]="selected" [typeahead]="students" class="form-control" placeholder="Find student...">
+  </div>
+
   <h2>{{ student.name }}</h2>
   <!--<button class="btn btn-success" (click)="onSuccess()">Success</button>
   <button class="btn btn-danger" (click)="onError()">Error</button>-->

@@ -15,6 +15,13 @@ export class AppComponent implements OnInit {
   
   show: boolean = false;
 
+  selected: string;
+  students: string[] = [
+    "Andrea",
+    "Catherine",
+    "Jodie"
+  ];
+
   student = {
     name: "Andrea Hummerstone"
   };
