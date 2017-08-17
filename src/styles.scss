@@ -1,18 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "variables";
-@import "bootswatch";
+//@import "variables";
+//@import "bootswatch";
 
-//@import "font-pt-sans";
-@import "font-open-sans";
+@import "font-pt-sans";
+
+$font-family-sans-serif: $font-pt-sans;
+
 @import "../node_modules/bootstrap/scss/bootstrap";
 
-/*h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6 {
   font-family: $font-pt-sans-caption;
   font-weight: bold;
 }
 
-.btn {
+/*.btn {
   font-family: $font-pt-sans-caption;
   font-weight: bold;
   text-transform: uppercase;

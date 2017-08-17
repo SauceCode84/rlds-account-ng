@@ -13,6 +13,8 @@ import { Statement, StatementLine } from "models";
 })
 export class AppComponent implements OnInit {
   
+  show: boolean = false;
+
   student = {
     name: "Andrea Hummerstone"
   };
