@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 
-import { Statement, StatementLine } from "models";
-import { sum } from "helpers/sum";
+import { Statement, StatementLine, LineType } from "models";
+import "helpers/sum";
 
 @Injectable()
 export class StatementService {
@@ -133,9 +133,9 @@ export class StatementService {
 
   getStatement(fromDate?: Date): Statement {
     fromDate = fromDate || new Date(new Date().getFullYear(), 0, 1);
-
-    let totalInvoiced: number = sum(this.statementLines, line => line.debit);
-    let totalPayments: number = sum(this.statementLines, line => line.credit);
+    
+    let totalInvoiced: number = this.statementLines.sum(line => line.debit);
+    let totalPayments: number = this.statementLines.sum(line => line.credit);
 
     let lines = this.statementLines.filter(line => line.date <= fromDate);
 
