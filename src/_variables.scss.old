@@ -1,4 +1,0 @@
-
-@import "font-pt-sans";
-
-$font-family-sans-serif: $font-pt-sans;
