@@ -1,10 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from "@angular/platform-browser";
 
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/operator/debounceTime";
+import "rxjs/add/operator/distinctUntilChanged";
+import "rxjs/add/operator/map";
+
 import { AlertService } from "providers/alert.service";
 import { StatementService } from "providers/statement.service";
+import { StudentService } from "providers/student.service";
 
-import { Statement, StatementLine } from "models";
+import { Statement, StatementLine, Student } from "models";
+import { NgbTypeaheadSelectItemEvent } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-root',
@@ -15,31 +22,54 @@ export class AppComponent implements OnInit {
   
   show: boolean = false;
 
+  students: Student[];
+
+  searchStudent = (text: Observable<string>) => 
+    text
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .map(value => {
+        let results = [];
+        
+        if (value.length >= 2) {
+          results = this.students
+            .filter(student => (student.firstName + " " + student.lastName).toLowerCase().indexOf(value.toLowerCase()) > -1)
+            .slice(0, 10);
+        }
+
+        return results;
+      });
+  
+  inputFormatter = (student: Student) => student.firstName + " " + student.lastName;
+
   selected: string;
-  students: string[] = [
-    "Andrea",
-    "Catherine",
-    "Jodie"
-  ];
+
+  selectItem(e: NgbTypeaheadSelectItemEvent) {
+    console.log(e.item);
+  }
 
   student = {
     name: "Andrea Hummerstone"
   };
+
 
   statement: Statement;
 
   currentBalance: number;
 
   constructor(
+    private studentService: StudentService,
     private statementService: StatementService,
     private alertService: AlertService,
     private title: Title) {
     this.title.setTitle(this.student.name + " - Statement");
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     let fromDate = new Date("2017-04-18");
     this.statement = this.statementService.getStatement(fromDate);
+
+    this.students = await this.studentService.getAllStudents();
   }
 
   onSuccess() {

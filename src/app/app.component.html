@@ -1,4 +1,3 @@
-<!--<ml-menu></ml-menu>-->
 <nav class="navbar navbar-expand-md navbar-dark bg-primary">
   <a class="navbar-brand" href="#">Navbar</a>
   
@@ -24,40 +23,22 @@
     <li class="breadcrumb-item active">Statements</li>
   </ol>
 
-  <pre>{{ selected | json }}</pre>
+  <ng-template #rt let-r="result" let-t="term">
+    <ngb-highlight [result]="r.firstName + ' ' + r.lastName" [term]="t"></ngb-highlight> - <i>{{ r.grade }}</i>
+  </ng-template>
+
   <div class="input-group">
     <div class="input-group-addon"><i class="fa fa-search"></i></div>
-    <input [(ngModel)]="selected" [typeahead]="students" class="form-control" placeholder="Find student...">
+    <input
+      class="form-control"
+      placeholder="Find student..."
+      [(ngModel)]="selected"
+      [ngbTypeahead]="searchStudent"
+      [resultTemplate]="rt"
+      [inputFormatter]="inputFormatter"
+      (selectItem)="selectItem($event)">
   </div>
 
-  <h2>{{ student.name }}</h2>
-  <!--<button class="btn btn-success" (click)="onSuccess()">Success</button>
-  <button class="btn btn-danger" (click)="onError()">Error</button>-->
-  <!--<alert></alert>-->
-  <table class="table table-sm table-striped table-hover">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Details</th>
-        <th>Debit</th>
-        <th>Credit</th>
-        <th>Balance</th>
-    </thead>
-    <tbody>
-      <tr *ngFor="let line of statement.lines">
-        <td>{{ line.date | date:'dd MMM yyyy' }}</td>
-        <td>{{ line.details }}</td>
-        <td class="text-right">{{ line.debit | number:'1.2-2' }}</td>
-        <td class="text-right">{{ line.credit | number:'1.2-2' }}</td>
-        <td class="text-right">{{ line.balance | number:'1.2-2' }}</td>
-      </tr>
-    </tbody>
-  </table>
-  <hr/>
-  <div>
-    Amount {{ statement.currentBalance >= 0 ? 'Due' : 'Owed' }}:<br/>
-    {{ statement.currentBalance | number:'1.2-2' }}<br/>
-    Total Invoiced: {{ statement.totalInvoiced | number:'1.2-2' }}<br/>
-    Total Payments: {{ statement.totalPayments | number:'1.2-2' }}<br/>
-  </div>
+  <app-student-list></app-student-list>
+
 </div>

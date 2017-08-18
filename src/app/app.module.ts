@@ -1,19 +1,22 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule  } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
 
-import { TypeaheadModule } from "ngx-bootstrap";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppComponent } from "./app.component";
 import { AlertComponent } from "components/alert/alert.component";
 import { AlertService } from "providers/alert.service";
 import { StatementService } from "providers/statement.service";
+import { StudentService } from "providers/student.service";
 
 import { MultiLevelMenuComponent } from "components/ml-menu/ml-menu.component";
 import { MenuComponent } from "components/ml-menu/menu/menu.component";
 import { MenuItemComponent } from "components/ml-menu/menu-item/menu-item.component";
+import { StudentListComponent } from "app/student-list/student-list.component";
+import { StatementComponent } from "app/statement/statement.component";
 
 @NgModule({
   declarations: [
@@ -22,18 +25,21 @@ import { MenuItemComponent } from "components/ml-menu/menu-item/menu-item.compon
     
     MultiLevelMenuComponent,
     MenuComponent,
-    MenuItemComponent
+    MenuItemComponent,
+    StudentListComponent,
+    StatementComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     RouterModule.forRoot([]),
-    TypeaheadModule.forRoot()
+    NgbModule.forRoot()
   ],
   providers: [
     AlertService,
-    StatementService
+    StatementService,
+    StudentService
   ],
   bootstrap: [AppComponent]
 })
