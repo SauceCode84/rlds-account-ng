@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
-import "rxjs/add/operator/toPromise";
+//import "rxjs/add/operator/toPromise";
 
 import { Student } from "models";
 
@@ -13,7 +13,7 @@ export class StudentService {
   constructor(private http: HttpClient) { }
 
   public getAllStudents() {
-    return this.http.get<Student[]>(`${this.baseUrl}/student`).toPromise();
+    return this.http.get<Student[]>(`${this.baseUrl}/student`);
   }
 
 }

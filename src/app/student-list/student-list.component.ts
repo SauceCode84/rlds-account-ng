@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 
 import { StudentService } from "providers/student.service";
 import { Student } from "models";
+import { Observable } from "rxjs/Observable";
 
 @Component({
   selector: "app-student-list",
@@ -17,13 +18,16 @@ export class StudentListComponent implements OnInit {
 
   constructor(private studentService: StudentService) { }
 
-  private async populateStudents() {
-    let allStudents = await this.studentService.getAllStudents();
-    this.rowCount = allStudents.length;
-    this.students = allStudents.splice((this.page - 1) * 10, 10);
+  private populateStudents() {
+    this.studentService
+      .getAllStudents()
+      .subscribe(students => {
+        this.rowCount = students.length;
+        this.students = students.splice((this.page - 1) * 10, 10);
+      });
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.page = 1;
     this.populateStudents();
   }
