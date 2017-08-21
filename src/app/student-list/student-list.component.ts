@@ -13,17 +13,18 @@ export class StudentListComponent implements OnInit {
 
   private students: Student[];
 
-  rowCount: number;
+  totalCount: number;
   page: number;
+  pageSize: number = 10;
 
   constructor(private studentService: StudentService) { }
 
   private populateStudents() {
     this.studentService
-      .getAllStudents()
-      .subscribe(students => {
-        this.rowCount = students.length;
-        this.students = students.splice((this.page - 1) * 10, 10);
+      .getAllStudents(this.page, this.pageSize)
+      .subscribe(result => {
+        this.totalCount = result.totalCount;
+        this.students = result.results;
       });
   }
 
