@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 
 import { Observable } from "rxjs/Observable";
@@ -46,6 +47,7 @@ export class AppComponent implements OnInit {
 
   selectItem(e: NgbTypeaheadSelectItemEvent) {
     console.log(e.item);
+    this.router.navigate(["/student", e.item._id]);
   }
 
   student = {
@@ -61,6 +63,7 @@ export class AppComponent implements OnInit {
     private studentService: StudentService,
     private statementService: StatementService,
     private alertService: AlertService,
+    private router: Router,
     private title: Title) {
     this.title.setTitle(this.student.name + " - Statement");
   }
@@ -69,7 +72,9 @@ export class AppComponent implements OnInit {
     let fromDate = new Date("2017-04-18");
     this.statement = this.statementService.getStatement(fromDate);
 
-    this.students = await this.studentService.getAllStudents();
+    this.studentService
+      .getAllStudents()
+      .subscribe(students => this.students = students);
   }
 
   onSuccess() {

@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule  } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
 
@@ -16,7 +16,9 @@ import { MultiLevelMenuComponent } from "components/ml-menu/ml-menu.component";
 import { MenuComponent } from "components/ml-menu/menu/menu.component";
 import { MenuItemComponent } from "components/ml-menu/menu-item/menu-item.component";
 import { StudentListComponent } from "app/student-list/student-list.component";
+import { StudentDetailComponent } from "app/student-detail/student-detail.component";
 import { StatementComponent } from "app/statement/statement.component";
+import { AppRoutingModule } from "app/app-routing.module";
 
 @NgModule({
   declarations: [
@@ -27,13 +29,15 @@ import { StatementComponent } from "app/statement/statement.component";
     MenuComponent,
     MenuItemComponent,
     StudentListComponent,
-    StatementComponent
+    StatementComponent,
+    StudentDetailComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
-    RouterModule.forRoot([]),
+    AppRoutingModule,
     NgbModule.forRoot()
   ],
   providers: [
