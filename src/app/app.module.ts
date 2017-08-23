@@ -18,6 +18,8 @@ import { MenuItemComponent } from "components/ml-menu/menu-item/menu-item.compon
 import { StudentListComponent } from "app/student-list/student-list.component";
 import { StudentDetailComponent } from "app/student-detail/student-detail.component";
 import { StatementComponent } from "app/statement/statement.component";
+import { SearchStudentComponent } from "app/search-student/search-student.component";
+
 import { AppRoutingModule } from "app/app-routing.module";
 
 @NgModule({
@@ -30,7 +32,8 @@ import { AppRoutingModule } from "app/app-routing.module";
     MenuItemComponent,
     StudentListComponent,
     StatementComponent,
-    StudentDetailComponent
+    StudentDetailComponent,
+    SearchStudentComponent
   ],
   imports: [
     BrowserModule,

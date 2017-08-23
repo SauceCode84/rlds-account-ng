@@ -1,0 +1,15 @@
+<ng-template #rt let-r="result" let-t="term">
+  <ngb-highlight [result]="r.firstName + ' ' + r.lastName" [term]="t"></ngb-highlight> - <i>{{ r.grade }}</i>
+</ng-template>
+
+<!--<div class="input-group">
+  <div class="input-group-addon"><i class="fa fa-search"></i></div>-->
+  <input
+    class="form-control"
+    placeholder="Search students..."
+    [(ngModel)]="selected"
+    [ngbTypeahead]="searchStudent"
+    [resultTemplate]="rt"
+    [inputFormatter]="inputFormatter"
+    (selectItem)="selectItem($event)">
+<!--</div>-->

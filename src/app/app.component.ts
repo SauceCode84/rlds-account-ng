@@ -22,34 +22,7 @@ import { NgbTypeaheadSelectItemEvent } from "@ng-bootstrap/ng-bootstrap";
 export class AppComponent implements OnInit {
   
   show: boolean = false;
-
-  students: Student[];
-
-  searchStudent = (text: Observable<string>) => 
-    text
-      .debounceTime(200)
-      .distinctUntilChanged()
-      .map(value => {
-        let results = [];
-        
-        if (value.length >= 2) {
-          results = this.students
-            .filter(student => (student.firstName + " " + student.lastName).toLowerCase().indexOf(value.toLowerCase()) > -1)
-            .slice(0, 10);
-        }
-
-        return results;
-      });
   
-  inputFormatter = (student: Student) => student.firstName + " " + student.lastName;
-
-  selected: string;
-
-  selectItem(e: NgbTypeaheadSelectItemEvent) {
-    console.log(e.item);
-    this.router.navigate(["/student", e.item._id]);
-  }
-
   student = {
     name: "Andrea Hummerstone"
   };
@@ -71,10 +44,10 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     let fromDate = new Date("2017-04-18");
     this.statement = this.statementService.getStatement(fromDate);
+  }
 
-    this.studentService
-      .getAllStudents()
-      .subscribe(students => this.students = students);
+  onStudentSelected(studentId: string) {
+    this.router.navigate(["student", studentId]);
   }
 
   onSuccess() {

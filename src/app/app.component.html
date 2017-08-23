@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-primary">
+<nav class="navbar fixed-top navbar-expand-md navbar-dark bg-primary">
   <a class="navbar-brand" href="#">Navbar</a>
   
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1">
@@ -14,6 +14,9 @@
         <a class="nav-link" href="#">Link</a>
       </li>
     </ul>
+    <form>
+        <search-student (studentSelected)="onStudentSelected($event)"></search-student>
+    </form>
   </div>
 </nav>
 
@@ -23,23 +26,6 @@
     <li class="breadcrumb-item active">Statements</li>
   </ol>
 
-  <ng-template #rt let-r="result" let-t="term">
-    <ngb-highlight [result]="r.firstName + ' ' + r.lastName" [term]="t"></ngb-highlight> - <i>{{ r.grade }}</i>
-  </ng-template>
-
-  <div class="input-group">
-    <div class="input-group-addon"><i class="fa fa-search"></i></div>
-    <input
-      class="form-control"
-      placeholder="Find student..."
-      [(ngModel)]="selected"
-      [ngbTypeahead]="searchStudent"
-      [resultTemplate]="rt"
-      [inputFormatter]="inputFormatter"
-      (selectItem)="selectItem($event)">
-  </div>
-
-  <!--<app-student-list></app-student-list>-->
   <router-outlet></router-outlet>
 
 </div>
