@@ -21,6 +21,7 @@ import { StatementComponent } from "app/statement/statement.component";
 import { SearchStudentComponent } from "app/search-student/search-student.component";
 
 import { AppRoutingModule } from "app/app-routing.module";
+import { DisplayGradePipe } from "../pipes/display-grade.pipe";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,9 @@ import { AppRoutingModule } from "app/app-routing.module";
     StudentListComponent,
     StatementComponent,
     StudentDetailComponent,
-    SearchStudentComponent
+    SearchStudentComponent,
+    
+    DisplayGradePipe
   ],
   imports: [
     BrowserModule,

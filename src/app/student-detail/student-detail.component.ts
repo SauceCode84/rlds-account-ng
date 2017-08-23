@@ -7,6 +7,7 @@ import "rxjs/add/operator/switchMap";
 
 import { StudentService } from "providers/student.service";
 import { Student } from "models";
+import { Grade } from "models/student";
 
 @Component({
   selector: "app-student-detail",
@@ -17,6 +18,10 @@ export class StudentDetailComponent implements OnInit {
 
   //private student: Student;
   private studentForm: FormGroup;
+
+  private grades = Object.keys(Grade)
+    .filter(grade => typeof Grade[grade] === "number")
+    .map(grade => Grade[grade]);
 
   constructor(
     private route: ActivatedRoute,
@@ -30,6 +35,8 @@ export class StudentDetailComponent implements OnInit {
       lastName: "",
       grade: ""
     });
+
+    console.log(this.grades);
   }
 
   get firstName() {

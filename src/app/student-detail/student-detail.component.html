@@ -22,12 +22,7 @@
     <label class="col-sm-2 col-form-label">Grade</label>
     <div class="col-sm-10">
       <select class="form-control" formControlName="grade">
-        <option value="Primary">Primary</option>
-        <option value="Grade 1">Grade 1</option>
-        <option value="Grade 2">Grade 2</option>
-        <option value="Grade 3">Grade 3</option>
-        <option value="Grade 4">Grade 4</option>
-        <option value="Grade 5">Grade 5</option>
+        <option *ngFor="let grade of grades" [value]="grade">{{ grade | displayGrade }}</option>
       </select>
     </div>
   </div>
@@ -41,4 +36,3 @@
 <pre>{{ student | json }}</pre>
 <pre>{{ studentForm.value | json }}</pre>
 <pre>{{ studentForm.status | json }}</pre>
-

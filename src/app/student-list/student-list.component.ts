@@ -3,6 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { StudentService } from "providers/student.service";
 import { Student } from "models";
 import { Observable } from "rxjs/Observable";
+import { GradeDisplay } from "models/student";
 
 @Component({
   selector: "app-student-list",
