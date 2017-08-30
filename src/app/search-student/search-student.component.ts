@@ -35,12 +35,19 @@ export class SearchStudentComponent implements OnInit {
         
         if (value.length >= 2) {
           results = this.students
-            .filter(student => (student.firstName + " " + student.lastName).toLowerCase().indexOf(value.toLowerCase()) > -1)
+            .filter(this.filterByStudentName(value))
             .slice(0, 10);
         }
 
         return results;
       });
+  }
+
+  private filterByStudentName(search: string) {
+    return (student: Student) => {
+      let fullName = student.firstName + " " + student.lastName;
+      return fullName.toLowerCase().indexOf(search.toLowerCase()) > -1;
+    }
   }
 
   inputFormatter(student: Student): string {
