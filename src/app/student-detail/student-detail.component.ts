@@ -7,7 +7,7 @@ import "rxjs/add/operator/switchMap";
 
 import { StudentService } from "providers/student.service";
 import { Student } from "models";
-import { Grade } from "models/student";
+import { Grade, PaymentOption, PaymentOptions, getPaymentOptionDisplayValue, getPaymentOptionValue, getDisplayValueArray } from "models/student";
 
 @Component({
   selector: "app-student-detail",
@@ -23,6 +23,8 @@ export class StudentDetailComponent implements OnInit {
     .filter(grade => typeof Grade[grade] === "number")
     .map(grade => Grade[grade]);
 
+  private paymentOptions;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -33,10 +35,11 @@ export class StudentDetailComponent implements OnInit {
     this.studentForm = this.fb.group({
       firstName: ["", Validators.required],
       lastName: "",
-      grade: ""
+      grade: "",
+      paymentOption: ""
     });
 
-    console.log(this.grades);
+    this.paymentOptions = getDisplayValueArray(PaymentOptions);
   }
 
   get firstName() {
@@ -52,7 +55,8 @@ export class StudentDetailComponent implements OnInit {
         this.studentForm.setValue({
           firstName: student.firstName,
           lastName: student.lastName,
-          grade: student.grade
+          grade: student.grade,
+          paymentOption: student.paymentOption
         });
       
         this.studentForm.valueChanges.subscribe(data => {

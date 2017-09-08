@@ -22,7 +22,7 @@ export class SearchStudentComponent implements OnInit {
 
   ngOnInit() {
     this.studentService
-      .getAllStudents()
+      .getStudentNames()
       .subscribe(students => this.students = students);
   }
 

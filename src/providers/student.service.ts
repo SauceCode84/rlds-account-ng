@@ -27,7 +27,7 @@ export class StudentService {
   
   public getAllStudents(page?: number, pageSize?: number) {
     if (page !== undefined && pageSize !== undefined) {
-      let params: HttpParams = new HttpParams()
+      let params = new HttpParams()
         .set("page", page.toString())
         .set("pageSize", pageSize.toString());
       
@@ -35,6 +35,10 @@ export class StudentService {
     }
 
     return this.http.get<Student[]>(this.url);
+  }
+
+  public getStudentNames() {
+    return this.http.get<Student[]>(this.url + "/names");
   }
 
   public getById(id: string): Observable<Student> {
