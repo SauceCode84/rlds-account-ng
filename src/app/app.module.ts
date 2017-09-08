@@ -4,6 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule  } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
 
+import { AngularFireModule } from "angularfire2";
+import { AngularFireDatabaseModule } from "angularfire2/database";
+
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppComponent } from "./app.component";
@@ -22,6 +25,8 @@ import { SearchStudentComponent } from "app/search-student/search-student.compon
 
 import { AppRoutingModule } from "app/app-routing.module";
 import { DisplayGradePipe } from "../pipes/display-grade.pipe";
+
+import { environment } from "environments/environment";
 
 @NgModule({
   declarations: [
@@ -43,6 +48,10 @@ import { DisplayGradePipe } from "../pipes/display-grade.pipe";
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+
     AppRoutingModule,
     NgbModule.forRoot()
   ],
