@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
 
 import { Observable } from "rxjs/Observable";
 
@@ -10,42 +10,33 @@ import { StatementService } from "providers/statement.service";
   templateUrl: "./statement.component.html",
   styleUrls: ["./statement.component.scss"]
 })
-export class StatementComponent implements OnInit {
-
+export class StatementComponent implements OnChanges, OnInit {
+  
   @Input()
   public studentId: string;
 
-  @Input()
-  public statement: Observable<Statement>;
+  public statement$: Observable<Statement>;
+  public statement: Statement;
 
   constructor(private statementService: StatementService) { }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (!changes.studentId.isFirstChange()) {
+      this.loadStatement();
+    }
+  }
+
   ngOnInit() {
-    console.log(this.studentId);
-    //let result = this.statementService.linesByStudentId(this.studentId);
+    this.loadStatement();
+  }
 
-    /*result.subscribe(lines => {
-      console.log(lines);
-    });*/
-
-    this.statement = this.statementService.statementForStudent(this.studentId);
-
-    this.statement.subscribe(console.log);
-
-    //console.log("StatementComponent.ngOnInit()", this.statement);
-    /*this.statement = this.statement.map(statement => {
-      console.log(statement);
-      return this.statementService.buildStatement(statement.lines)
-    });*/
+  private loadStatement() {
+    this.statement$ = this.statementService.statementForStudent(this.studentId);
+    this.statement$.subscribe(statement => this.statement = statement);
   }
 
   async addPayment() {
     await this.statementService.addPayment(this.studentId, 200);
   }
-
-  /*get lastPayment() {
-    //| date:'dd MMM yyyy'
-    return this.statement.map((statement: any) => statement.lastPayment);
-  }*/
 
 }
