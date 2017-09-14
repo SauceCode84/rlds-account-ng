@@ -6,10 +6,13 @@ import { RouterModule } from "@angular/router";
 
 import { AngularFireModule } from "angularfire2";
 import { AngularFireDatabaseModule } from "angularfire2/database";
+import { AngularFireAuthModule } from "angularfire2/auth";
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppComponent } from "./app.component";
+import { NotificationService } from 'providers/notification.service';
+import { AuthService } from 'providers/auth.service';
 import { AlertComponent } from "components/alert/alert.component";
 import { AlertService } from "providers/alert.service";
 import { StatementService } from "providers/statement.service";
@@ -23,6 +26,7 @@ import { StudentListComponent } from "app/student-list/student-list.component";
 import { StudentDetailComponent } from "app/student-detail/student-detail.component";
 import { StatementComponent } from "app/statement/statement.component";
 import { SearchStudentComponent } from "app/search-student/search-student.component";
+import { UserLoginComponent } from "./user-login/user-login.component";
 
 import { AppRoutingModule } from "app/app-routing.module";
 import { DisplayGradePipe } from "../pipes/display-grade.pipe";
@@ -44,7 +48,8 @@ import { environment } from "environments/environment";
     SearchStudentComponent,
     
     DisplayGradePipe,
-    NADatePipe
+    NADatePipe,
+    UserLoginComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +59,7 @@ import { environment } from "environments/environment";
 
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
+    AngularFireAuthModule,
 
     AppRoutingModule,
     NgbModule.forRoot()
@@ -61,6 +67,8 @@ import { environment } from "environments/environment";
   providers: [
     AngularFireKeyService,
 
+    NotificationService,
+    AuthService,
     AlertService,
     StatementService,
     StudentService

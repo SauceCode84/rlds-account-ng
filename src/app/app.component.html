@@ -26,6 +26,11 @@
     <li class="breadcrumb-item active">Statements</li>
   </ol>
 
+  <button (click)="anonSignin()">Anon</button>
+  <p>Current User: {{ currentUser }}</p>
+
+  <pre>{{ notification | async | json }}</pre>
+
   <router-outlet></router-outlet>
 
 </div>

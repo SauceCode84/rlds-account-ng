@@ -8,11 +8,11 @@ import "rxjs/add/operator/distinctUntilChanged";
 import "rxjs/add/operator/map";
 
 import { AlertService } from "providers/alert.service";
-import { StatementService } from "providers/statement.service";
-import { StudentService } from "providers/student.service";
+import { AuthService } from "providers/auth.service";
+import { NotificationService } from "providers/notification.service";
 
-import { Statement, StatementLine, Student } from "models";
 import { NgbTypeaheadSelectItemEvent } from "@ng-bootstrap/ng-bootstrap";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 @Component({
   selector: 'app-root',
@@ -21,21 +21,30 @@ import { NgbTypeaheadSelectItemEvent } from "@ng-bootstrap/ng-bootstrap";
 })
 export class AppComponent implements OnInit {
   
+  notification: BehaviorSubject<any>;
+
   show: boolean = false;
   
-  statement: Statement;
-
   currentBalance: number;
 
   constructor(
-    private studentService: StudentService,
-    private statementService: StatementService,
     private alertService: AlertService,
+    private notificationService: NotificationService,
+    private authService: AuthService,
     private router: Router) { }
 
   ngOnInit() {
-    let fromDate = new Date("2017-04-18");
-    //this.statement = this.statementService.getStatement(fromDate);
+    this.notificationService.getPermission();
+    this.notificationService.receiveNotifications();
+    this.notification = this.notificationService.currentNotification;
+  }
+
+  async anonSignin() {
+    await this.authService.anonymousLogin();
+  }
+
+  get currentUser() {
+    return this.authService.currentDisplayName;
   }
 
   onStudentSelected(studentId: string) {
