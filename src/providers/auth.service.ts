@@ -74,6 +74,11 @@ export class AuthService {
     }
   }
 
+  async logout() {
+    await this.afAuth.auth.signOut();
+    this.router.navigate(["/"]);
+  }
+
   private async updateUserData() {
     const path = `users/${this.currentUserId}`;
     const userData = {

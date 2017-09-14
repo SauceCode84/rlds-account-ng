@@ -43,8 +43,16 @@ export class AppComponent implements OnInit {
     await this.authService.anonymousLogin();
   }
 
+  logout() {
+    this.authService.logout();
+  }
+
   get currentUser() {
     return this.authService.currentDisplayName;
+  }
+
+  get isAuthenticated() {
+    return this.authService.isAuthenticated;
   }
 
   onStudentSelected(studentId: string) {
