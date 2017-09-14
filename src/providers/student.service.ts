@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 
+import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from "angularfire2/database";
+
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/empty";
 
@@ -20,7 +22,7 @@ export class StudentService {
 
   private url = `${baseUrl}/student`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private db: AngularFireDatabase) { }
 
   public getAllStudents(): Observable<Student[]>;
   public getAllStudents(page: number, pageSize: number): Observable<IPagedResults<Student>>;
@@ -43,6 +45,24 @@ export class StudentService {
 
   public getById(id: string): Observable<Student> {
     return this.http.get<Student>(this.url + "/" + id);
+  }
+
+  public getStudents(): FirebaseListObservable<Student[]> {
+    return this.db.list("/students");
+  }
+
+  public getStudentById(key: string): FirebaseObjectObservable<Student> {
+    return this.db.object("/students/" + key);
+  }
+
+  public addStudent(student: Student): FirebaseObjectObservable<Student> {
+    let key = this.getStudents().push(student).key;
+    
+    return this.getStudentById(key);
+  }
+
+  public updateStudent(student: FirebaseObjectObservable<Student>, data: any) {
+    return student.update(data);
   }
 
 }

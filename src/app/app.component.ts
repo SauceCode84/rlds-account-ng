@@ -23,11 +23,6 @@ export class AppComponent implements OnInit {
   
   show: boolean = false;
   
-  student = {
-    name: "Andrea Hummerstone"
-  };
-
-
   statement: Statement;
 
   currentBalance: number;
@@ -36,14 +31,11 @@ export class AppComponent implements OnInit {
     private studentService: StudentService,
     private statementService: StatementService,
     private alertService: AlertService,
-    private router: Router,
-    private title: Title) {
-    this.title.setTitle(this.student.name + " - Statement");
-  }
+    private router: Router) { }
 
-  async ngOnInit() {
+  ngOnInit() {
     let fromDate = new Date("2017-04-18");
-    this.statement = this.statementService.getStatement(fromDate);
+    //this.statement = this.statementService.getStatement(fromDate);
   }
 
   onStudentSelected(studentId: string) {

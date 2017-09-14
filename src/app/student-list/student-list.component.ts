@@ -1,8 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
 
 import { StudentService } from "providers/student.service";
 import { Student } from "models";
-import { Observable } from "rxjs/Observable";
 import { GradeDisplay } from "models/student";
 
 @Component({
@@ -10,9 +12,12 @@ import { GradeDisplay } from "models/student";
   templateUrl: "./student-list.component.html",
   styleUrls: ["./student-list.component.scss"]
 })
-export class StudentListComponent implements OnInit {
+export class StudentListComponent implements OnInit, OnDestroy {
+  
+  students: Student[];
+  subscription: Subscription;
 
-  private students: Student[];
+  isLoading: boolean;
 
   totalCount: number;
   page: number;
@@ -20,22 +25,41 @@ export class StudentListComponent implements OnInit {
 
   constructor(private studentService: StudentService) { }
 
-  private populateStudents() {
-    this.studentService
-      .getAllStudents(this.page, this.pageSize)
-      .subscribe(result => {
-        this.totalCount = result.totalCount;
-        this.students = result.results;
+  ngOnInit() {
+    this.page = 1;
+    this.isLoading = true;
+
+    this.subscription = this.studentService.getStudents()
+      .subscribe(students => {
+        this.isLoading = false;
+
+        this.students = students.sort(studentCompare);
+        this.totalCount = this.students.length;
       });
   }
 
-  ngOnInit() {
-    this.page = 1;
-    this.populateStudents();
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
-  onPageChange(page: number) {
+  /*onPageChange(page: number) {
     this.populateStudents();
-  }
+  }*/
 
+}
+
+export const compare = <T>(a: T, b: T): number => {
+  if (a > b) return +1;
+  if (a < b) return -1;
+  return 0;
+};
+
+export const compareCaseInsensitive = (a: string, b: string): number => {
+  return compare(a.toLowerCase(), b.toLowerCase());
+};
+
+const studentCompare = (a: Student, b: Student) => {
+  return compare(a.grade, b.grade)
+    || compareCaseInsensitive(a.lastName, b.lastName)
+    || compareCaseInsensitive(a.firstName, b.firstName);
 }

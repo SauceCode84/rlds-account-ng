@@ -1,12 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 
+import { FirebaseObjectObservable } from "angularfire2/database";
+
+import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/switchMap";
 
 import { StudentService } from "providers/student.service";
-import { Student } from "models";
+import { Student, Statement } from "models";
 import { Grade, PaymentOption, PaymentOptions, getPaymentOptionDisplayValue, getPaymentOptionValue, getDisplayValueArray } from "models/student";
 
 @Component({
@@ -15,16 +18,21 @@ import { Grade, PaymentOption, PaymentOptions, getPaymentOptionDisplayValue, get
   styleUrls: ["./student-detail.component.scss"]
 })
 export class StudentDetailComponent implements OnInit {
+  
+  private isNew: boolean;
+  public isSaving: boolean = false;
+  
+  public dateOfBirth;
+  
+  public student: FirebaseObjectObservable<Student>;
+  public studentForm: FormGroup;
 
-  //private student: Student;
-  private studentForm: FormGroup;
-
-  private grades = Object.keys(Grade)
+  public grades = Object.keys(Grade)
     .filter(grade => typeof Grade[grade] === "number")
     .map(grade => Grade[grade]);
 
-  private paymentOptions;
-
+  public paymentOptions;
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -36,33 +44,66 @@ export class StudentDetailComponent implements OnInit {
       firstName: ["", Validators.required],
       lastName: "",
       grade: "",
+      dob: "",
       paymentOption: ""
     });
 
     this.paymentOptions = getDisplayValueArray(PaymentOptions);
   }
 
-  get firstName() {
-    return this.studentForm.get("firstName");
+  private createContactGroup() {
+    return this.fb.group({
+      name: "",
+      email: ""
+    });
   }
 
+  get firstName() {
+    return this.studentForm.get("firstName") as FormControl;
+  }
+
+  /*get dob() {
+    return this.studentForm.get("dob") as FormControl;
+  }*/
+  
   ngOnInit() {
     this.route.paramMap
-      .switchMap((params: ParamMap) => this.studentService.getById(params.get("id")))
-      .subscribe(student => {
-        this.title.setTitle(student.firstName + " " + student.lastName + " - Students");
+      .subscribe((params: ParamMap) => {
+        let id = params.get("id");
+        this.isNew = id === null;
+        
+        if (this.isNew) {
+          this.student = this.studentService.addStudent(<Student>{});
+        } else {
+          this.student = this.studentService.getStudentById(id);
+        }
 
-        this.studentForm.setValue({
-          firstName: student.firstName,
-          lastName: student.lastName,
-          grade: student.grade,
-          paymentOption: student.paymentOption
-        });
-      
-        this.studentForm.valueChanges.subscribe(data => {
-          console.log("Form changes:", data);
+        this.student.subscribe(student => {
+          console.log(student);
+          
+          let title = "New Student - Students";
+
+          if (!this.isNew) {
+            title = student.firstName + " " + student.lastName + " - Students";
+            this.studentForm.patchValue(student);
+          }
+
+          this.title.setTitle(title);
         });
       });
+  }
+
+  async saveChanges() {
+    if (this.studentForm.invalid) {
+      return;
+    }
+
+    this.isSaving = true;
+
+    let data = this.studentForm.value;
+    await this.studentService.updateStudent(this.student, data);
+
+    this.isSaving = false;
   }
 
   onSubmit() {

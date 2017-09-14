@@ -14,6 +14,7 @@ import { AlertComponent } from "components/alert/alert.component";
 import { AlertService } from "providers/alert.service";
 import { StatementService } from "providers/statement.service";
 import { StudentService } from "providers/student.service";
+import { AngularFireKeyService } from "providers/angular-fire-key.service";
 
 import { MultiLevelMenuComponent } from "components/ml-menu/ml-menu.component";
 import { MenuComponent } from "components/ml-menu/menu/menu.component";
@@ -25,6 +26,7 @@ import { SearchStudentComponent } from "app/search-student/search-student.compon
 
 import { AppRoutingModule } from "app/app-routing.module";
 import { DisplayGradePipe } from "../pipes/display-grade.pipe";
+import { NADatePipe } from "pipes/na-date.pipe";
 
 import { environment } from "environments/environment";
 
@@ -41,7 +43,8 @@ import { environment } from "environments/environment";
     StudentDetailComponent,
     SearchStudentComponent,
     
-    DisplayGradePipe
+    DisplayGradePipe,
+    NADatePipe
   ],
   imports: [
     BrowserModule,
@@ -56,6 +59,8 @@ import { environment } from "environments/environment";
     NgbModule.forRoot()
   ],
   providers: [
+    AngularFireKeyService,
+
     AlertService,
     StatementService,
     StudentService

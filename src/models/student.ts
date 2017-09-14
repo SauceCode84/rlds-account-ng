@@ -5,6 +5,10 @@ export interface Student {
   grade: number;
   emails: string[];
   paymentOption: PaymentOption;
+  account: {
+    balance: number;
+    lastPayment: Date;
+  }
 }
 
 export enum Grade {

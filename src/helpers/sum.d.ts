@@ -7,5 +7,5 @@ interface Array<T> {
    * @param selectorFn A callback function which returns a number, used to sum the elements in the array
    * @param initalValue An initial value. Default is 0
    */
-  sum(selectorFn: NumberSelector<T>, initalValue?: number): number;
+  sum(selectorFn?: NumberSelector<T>, initalValue?: number): number;
 }

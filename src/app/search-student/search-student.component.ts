@@ -22,7 +22,7 @@ export class SearchStudentComponent implements OnInit {
 
   ngOnInit() {
     this.studentService
-      .getStudentNames()
+      .getStudents()
       .subscribe(students => this.students = students);
   }
 
@@ -55,9 +55,7 @@ export class SearchStudentComponent implements OnInit {
   }
 
   selectItem(e: NgbTypeaheadSelectItemEvent) {
-    console.log(e.item);
-    this.studentSelected.emit(e.item._id);
-    //this.router.navigate(["/student", e.item._id]);
+    this.studentSelected.emit(e.item.$key);
   }
 
 }

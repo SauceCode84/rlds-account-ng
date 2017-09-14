@@ -1,18 +1,19 @@
-<h2>{{ student.name }}</h2>
-<!--<button class="btn btn-success" (click)="onSuccess()">Success</button>
-<button class="btn btn-danger" (click)="onError()">Error</button>-->
-<!--<alert></alert>-->
+
+<button class="btn btn-primary" (click)="addPayment()">Payment</button>
+
+<h3 class="text-right"><small>Amount {{ (statement | async)?.currentBalance >= 0 ? 'Due' : 'Owed' }}:</small> {{ (statement | async)?.currentBalance | number:'1.2-2' }}</h3>
+<h5 class="text-right"><small>Last Payment:</small> {{ (statement | async)?.lastPayment | naDate:'dd MMM yyyy' }}</h5>
 <table class="table table-sm table-striped table-hover">
   <thead>
     <tr>
-      <th>Date</th>
-      <th>Details</th>
-      <th>Debit</th>
-      <th>Credit</th>
-      <th>Balance</th>
+      <th class="text-center">Date</th>
+      <th class="text-center">Details</th>
+      <th class="text-center">Debit</th>
+      <th class="text-center">Credit</th>
+      <th class="text-center">Balance</th>
   </thead>
   <tbody>
-    <tr *ngFor="let line of statement.lines">
+    <tr *ngFor="let line of (statement | async)?.lines">
       <td>{{ line.date | date:'dd MMM yyyy' }}</td>
       <td>{{ line.details }}</td>
       <td class="text-right">{{ line.debit | number:'1.2-2' }}</td>
@@ -22,9 +23,9 @@
   </tbody>
 </table>
 <hr/>
-<div>
-  Amount {{ statement.currentBalance >= 0 ? 'Due' : 'Owed' }}:<br/>
-  {{ statement.currentBalance | number:'1.2-2' }}<br/>
-  Total Invoiced: {{ statement.totalInvoiced | number:'1.2-2' }}<br/>
-  Total Payments: {{ statement.totalPayments | number:'1.2-2' }}<br/>
-</div>
+<!--<div>
+  Amount {{ (statement | async)?.currentBalance >= 0 ? 'Due' : 'Owed' }}:<br/>
+  {{ (statement | async)?.currentBalance | number:'1.2-2' }}<br/>
+  Total Invoiced: {{ (statement | async)?.totalInvoiced | number:'1.2-2' }}<br/>
+  Total Payments: {{ (statement | async)?.totalPayments | number:'1.2-2' }}<br/>
+</div>-->

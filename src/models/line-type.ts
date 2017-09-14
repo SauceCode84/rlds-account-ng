@@ -1,6 +1,6 @@
 
 export enum LineType {
-  ClassFees,
-  ExamFees,
-  Payment
+  ClassFees = "classFees",
+  ExamFees = "examFees",
+  Payment = "payment"
 }
