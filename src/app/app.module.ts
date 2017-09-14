@@ -27,6 +27,7 @@ import { StudentDetailComponent } from "app/student-detail/student-detail.compon
 import { StatementComponent } from "app/statement/statement.component";
 import { SearchStudentComponent } from "app/search-student/search-student.component";
 import { UserLoginComponent } from "./user-login/user-login.component";
+import { LoginFormComponent } from "./login-form/login-form.component";
 
 import { AppRoutingModule } from "app/app-routing.module";
 import { DisplayGradePipe } from "../pipes/display-grade.pipe";
@@ -46,10 +47,11 @@ import { environment } from "environments/environment";
     StatementComponent,
     StudentDetailComponent,
     SearchStudentComponent,
+    UserLoginComponent,
+    LoginFormComponent,
     
     DisplayGradePipe,
-    NADatePipe,
-    UserLoginComponent
+    NADatePipe
   ],
   imports: [
     BrowserModule,
