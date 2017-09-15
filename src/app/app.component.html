@@ -15,7 +15,7 @@
       </li>
     </ul>
     <ul class="navbar-nav">
-      <li class="nav-item dropdown" ngbDropdown [autoClose]="outside">
+      <li class="nav-item dropdown" ngbDropdown [autoClose]="'outside'">
         <a class="nav-link dropdown-toggle mx-2" href="#" ngbDropdownToggle id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span *ngIf="isAuthenticated; else loginDropdown">
             <i class="fa fa-user" aria-hidden="true"></i> {{ currentUser }}
