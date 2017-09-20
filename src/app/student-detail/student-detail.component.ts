@@ -3,12 +3,15 @@ import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+
 import { FirebaseObjectObservable } from "angularfire2/database";
 
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/switchMap";
 
 import { StudentService } from "providers/student.service";
+import { PaymentModalComponent } from "app/payment-modal/payment-modal.component";
 import { Student, Statement } from "models";
 import { Grade, PaymentOption, PaymentOptions, getPaymentOptionDisplayValue, getPaymentOptionValue, getDisplayValueArray } from "models/student";
 
@@ -38,6 +41,7 @@ export class StudentDetailComponent implements OnInit {
     private router: Router,
     private title: Title,
     private studentService: StudentService,
+    private modalService: NgbModal,
     private fb: FormBuilder) {
 
     this.studentForm = this.fb.group({
@@ -79,7 +83,7 @@ export class StudentDetailComponent implements OnInit {
         }
 
         this.student.subscribe(student => {
-          console.log(student);
+          //console.log(student);
           
           let title = "New Student - Students";
 
@@ -104,6 +108,11 @@ export class StudentDetailComponent implements OnInit {
     await this.studentService.updateStudent(this.student, data);
 
     this.isSaving = false;
+  }
+
+  onPaymentClick() {
+    let paymentModalRef = this.modalService.open(PaymentModalComponent);
+    paymentModalRef.componentInstance.student$ = this.student;
   }
 
   onSubmit() {

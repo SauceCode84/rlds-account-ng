@@ -1,9 +1,6 @@
-
-<button class="btn btn-primary" (click)="addPayment()">Payment</button>
-
 <h3 class="text-right"><small>Amount {{ statement?.currentBalance >= 0 ? 'Due' : 'Owed' }}:</small> {{ statement?.currentBalance | number:'1.2-2' }}</h3>
 <h5 class="text-right"><small>Last Payment:</small> {{ statement?.lastPayment | naDate:'dd MMM yyyy' }}</h5>
-<table class="table table-sm table-striped table-hover">
+<table class="table table-responsive table-sm table-striped table-hover">
   <thead>
     <tr>
       <th class="text-center">Date</th>

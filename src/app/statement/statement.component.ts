@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 import { Observable } from "rxjs/Observable";
 
@@ -33,10 +34,6 @@ export class StatementComponent implements OnChanges, OnInit {
   private loadStatement() {
     this.statement$ = this.statementService.statementForStudent(this.studentId);
     this.statement$.subscribe(statement => this.statement = statement);
-  }
-
-  async addPayment() {
-    await this.statementService.addPayment(this.studentId, 200);
   }
 
 }

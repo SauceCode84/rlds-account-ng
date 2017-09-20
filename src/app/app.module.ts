@@ -10,15 +10,18 @@ import { AngularFireAuthModule } from "angularfire2/auth";
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
-import { AppComponent } from "./app.component";
-import { NotificationService } from 'providers/notification.service';
-import { AuthService } from 'providers/auth.service';
-import { AlertComponent } from "components/alert/alert.component";
-import { AlertService } from "providers/alert.service";
-import { StatementService } from "providers/statement.service";
-import { StudentService } from "providers/student.service";
-import { AngularFireKeyService } from "providers/angular-fire-key.service";
+import { 
+  AlertService,
+  AngularFireKeyService,
+  AuthService,
+  FeesService,
+  NotificationService,
+  StatementService,
+  StudentService
+} from "providers";
 
+import { AppComponent } from "./app.component";
+import { AlertComponent } from "components/alert/alert.component";
 import { MultiLevelMenuComponent } from "components/ml-menu/ml-menu.component";
 import { MenuComponent } from "components/ml-menu/menu/menu.component";
 import { MenuItemComponent } from "components/ml-menu/menu-item/menu-item.component";
@@ -28,8 +31,12 @@ import { StatementComponent } from "app/statement/statement.component";
 import { SearchStudentComponent } from "app/search-student/search-student.component";
 import { UserLoginComponent } from "./user-login/user-login.component";
 import { LoginFormComponent } from "./login-form/login-form.component";
+import { PaymentModalComponent } from "./payment-modal/payment-modal.component";
+import { FeesListComponent } from './fees-list/fees-list.component';
+import { FeesModalComponent } from "./fees-modal/fees-modal.component";
 
 import { AppRoutingModule } from "app/app-routing.module";
+
 import { DisplayGradePipe } from "../pipes/display-grade.pipe";
 import { NADatePipe } from "pipes/na-date.pipe";
 
@@ -51,7 +58,10 @@ import { environment } from "environments/environment";
     LoginFormComponent,
     
     DisplayGradePipe,
-    NADatePipe
+    NADatePipe,
+    PaymentModalComponent,
+    FeesListComponent,
+    FeesModalComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +83,12 @@ import { environment } from "environments/environment";
     AuthService,
     AlertService,
     StatementService,
-    StudentService
+    StudentService,
+    FeesService
+  ],
+  entryComponents: [
+    PaymentModalComponent,
+    FeesModalComponent
   ],
   bootstrap: [AppComponent]
 })

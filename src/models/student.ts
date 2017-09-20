@@ -11,6 +11,14 @@ export interface Student {
   }
 }
 
+export const GradeOptions = {
+  preprimary: {
+    value: "pre-primary",
+    displayValue: "Pre-primary",
+    sortOrder: 0
+  }
+}
+
 export enum Grade {
   PrePrimary,
   Primary,
@@ -34,8 +42,16 @@ type DisplayValuePair<T> = {
   displayValue: string;
 }
 
+type SortableDisplayValuePair<T> = DisplayValuePair<T> & {
+  sortOrder: number;
+}
+
 interface DisplayKeyValuePair<T> {
   [key: string]: DisplayValuePair<T>
+}
+
+interface SortableDisplayKeyValuePair<T> extends DisplayKeyValuePair<T> {
+  [key: string]: SortableDisplayValuePair<T>;
 }
 
 export const PaymentOptions = {
@@ -71,14 +87,22 @@ const getDisplayValues = <T>(obj: DisplayKeyValuePair<T>) => {
   return Object.keys(obj).map(key => obj[key].displayValue);
 }
 
-const mapDisplayValuePair = <T>(obj: DisplayKeyValuePair<T>) => (key: string) => {
+const mapDisplayValuePair = <T>(obj: DisplayKeyValuePair<T>) => (key: string): DisplayValuePair<T> => {
   return {
     value: obj[key].value,
     displayValue: obj[key].displayValue
-  } 
+  };
 }
 
 export const getDisplayValueArray = <T>(obj: DisplayKeyValuePair<T>) => Object.keys(obj).map(mapDisplayValuePair(obj));
+export const getSortedDisplayValueArray = <T>(obj: SortableDisplayKeyValuePair<T>) => {
+  return (getDisplayValueArray(obj) as SortableDisplayValuePair<T>[])
+    .sort((a, b) => {
+      if (a.sortOrder > b.sortOrder) return 1;
+      if (a.sortOrder < b.sortOrder) return -1;
+      return 0;
+    });
+}
 
 export const getPaymentOptionValue = getValue(PaymentOptions);
 export const getPaymentOptionDisplayValue = getDisplayValue(PaymentOptions);

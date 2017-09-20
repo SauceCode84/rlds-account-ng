@@ -1,0 +1,31 @@
+<div *ngIf="!isLoading; else loading">
+  <button class="btn btn-primary" (click)="newFee()">New</button>
+
+  <div class="card">
+    <div class="card-block">
+      <table class="table table-responsive table-sm table-striped table-hover">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="text-center">Name</th>
+            <th class="text-center">Monthly</th>
+            <th class="text-center">Termly</th>
+            <th class="text-center">Annually</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fee of fees">
+            <td></td>
+            <td><a href="javascript:void(0)" (click)="editFee(fee)">{{ fee.name }}</a></td>
+            <td class="text-right px-3">{{ fee.monthly | number:'1.2-2' }}</td>
+            <td class="text-right px-3">{{ fee.termly | number:'1.2-2' }}</td>
+            <td class="text-right px-3">{{ fee.annually | number:'1.2-2' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+  
+<ng-template #loading>
+  Loading...
+</ng-template>

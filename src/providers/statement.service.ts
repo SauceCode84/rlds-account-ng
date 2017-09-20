@@ -68,22 +68,18 @@ export class StatementService {
     });
   }
 
-  async addPayment(studentId: string, amount: number) {
-    console.log(this.keyService.randomKey());
-
+  async addPayment(studentId: string, amount: number, date: string) {
     let newKey = await this.keyService.nextKey("/transactions");
 
     let newPayment = {
       studentId,
       details: "Payment Received - Thank you!",
       credit: amount,
-      date: moment().format("YYYY-MM-DD"),
+      date: date,
       type: LineType.Payment
     }
 
-    return this.db
-      .list("/transactions")
-      .update(newKey, newPayment);
+    await this.db.object(`/transactions/${newKey}`).set(newPayment);
   }
 
 }

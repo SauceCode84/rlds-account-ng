@@ -17,6 +17,17 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }
 
+.input-group.is-invalid {
+  .input-group-addon {
+    border-color: $form-feedback-invalid-color;
+  }
+
+  ~ .invalid-feedback {
+    display: block;
+  }
+}
+
+
 /*.btn {
   font-family: $font-pt-sans-caption;
   font-weight: bold;
