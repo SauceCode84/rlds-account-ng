@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Title } from "@angular/platform-browser";
 
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
@@ -15,7 +16,7 @@ import { GradeDisplay } from "models/student";
 export class StudentListComponent implements OnInit, OnDestroy {
   
   students: Student[];
-  subscription: Subscription;
+  studentsSub: Subscription;
 
   isLoading: boolean;
 
@@ -23,13 +24,16 @@ export class StudentListComponent implements OnInit, OnDestroy {
   page: number;
   pageSize: number = 10;
 
-  constructor(private studentService: StudentService) { }
+  constructor(private title: Title, private studentService: StudentService) { }
 
   ngOnInit() {
+    this.title.setTitle("Students");
+
     this.page = 1;
     this.isLoading = true;
 
-    this.subscription = this.studentService.getStudents()
+    this.studentsSub = this.studentService
+      .getStudents()
       .subscribe(students => {
         this.isLoading = false;
 
@@ -39,7 +43,7 @@ export class StudentListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.studentsSub.unsubscribe();
   }
 
   /*onPageChange(page: number) {

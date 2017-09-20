@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
@@ -8,6 +8,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { FirebaseObjectObservable } from "angularfire2/database";
 
 import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/operator/switchMap";
 
 import { StudentService } from "providers/student.service";
@@ -20,14 +21,16 @@ import { Grade, PaymentOption, PaymentOptions, getPaymentOptionDisplayValue, get
   templateUrl: "./student-detail.component.html",
   styleUrls: ["./student-detail.component.scss"]
 })
-export class StudentDetailComponent implements OnInit {
+export class StudentDetailComponent implements OnInit, OnDestroy {
   
-  private isNew: boolean;
+  public isNew: boolean;
   public isSaving: boolean = false;
   
   public dateOfBirth;
   
   public student: FirebaseObjectObservable<Student>;
+  private studentSub: Subscription;
+  
   public studentForm: FormGroup;
 
   public grades = Object.keys(Grade)
@@ -46,7 +49,7 @@ export class StudentDetailComponent implements OnInit {
 
     this.studentForm = this.fb.group({
       firstName: ["", Validators.required],
-      lastName: "",
+      lastName: ["", Validators.required],
       grade: "",
       dob: "",
       paymentOption: ""
@@ -66,6 +69,10 @@ export class StudentDetailComponent implements OnInit {
     return this.studentForm.get("firstName") as FormControl;
   }
 
+  get lastName() {
+    return this.studentForm.get("lastName") as FormControl;
+  }
+
   /*get dob() {
     return this.studentForm.get("dob") as FormControl;
   }*/
@@ -82,9 +89,7 @@ export class StudentDetailComponent implements OnInit {
           this.student = this.studentService.getStudentById(id);
         }
 
-        this.student.subscribe(student => {
-          //console.log(student);
-          
+        this.studentSub = this.student.subscribe(student => {
           let title = "New Student - Students";
 
           if (!this.isNew) {
@@ -97,12 +102,21 @@ export class StudentDetailComponent implements OnInit {
       });
   }
 
+  ngOnDestroy() {
+    this.studentSub.unsubscribe();
+  }
+
   async saveChanges() {
     if (this.studentForm.invalid) {
       return;
     }
 
+    if (this.isNew) {
+      await this.student.set({ account: { balance: 0 } });
+    }
+
     this.isSaving = true;
+    this.isNew = false;
 
     let data = this.studentForm.value;
     await this.studentService.updateStudent(this.student, data);
