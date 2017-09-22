@@ -8,6 +8,7 @@ import "rxjs/add/observable/of";
 
 import { FeesService } from "providers/fees.service";
 import { Fee } from "models";
+import { FeeType } from "models/fee";
 
 const greaterThanZero = (input: FormControl) => {
   return Observable
@@ -39,6 +40,10 @@ export class FeesModalComponent implements OnInit {
     return this.feeForm.get("name") as FormControl;
   }
 
+  get single() {
+    return this.feeForm.get("single") as FormControl;
+  }
+
   get monthly() {
     return this.feeForm.get("monthly") as FormControl;
   }
@@ -60,9 +65,24 @@ export class FeesModalComponent implements OnInit {
     this.feeForm = this.fb.group({
       name: ["", Validators.required],
       monthly: [0, Validators.required, greaterThanZero],
-      termly: [0, Validators.required, greaterThanZero],
-      annually: [0, Validators.required, greaterThanZero]
+      termly: [0, Validators.required, greaterThanZero]
     });
+
+    if (this.isClassFee) {
+      this.feeForm.addControl("annually", this.fb.control(0, Validators.required, greaterThanZero));
+    }
+
+    if (this.isPrivateFee) {
+      this.feeForm.addControl("single", this.fb.control(0, Validators.required, greaterThanZero));
+    }
+  }
+
+  get isClassFee() {
+    return this.fee.type === FeeType.Class;
+  }
+
+  get isPrivateFee() {
+    return this.fee.type === FeeType.Private;
   }
 
   async onSubmit() {

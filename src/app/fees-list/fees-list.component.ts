@@ -5,6 +5,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { FeesModalComponent } from "../fees-modal/fees-modal.component";
 import { FeesService } from "providers/fees.service";
 import { Fee } from "models";
+import { FeeType } from "models/fee";
 
 @Component({
   selector: "app-fees-list",
@@ -13,7 +14,8 @@ import { Fee } from "models";
 })
 export class FeesListComponent implements OnInit {
 
-  fees: Fee[] = [];
+  classFees: Fee[] = [];
+  privateFees: Fee[] = [];
   isLoading: boolean = false;
 
   constructor(private feesService: FeesService, private modalService: NgbModal) { }
@@ -21,11 +23,12 @@ export class FeesListComponent implements OnInit {
   ngOnInit() {
     this.isLoading = true;
 
-    this.feesService.getFees()
-      .subscribe(fees => {
-        this.fees = fees;
-        this.isLoading = false;
-      });
+    this.feesService.getFees().subscribe(fees => {
+      this.classFees = fees.filter(fee => fee.type === FeeType.Class);
+      this.privateFees = fees.filter(fee => fee.type === FeeType.Private);
+      
+      this.isLoading = false;
+    });
   }
 
   newFee() {
