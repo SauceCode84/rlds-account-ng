@@ -11,4 +11,5 @@ export interface Fee {
 export enum FeeType {
   Class = "class",
   Private = "private",
+  Preschool = "preschool"
 }

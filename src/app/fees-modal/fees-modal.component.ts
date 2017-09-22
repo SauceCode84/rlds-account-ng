@@ -27,7 +27,9 @@ export class FeesModalComponent implements OnInit {
 
   isSaving: boolean;
   isNew: boolean;
+  
   fee: Fee;
+  noValidate: string[] = [];
 
   feeForm: FormGroup;
 
@@ -62,19 +64,27 @@ export class FeesModalComponent implements OnInit {
   }
 
   private buildForm() {
-    this.feeForm = this.fb.group({
+    let formGroupDef = {
       name: ["", Validators.required],
       monthly: [0, Validators.required, greaterThanZero],
       termly: [0, Validators.required, greaterThanZero]
-    });
+    };
 
     if (this.isClassFee) {
-      this.feeForm.addControl("annually", this.fb.control(0, Validators.required, greaterThanZero));
+      formGroupDef["annually"] = [0, Validators.required, greaterThanZero];
     }
 
     if (this.isPrivateFee) {
-      this.feeForm.addControl("single", this.fb.control(0, Validators.required, greaterThanZero));
+      formGroupDef["single"] = [0, Validators.required, greaterThanZero];
     }
+
+    Object.keys(formGroupDef).forEach(key => {
+      if (this.noValidate.indexOf(key) > -1) {
+        formGroupDef[key] = 0;
+      }
+    });
+    
+    this.feeForm = this.fb.group(formGroupDef);
   }
 
   get isClassFee() {
