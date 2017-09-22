@@ -29,7 +29,7 @@ export class FeesModalComponent implements OnInit {
   isNew: boolean;
   
   fee: Fee;
-  noValidate: string[] = [];
+  notInclude: string[] = [];
 
   feeForm: FormGroup;
 
@@ -70,7 +70,7 @@ export class FeesModalComponent implements OnInit {
       termly: [0, Validators.required, greaterThanZero]
     };
 
-    if (this.isClassFee) {
+    if (this.isClassFee || this.isPreschoolFee) {
       formGroupDef["annually"] = [0, Validators.required, greaterThanZero];
     }
 
@@ -78,13 +78,27 @@ export class FeesModalComponent implements OnInit {
       formGroupDef["single"] = [0, Validators.required, greaterThanZero];
     }
 
-    Object.keys(formGroupDef).forEach(key => {
-      if (this.noValidate.indexOf(key) > -1) {
-        formGroupDef[key] = 0;
-      }
+    this.notInclude.forEach(key => {
+      delete formGroupDef[key];
     });
-    
+
     this.feeForm = this.fb.group(formGroupDef);
+  }
+
+  showFeeControl(name: string): boolean {
+    if (this.notInclude.indexOf(name) > -1) {
+      return false;
+    }
+
+    if (name === "annually" && !(this.isClassFee || this.isPreschoolFee)) {
+      return false;
+    }
+
+    if (name === "single" && !this.isPrivateFee) {
+      return false;
+    }
+
+    return true;
   }
 
   get isClassFee() {
@@ -93,6 +107,10 @@ export class FeesModalComponent implements OnInit {
 
   get isPrivateFee() {
     return this.fee.type === FeeType.Private;
+  }
+
+  get isPreschoolFee() {
+    return this.fee.type === FeeType.Preschool;
   }
 
   async onSubmit() {

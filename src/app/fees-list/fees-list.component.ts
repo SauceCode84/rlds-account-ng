@@ -54,7 +54,7 @@ export class FeesListComponent implements OnInit, OnDestroy {
     paymentModalRef.componentInstance.fee = fee;
 
     if ((fee as any).$key === "curro") {
-      paymentModalRef.componentInstance.noValidate = ["monthly"];
+      paymentModalRef.componentInstance.notInclude = ["monthly"];
     }
   }
 

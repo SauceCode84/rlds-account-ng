@@ -67,6 +67,7 @@
             <th class="text-center">Name</th>
             <th class="text-center">Monthly</th>
             <th class="text-center">Termly</th>
+            <th class="text-center">Annually</th>
         </thead>
         <tbody>
           <tr *ngFor="let preschoolFee of preschoolFees">
@@ -74,6 +75,7 @@
             <td><a href="javascript:void(0)" (click)="editFee(preschoolFee)">{{ preschoolFee.name }}</a></td>
             <td class="text-right px-3">{{ preschoolFee.monthly | number:'1.2-2' }}</td>
             <td class="text-right px-3">{{ preschoolFee.termly | number:'1.2-2' }}</td>
+            <td class="text-right px-3">{{ preschoolFee.annually | number:'1.2-2' }}</td>
           </tr>
         </tbody>
       </table>
