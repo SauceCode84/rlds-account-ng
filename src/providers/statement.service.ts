@@ -95,6 +95,7 @@ const txToStatementLine = (tx: Transaction): StatementLine => {
   return {
     date: new Date(tx.date),
     details: tx.details,
+    type: tx.type,
     amount: amountFromTx(tx),
     balance: 0
   };

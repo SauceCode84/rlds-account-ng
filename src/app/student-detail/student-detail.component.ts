@@ -29,6 +29,7 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
   public dateOfBirth;
   
   public student: FirebaseObjectObservable<Student>;
+  public studentId: string;
   private studentSub: Subscription;
   
   public studentForm: FormGroup;
@@ -91,10 +92,11 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
 
         this.studentSub = this.student.subscribe(student => {
           let title = "New Student - Students";
-
+          
           if (!this.isNew) {
             title = student.firstName + " " + student.lastName + " - Students";
             this.studentForm.patchValue(student);
+            this.studentId = (student as any).$key;
           }
 
           this.title.setTitle(title);

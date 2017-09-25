@@ -3,7 +3,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 import { Observable } from "rxjs/Observable";
 
-import { Statement } from "models";
+import { Statement, StatementLine, LineType } from "models";
 import { StatementService } from "providers/statement.service";
 
 @Component({
@@ -31,9 +31,20 @@ export class StatementComponent implements OnChanges, OnInit {
     this.loadStatement();
   }
 
+  isPayment(line: StatementLine) {
+    if (line && line.type) {
+      return line.type === LineType.Payment;
+    }
+
+    return false;
+  }
+
   private loadStatement() {
     this.statement$ = this.statementService.statementForStudent(this.studentId);
-    this.statement$.subscribe(statement => this.statement = statement);
+    this.statement$.subscribe(statement => {
+      console.log(statement);
+      this.statement = statement
+    });
   }
 
 }

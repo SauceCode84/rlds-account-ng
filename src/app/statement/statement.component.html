@@ -13,7 +13,7 @@
       <tr *ngFor="let line of statement?.lines">
         <td>{{ line.date | date:'dd MMM' }}</td>
         <td>{{ line.details }}</td>
-        <td class="text-right">{{ line.amount | number:'1.2-2' }}</td>
+        <td class="text-right" [class.text-danger]="isPayment(line)">{{ line.amount | number:'1.2-2' }}</td>
         <td class="text-right">{{ line.balance | number:'1.2-2' }}</td>
       </tr>
     </tbody>
