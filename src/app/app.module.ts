@@ -40,6 +40,8 @@ import { AppRoutingModule } from "app/app-routing.module";
 import { DisplayGradePipe } from "../pipes/display-grade.pipe";
 import { NADatePipe } from "pipes/na-date.pipe";
 
+import { FormatNumberDirective } from "../directives/format-number.directive";
+
 import { environment } from "environments/environment";
 
 @NgModule({
@@ -56,12 +58,14 @@ import { environment } from "environments/environment";
     SearchStudentComponent,
     UserLoginComponent,
     LoginFormComponent,
+    PaymentModalComponent,
+    FeesListComponent,
+    FeesModalComponent,
     
     DisplayGradePipe,
     NADatePipe,
-    PaymentModalComponent,
-    FeesListComponent,
-    FeesModalComponent
+    
+    FormatNumberDirective
   ],
   imports: [
     BrowserModule,

@@ -9,6 +9,11 @@ import { StatementService } from "providers/statement.service";
 
 import * as moment from "moment";
 
+const defaultValues = {
+  amount: 0,
+  date: moment().format("YYYY-MM-DD")
+};
+
 @Component({
   selector: "app-payment-modal",
   templateUrl: "./payment-modal.component.html",
@@ -33,19 +38,14 @@ export class PaymentModalComponent implements OnInit {
       amount: "",
       date: ""
     });
+
+    this.paymentForm.setValue(defaultValues);
   }
 
   ngOnInit() {
     this.student$.subscribe(student => {
       this.student = student;
     });
-
-    let defaultValues = {
-      amount: 0,
-      date: moment().format("YYYY-MM-DD")
-    };
-
-    this.paymentForm.setValue(defaultValues);
   }
 
   async onSubmit() {
