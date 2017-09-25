@@ -1,28 +1,21 @@
 <h3 class="text-right"><small>Amount {{ statement?.currentBalance >= 0 ? 'Due' : 'Owed' }}:</small> {{ statement?.currentBalance | number:'1.2-2' }}</h3>
 <h5 class="text-right"><small>Last Payment:</small> {{ statement?.lastPayment | naDate:'dd MMM yyyy' }}</h5>
-<table class="table table-responsive table-sm table-striped table-hover">
-  <thead>
-    <tr>
-      <th class="text-center">Date</th>
-      <th class="text-center">Details</th>
-      <th class="text-center">Debit</th>
-      <th class="text-center">Credit</th>
-      <th class="text-center">Balance</th>
-  </thead>
-  <tbody>
-    <tr *ngFor="let line of statement?.lines">
-      <td>{{ line.date | date:'dd MMM yyyy' }}</td>
-      <td>{{ line.details }}</td>
-      <td class="text-right">{{ line.debit | number:'1.2-2' }}</td>
-      <td class="text-right">{{ line.credit | number:'1.2-2' }}</td>
-      <td class="text-right">{{ line.balance | number:'1.2-2' }}</td>
-    </tr>
-  </tbody>
-</table>
-<hr/>
-<!--<div>
-  Amount {{ (statement | async)?.currentBalance >= 0 ? 'Due' : 'Owed' }}:<br/>
-  {{ (statement | async)?.currentBalance | number:'1.2-2' }}<br/>
-  Total Invoiced: {{ (statement | async)?.totalInvoiced | number:'1.2-2' }}<br/>
-  Total Payments: {{ (statement | async)?.totalPayments | number:'1.2-2' }}<br/>
-</div>-->
+<div class="table-responsive">
+  <table class="table table-sm table-striped table-hover">
+    <thead>
+      <tr>
+        <th class="text-center">Date</th>
+        <th class="text-center">Details</th>
+        <th class="text-center">Amount</th>
+        <th class="text-center">Balance</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let line of statement?.lines">
+        <td>{{ line.date | date:'dd MMM' }}</td>
+        <td>{{ line.details }}</td>
+        <td class="text-right">{{ line.amount | number:'1.2-2' }}</td>
+        <td class="text-right">{{ line.balance | number:'1.2-2' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

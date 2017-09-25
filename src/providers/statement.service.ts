@@ -9,7 +9,7 @@ import "rxjs/add/operator/toPromise";
 
 import * as moment from "moment";
 
-import { Statement, StatementLine, LineType } from "models";
+import { Statement, StatementLine, LineType, Transaction } from "models";
 import { AngularFireKeyService } from "providers/angular-fire-key.service";
 
 import "helpers/sum";
@@ -20,7 +20,7 @@ export class StatementService {
 
   constructor(private db: AngularFireDatabase, private keyService: AngularFireKeyService) { }
 
-  public linesByStudentId(studentId: string): FirebaseListObservable<StatementLine[]> {
+  public txsByStudentId(studentId: string): FirebaseListObservable<Transaction[]> {
     return this.db.list("/transactions", {
       query: {
         orderByChild: "studentId",
@@ -30,41 +30,15 @@ export class StatementService {
   }
 
   public statementForStudent(studentId: string, fromDate?: Date) {
-    return this.linesByStudentId(studentId).map(sl => {
-      let statementLines: StatementLine[] = [].concat(sl).sort(statementLineByDate);
-
-      statementLines.forEach(statementLine => statementLine.balance = 0);
-
-      fromDate = fromDate || new Date(new Date().getFullYear(), 0, 1);
-    
-      let totalInvoiced: number = statementLines.sum(line => line.debit);
-      let totalPayments: number = statementLines.sum(line => line.credit);
-
-      let lines = statementLines.filter(line => line.date <= fromDate);
-
-      let balance = lines.reduce(calculateBalance, 0);
-
-      statementLines.splice(0, lines.length);
-
-      let balanceLine = {
-        date: fromDate,
-        details: "Balance Brought Forward",
-        balance: balance
-      };
-
-      statementLines.unshift(balanceLine);
-      
-      let currentBalance = statementLines.reduce(calculateBalance, 0);
-
-      let lastPayment: Date = lastPaymentDate(statementLines);
-
-      return <Statement>{
-        lines: statementLines,
-        currentBalance: currentBalance,
-        totalInvoiced: totalInvoiced,
-        totalPayments: totalPayments,
-        lastPayment: lastPayment
-      };
+    return this.txsByStudentId(studentId)
+      .map((txs: Transaction[]) => {
+        let lines = createStatementLines(txs);
+        
+        return <Statement>{
+          lines: lines,
+          currentBalance: lines.reduce(calculateBalance, 0),
+          lastPayment: lastPaymentDate(lines)
+        };
     });
   }
 
@@ -84,25 +58,67 @@ export class StatementService {
 
 }
 
-const calculateBalance = (balance: number, currentLine: StatementLine) => {
-  balance += currentLine.balance || 0;
+const createStatementLines = (txs: Transaction[], fromDate?: Date): StatementLine[] => {
+  let statementLines: StatementLine[] = [].concat(txs.map(txToStatementLine)).sort(byLineDate);
+  
+  fromDate = fromDate || new Date(new Date().getFullYear(), 0, 1);
+  
+  let lines = statementLines.filter(line => line.date <= fromDate);
+  let balance = lines.reduce(calculateBalance, 0);
 
-  balance += currentLine.debit || 0;
-  balance -= currentLine.credit || 0;
+  statementLines.splice(0, lines.length);
 
-  currentLine.balance = balance;
+  let balanceLine: StatementLine = {
+    date: fromDate,
+    details: "Balance Brought Forward",
+    balance: balance
+  };
+
+  statementLines.unshift(balanceLine);
+
+  return statementLines;
+}
+
+const amountFromTx = (tx: Transaction): number => {
+  if (tx.debit) {
+    return tx.debit;
+  }
+  
+  if (tx.credit) {
+    return -tx.credit;
+  }
+
+  return 0;
+}
+
+const txToStatementLine = (tx: Transaction): StatementLine => {
+  return {
+    date: new Date(tx.date),
+    details: tx.details,
+    amount: amountFromTx(tx),
+    balance: 0
+  };
+}
+
+const calculateBalance = (balance: number, line: StatementLine) => {
+  balance += line.amount || 0;
+  line.balance = balance;
     
   return balance;
 }
 
-const statementLineByDate = (a: StatementLine, b: StatementLine) => {
+const byLineDate = (a: StatementLine, b: StatementLine) => {
   if (a.date > b.date) return 1;
   if (a.date < b.date) return -1;
   return 0;
 }
 
-const lastPaymentDate = (statementLines: StatementLine[]) => {
-  let lastLine = statementLines.filter(sl => sl.type === LineType.Payment).last();
+const byLineDateDesc = (a: StatementLine, b: StatementLine) => {
+  return byLineDate(a, b) * -1;
+}
+
+const lastPaymentDate = (lines: StatementLine[]) => {
+  let lastLine = lines.filter(line => line.type === LineType.Payment).last();
   
   if (lastLine !== undefined) {
     return lastLine.date;
