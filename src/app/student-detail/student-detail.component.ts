@@ -15,6 +15,7 @@ import { StudentService } from "providers/student.service";
 import { PaymentModalComponent } from "app/payment-modal/payment-modal.component";
 import { Student, Statement } from "models";
 import { Grade, PaymentOption, PaymentOptions, getPaymentOptionDisplayValue, getPaymentOptionValue, getDisplayValueArray } from "models/student";
+import { StudentFeeModalComponent } from "app/student-fee-modal/student-fee-modal.component";
 
 @Component({
   selector: "app-student-detail",
@@ -124,6 +125,11 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
     await this.studentService.updateStudent(this.student, data);
 
     this.isSaving = false;
+  }
+
+  onFeesClick() {
+    let feeModalRef = this.modalService.open(StudentFeeModalComponent);
+    feeModalRef.componentInstance.student$ = this.student;
   }
 
   onPaymentClick() {

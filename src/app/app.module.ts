@@ -94,7 +94,8 @@ import { environment } from "environments/environment";
   ],
   entryComponents: [
     PaymentModalComponent,
-    FeesModalComponent
+    FeesModalComponent,
+    StudentFeeModalComponent
   ],
   bootstrap: [AppComponent]
 })
