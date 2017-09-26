@@ -1,7 +1,8 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from "@angular/core";
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from "@angular/core";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
 
 import { Statement, StatementLine, LineType } from "models";
 import { StatementService } from "providers/statement.service";
@@ -11,13 +12,13 @@ import { StatementService } from "providers/statement.service";
   templateUrl: "./statement.component.html",
   styleUrls: ["./statement.component.scss"]
 })
-export class StatementComponent implements OnChanges, OnInit {
+export class StatementComponent implements OnInit, OnChanges, OnDestroy {
   
   @Input()
   public studentId: string;
 
-  public statement$: Observable<Statement>;
   public statement: Statement;
+  private statementSub: Subscription;
 
   constructor(private statementService: StatementService) { }
 
@@ -31,6 +32,10 @@ export class StatementComponent implements OnChanges, OnInit {
     this.loadStatement();
   }
 
+  ngOnDestroy() {
+    this.statementSub.unsubscribe();
+  }
+
   isPayment(line: StatementLine) {
     if (line && line.type) {
       return line.type === LineType.Payment;
@@ -40,11 +45,13 @@ export class StatementComponent implements OnChanges, OnInit {
   }
 
   private loadStatement() {
-    this.statement$ = this.statementService.statementForStudent(this.studentId);
-    this.statement$.subscribe(statement => {
-      console.log(statement);
-      this.statement = statement
-    });
+    if (this.statementSub) {
+      this.statementSub.unsubscribe();
+    }
+    
+    this.statementSub = this.statementService
+      .statementForStudent(this.studentId)
+      .subscribe(statement => this.statement = statement);
   }
 
 }
