@@ -43,6 +43,7 @@ import { NADatePipe } from "pipes/na-date.pipe";
 import { FormatNumberDirective } from "../directives/format-number.directive";
 
 import { environment } from "environments/environment";
+import { FeeModalComponent } from './fee-modal/fee-modal.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,9 @@ import { environment } from "environments/environment";
     DisplayGradePipe,
     NADatePipe,
     
-    FormatNumberDirective
+    FormatNumberDirective,
+    
+    FeeModalComponent
   ],
   imports: [
     BrowserModule,
