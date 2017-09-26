@@ -34,6 +34,7 @@ import { LoginFormComponent } from "./login-form/login-form.component";
 import { PaymentModalComponent } from "./payment-modal/payment-modal.component";
 import { FeesListComponent } from './fees-list/fees-list.component';
 import { FeesModalComponent } from "./fees-modal/fees-modal.component";
+import { StudentFeeModalComponent } from "./student-fee-modal/student-fee-modal.component";
 
 import { AppRoutingModule } from "app/app-routing.module";
 
@@ -43,7 +44,6 @@ import { NADatePipe } from "pipes/na-date.pipe";
 import { FormatNumberDirective } from "../directives/format-number.directive";
 
 import { environment } from "environments/environment";
-import { FeeModalComponent } from './fee-modal/fee-modal.component';
 
 @NgModule({
   declarations: [
@@ -62,13 +62,12 @@ import { FeeModalComponent } from './fee-modal/fee-modal.component';
     PaymentModalComponent,
     FeesListComponent,
     FeesModalComponent,
+    StudentFeeModalComponent,
     
     DisplayGradePipe,
     NADatePipe,
     
-    FormatNumberDirective,
-    
-    FeeModalComponent
+    FormatNumberDirective    
   ],
   imports: [
     BrowserModule,
