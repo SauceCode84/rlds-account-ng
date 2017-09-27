@@ -55,17 +55,25 @@ interface SortableDisplayKeyValuePair<T> extends DisplayKeyValuePair<T> {
 }
 
 export const PaymentOptions = {
+  single: {
+    value: "single",
+    displayValue: "Single",
+    sortOrder: 1
+  },
   monthly: {
     value: "monthly",
-    displayValue: "Monthly"
+    displayValue: "Monthly",
+    sortOrder: 2
   },
   termly: {
     value: "termly",
-    displayValue: "Termly"
+    displayValue: "Termly",
+    sortOrder: 3
   },
   annually: {
     value: "annually",
-    displayValue: "Annually"
+    displayValue: "Annually",
+    sortOrder: 4
   }
 };
 
@@ -87,6 +95,14 @@ const getDisplayValues = <T>(obj: DisplayKeyValuePair<T>) => {
   return Object.keys(obj).map(key => obj[key].displayValue);
 }
 
+export const getDisplayValuesForKeys = <T>(obj: DisplayKeyValuePair<T>, keys: string[]) => {
+  return keys.map(mapDisplayValuePair(obj));
+}
+
+export const getSortedDisplayValuesForKeys = <T>(obj: SortableDisplayKeyValuePair<T>, keys: string[]) => {
+  return keys.map(mapSortableDisplayValuePair(obj)).sort(bySortable);
+}
+
 const mapDisplayValuePair = <T>(obj: DisplayKeyValuePair<T>) => (key: string): DisplayValuePair<T> => {
   return {
     value: obj[key].value,
@@ -94,14 +110,18 @@ const mapDisplayValuePair = <T>(obj: DisplayKeyValuePair<T>) => (key: string): D
   };
 }
 
+const mapSortableDisplayValuePair = <T>(obj: SortableDisplayKeyValuePair<T>) => (key: string): SortableDisplayValuePair<T> => {
+  return Object.assign(mapDisplayValuePair(obj)(key), { sortOrder: obj[key].sortOrder });
+}
+
 export const getDisplayValueArray = <T>(obj: DisplayKeyValuePair<T>) => Object.keys(obj).map(mapDisplayValuePair(obj));
-export const getSortedDisplayValueArray = <T>(obj: SortableDisplayKeyValuePair<T>) => {
-  return (getDisplayValueArray(obj) as SortableDisplayValuePair<T>[])
-    .sort((a, b) => {
-      if (a.sortOrder > b.sortOrder) return 1;
-      if (a.sortOrder < b.sortOrder) return -1;
-      return 0;
-    });
+export const getSortedDisplayValueArray = <T>(obj: SortableDisplayKeyValuePair<T>) => 
+  (getDisplayValueArray(obj) as SortableDisplayValuePair<T>[]).sort(bySortable);
+
+const bySortable = <T>(a: SortableDisplayValuePair<T>, b: SortableDisplayValuePair<T>) => {
+  if (a.sortOrder > b.sortOrder) return 1;
+  if (a.sortOrder < b.sortOrder) return -1;
+  return 0;
 }
 
 export const getPaymentOptionValue = getValue(PaymentOptions);

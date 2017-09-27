@@ -4,7 +4,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
-import { Statement, StatementLine, LineType } from "models";
+import { Statement, StatementLine } from "models";
 import { StatementService } from "providers/statement.service";
 
 @Component({
@@ -38,7 +38,7 @@ export class StatementComponent implements OnInit, OnChanges, OnDestroy {
 
   isPayment(line: StatementLine) {
     if (line && line.type) {
-      return line.type === LineType.Payment;
+      return line.type === "payment";
     }
 
     return false;

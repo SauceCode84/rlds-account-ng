@@ -1,11 +1,22 @@
-import { Directive, OnInit, ElementRef, HostListener } from "@angular/core";
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges
+} from "@angular/core";
 
 @Directive({
   selector: "[formatNumber]"
 })
-export class FormatNumberDirective implements OnInit {
+export class FormatNumberDirective implements OnInit, OnChanges {
   
   private el: HTMLInputElement;
+
+  @Input("formatNumber")
+  public input: any;
 
   constructor(private elementRef: ElementRef) {
     this.el = this.elementRef.nativeElement;
@@ -13,6 +24,16 @@ export class FormatNumberDirective implements OnInit {
 
   ngOnInit() {
     this.el.value = this.formatNumber(this.el.value);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.input && !this.hasFocus) {
+      this.el.value = this.formatNumber(changes.input.currentValue);
+    }
+  }
+
+  private get hasFocus() {
+    return this.el === document.activeElement;
   }
 
   @HostListener("focus", ["$event.target.value"])

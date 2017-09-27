@@ -8,7 +8,6 @@ import "rxjs/add/observable/of";
 
 import { FeesService } from "providers/fees.service";
 import { Fee } from "models";
-import { FeeType } from "models/fee";
 
 const greaterThanZero = (input: FormControl) => {
   return Observable
@@ -102,15 +101,15 @@ export class FeesModalComponent implements OnInit {
   }
 
   get isClassFee() {
-    return this.fee.type === FeeType.Class;
+    return this.fee.type === "class";
   }
 
   get isPrivateFee() {
-    return this.fee.type === FeeType.Private;
+    return this.fee.type === "private";
   }
 
   get isPreschoolFee() {
-    return this.fee.type === FeeType.Preschool;
+    return this.fee.type === "preschool";
   }
 
   async onSubmit() {

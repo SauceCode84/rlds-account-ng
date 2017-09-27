@@ -1,10 +1,10 @@
 
-import { LineType } from "models";
+import { TransactionType } from "models/line-type";
 
 export interface Transaction {
   date: Date;
   details: string;
-  type?: LineType;
+  type?: TransactionType;
   debit?: number;
   credit?: number;
   balance?: number;

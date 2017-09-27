@@ -5,7 +5,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { FeesModalComponent } from "../fees-modal/fees-modal.component";
 import { FeesService } from "providers/fees.service";
 import { Fee } from "models";
-import { FeeType } from "models/fee";
+import { FeeType } from "models/line-type";
 
 import { Subscription } from "rxjs/Subscription";
 
@@ -32,9 +32,9 @@ export class FeesListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     this.feesListSub = this.feesService.getFees().subscribe(fees => {
-      this.classFees = fees.filter(byFeeType(FeeType.Class));
-      this.privateFees = fees.filter(byFeeType(FeeType.Private));
-      this.preschoolFees = fees.filter(byFeeType(FeeType.Preschool));
+      this.classFees = fees.filter(byFeeType("class"));
+      this.privateFees = fees.filter(byFeeType("private"));
+      this.preschoolFees = fees.filter(byFeeType("preschool"));
       
       this.isLoading = false;
     });

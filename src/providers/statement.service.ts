@@ -9,7 +9,7 @@ import "rxjs/add/operator/toPromise";
 
 import * as moment from "moment";
 
-import { Statement, StatementLine, LineType, Transaction } from "models";
+import { Statement, StatementLine, Transaction } from "models";
 import { AngularFireKeyService } from "providers/angular-fire-key.service";
 
 import "helpers/sum";
@@ -50,10 +50,19 @@ export class StatementService {
       details: "Payment Received - Thank you!",
       credit: amount,
       date: date,
-      type: LineType.Payment
-    }
+      type: "payment"
+    };
 
     await this.db.object(`/transactions/${newKey}`).set(newPayment);
+  }
+
+  async addFee(studentId: string, fee: { details: string, amount: number, date: string, type: string }) {
+    let newKey = await this.keyService.nextKey("/transactions");
+    let { details, date, type, amount } = fee;
+
+    let newFee = Object.assign({ studentId }, { details, date, type }, { debit: amount });
+
+    await this.db.object(`/transactions/${newKey}`).set(newFee);
   }
 
 }
@@ -119,7 +128,7 @@ const byLineDateDesc = (a: StatementLine, b: StatementLine) => {
 }
 
 const lastPaymentDate = (lines: StatementLine[]) => {
-  let lastLine = lines.filter(line => line.type === LineType.Payment).last();
+  let lastLine = lines.filter(line => line.type === "payment").last();
   
   if (lastLine !== undefined) {
     return lastLine.date;
