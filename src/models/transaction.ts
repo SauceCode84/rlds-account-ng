@@ -1,5 +1,5 @@
 
-import { TransactionType } from "models/line-type";
+import { TransactionType } from "models/types";
 
 export interface Transaction {
   date: Date;

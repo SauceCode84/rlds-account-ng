@@ -4,8 +4,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 import { FeesModalComponent } from "../fees-modal/fees-modal.component";
 import { FeesService } from "providers/fees.service";
-import { Fee } from "models";
-import { FeeType } from "models/line-type";
+import { Fee, FeeType } from "models";
 
 import { Subscription } from "rxjs/Subscription";
 

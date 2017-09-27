@@ -1,10 +1,11 @@
-import { FeeType, CustomFeeType } from "models/line-type";
+
+import { CustomFeeType, FeeType, InterestType } from "models";
 
 export interface Fee {
   $key?: string;
   name: string;
   amount: number | FeeAmounts;
-  type: FeeType | CustomFeeType;
+  type: FeeType | InterestType | CustomFeeType;
   sortOrder?: number;
 }
 
