@@ -45,6 +45,7 @@ import { FormatNumberDirective } from "../directives/format-number.directive";
 
 import { environment } from "environments/environment";
 import { SummaryService } from 'providers/summary.service';
+import { SummaryChartComponent } from './summary-chart/summary-chart.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,9 @@ import { SummaryService } from 'providers/summary.service';
     DisplayGradePipe,
     NADatePipe,
     
-    FormatNumberDirective    
+    FormatNumberDirective,
+    
+    SummaryChartComponent    
   ],
   imports: [
     BrowserModule,
