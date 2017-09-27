@@ -44,6 +44,7 @@ import { NADatePipe } from "pipes/na-date.pipe";
 import { FormatNumberDirective } from "../directives/format-number.directive";
 
 import { environment } from "environments/environment";
+import { SummaryService } from 'providers/summary.service';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { environment } from "environments/environment";
     AlertService,
     StatementService,
     StudentService,
-    FeesService
+    FeesService,
+    SummaryService
   ],
   entryComponents: [
     PaymentModalComponent,

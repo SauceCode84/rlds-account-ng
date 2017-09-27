@@ -46,6 +46,14 @@
     <li class="breadcrumb-item active">Statements</li>
   </ol>
 
-  <router-outlet></router-outlet>
+  <div class="row">
+    <div class="col-4">
+      <div class="chart-container" >
+        <canvas #myChart></canvas>
+      </div>
+    </div>
+  </div>
 
+  <router-outlet></router-outlet>
+  
 </div>
