@@ -20,4 +20,7 @@ interface SummaryData {
   private: TotalsByMonth;
   registration: TotalsByMonth;
   payment: TotalsByMonth;
+  exam: TotalsByMonth;
+  festival: TotalsByMonth;
+  costume: TotalsByMonth;
 }

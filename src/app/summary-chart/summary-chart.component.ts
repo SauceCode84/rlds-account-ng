@@ -17,6 +17,10 @@ export class SummaryChartComponent implements OnInit {
 
   private classFeeDataSet: ChartDataSets;
   private privateFeeDataSet: ChartDataSets;
+  private registrationDataSet: ChartDataSets;
+  private examFeeDataSet: ChartDataSets;
+  private costumeFeeDataSet: ChartDataSets;
+  private festivalFeeDataSet: ChartDataSets;
   private paymentsDataSet: ChartDataSets;
 
   private chart: Chart;
@@ -31,7 +35,31 @@ export class SummaryChartComponent implements OnInit {
 
     this.privateFeeDataSet = {
       label: "Private Fees",
+      backgroundColor: "#9C27B0",
+      data: []
+    };
+
+    this.registrationDataSet = {
+      label: "Registration Fees",
       backgroundColor: "#E91E63",
+      data: []
+    };
+
+    this.examFeeDataSet = {
+      label: "Exam Fees",
+      backgroundColor: "#2196F3",
+      data: []
+    };
+
+    this.costumeFeeDataSet = {
+      label: "Costume Fees",
+      backgroundColor: "#00BCD4",
+      data: []
+    };
+
+    this.festivalFeeDataSet = {
+      label: "Festival Fees",
+      backgroundColor: "#009688",
       data: []
     };
 
@@ -47,7 +75,15 @@ export class SummaryChartComponent implements OnInit {
       type: "bar",      
       data: {
         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [this.paymentsDataSet, this.classFeeDataSet, this.privateFeeDataSet]
+        datasets: [
+          this.paymentsDataSet,
+          this.classFeeDataSet,
+          this.privateFeeDataSet,
+          this.registrationDataSet,
+          this.examFeeDataSet,
+          this.costumeFeeDataSet,
+          this.festivalFeeDataSet
+        ]
       },
       options: {
         responsive: true,
@@ -66,6 +102,10 @@ export class SummaryChartComponent implements OnInit {
     this.summaryService.getSummaryData().subscribe(summary => {
       this.classFeeDataSet.data = months.map(month => summary.class[2017][month]);
       this.privateFeeDataSet.data = months.map(month => summary.private[2017][month]);
+      this.registrationDataSet.data = months.map(month => summary.registration[2017][month]);
+      this.examFeeDataSet.data = months.map(month => summary.exam[2017][month]);
+      this.costumeFeeDataSet.data = months.map(month => summary.costume[2017][month]);
+      this.festivalFeeDataSet.data = months.map(month => summary.festival[2017][month]);
       
       this.paymentsDataSet.data = months.map(month => summary.payment[2017][month]);
 
