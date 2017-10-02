@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from "@angular/core";
+import { FirebaseObjectObservable } from "angularfire2/database";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 import { Observable } from "rxjs/Observable";
@@ -7,7 +8,7 @@ import { Subscription } from "rxjs/Subscription";
 import { Statement, StatementLine, Student } from "models";
 import { StatementService } from "providers/statement.service";
 import { StudentFeeModalComponent } from "app/student-fee-modal/student-fee-modal.component";
-import { FirebaseObjectObservable } from "angularfire2/database";
+import { PaymentModalComponent } from "app/payment-modal/payment-modal.component";
 
 @Component({
   selector: "app-statement",
@@ -66,7 +67,8 @@ export class StatementComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (line.type === "payment") {
-
+      let paymentModalRef = this.modalService.open(PaymentModalComponent);
+      paymentModalRef.componentInstance.studentId = this.studentId;
     } else {
       let feeModalRef = this.modalService.open(StudentFeeModalComponent);
       feeModalRef.componentInstance.studentId = this.studentId;
