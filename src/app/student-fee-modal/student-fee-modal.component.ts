@@ -6,7 +6,7 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs/Subscription";
 
 import { Student, Fee } from "models";
-import { FeesService, StatementService } from "providers";
+import { FeesService, StatementService, StudentService } from "providers";
 import { getDisplayValueArray, Grade, getDisplayValuesForKeys, PaymentOptions, getSortedDisplayValuesForKeys } from "models/student";
 import { FeeTypeOptions } from "models/fee-options";
 import { isFeeAmounts } from "models/fee";
@@ -21,6 +21,14 @@ const customFee: Fee = {
   sortOrder: -1
 };
 
+interface FeeViewModel {
+  $key: string;
+  details: string;
+  date: string;
+  amount: number;
+  type: string;
+}
+
 @Component({
   selector: "app-student-fee-modal",
   templateUrl: "./student-fee-modal.component.html",
@@ -29,7 +37,8 @@ const customFee: Fee = {
 export class StudentFeeModalComponent implements OnInit, OnDestroy {
   
   @Input()
-  public student$: FirebaseObjectObservable<Student>;
+  public studentId: string;
+
   public student: Student;
   public studentSub: Subscription;
 
@@ -38,22 +47,17 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
   public fees: Fee[];
   public currentFee: Fee;
 
+  public viewModel: FeeViewModel;
+
   public isSaving: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     public activeModal: NgbActiveModal,
+    private studentService: StudentService,
     private feesService: FeesService,
     private statementService: StatementService
   ) {
-    this.feeForm = this.fb.group({
-      details: ["", Validators.required],
-      fee: "",
-      paymentOption: "",
-      amount: 0,
-      date: moment().format("YYYY-MM-DD")
-    });
-
     this.feesService
       .getFees()
       .subscribe(fees => {
@@ -80,6 +84,10 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
     return this.getFormControl("amount");
   }
 
+  get type() {
+    return this.getFormControl("type");
+  }
+
   private getFee(key: string) {
     let index = this.fees.findIndex(fee => fee.$key === key);
     return this.fees[index];
@@ -98,10 +106,45 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  get isNew() {
+    return this.viewModel === null || this.viewModel === undefined;
+  }
+
+  private buildForm() {
+    let formGroupDef = {
+      details: ["", Validators.required],
+      amount: 0,
+      date: moment().format("YYYY-MM-DD"),
+      type: ""
+    };
+
+    if (this.isNew) {
+      formGroupDef["fee"] = [""];
+      formGroupDef["paymentOption"] = [""];
+    }
+
+    this.feeForm = this.fb.group(formGroupDef);
+  }
+
+  private applyValue() {
+    if (!this.isNew) {
+      this.feeForm.patchValue(Object.assign({}, this.viewModel, { date: moment(this.viewModel.date).format("YYYY-MM-DD") }));
+    }
+  }
+
   ngOnInit() {
-    this.studentSub = this.student$
+    this.studentSub = this.studentService.getStudentById(this.studentId)
       .subscribe(student => this.student = student);
 
+    this.buildForm();
+    this.applyValue();
+
+    if (this.isNew) {
+      this.setupValueChangeListeners();
+    }
+  }
+
+  private setupValueChangeListeners() {
     this.fee.valueChanges.subscribe(value => {
       this.currentFee = this.getFee(value);
 
@@ -119,6 +162,10 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
         this.paymentOption.disable();
       }
 
+      if (this.currentFee && this.currentFee.type) {
+        this.type.setValue(this.currentFee.type);
+      }
+      
       this.details.setValue(this.getFeeDetails(this.currentFee));
     });
 
@@ -153,10 +200,13 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
     this.isSaving = true;
 
     try {
-      let { type } = this.currentFee;
-      let fee = Object.assign({ type }, this.feeForm.value);
+      let fee = this.feeForm.value;
 
-      await this.statementService.addFee((this.student as any).$key, fee);
+      if (this.isNew) {
+        await this.statementService.addFee(this.student.$key, fee);
+      } else {
+        await this.statementService.updateFee(this.viewModel.$key, fee);
+      }
       this.activeModal.close();
     } catch (err) {
       this.isSaving = false;

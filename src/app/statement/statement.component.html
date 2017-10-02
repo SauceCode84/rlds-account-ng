@@ -10,7 +10,7 @@
         <th class="text-center">Balance</th>
     </thead>
     <tbody>
-      <tr *ngFor="let line of statement?.lines">
+      <tr *ngFor="let line of statement?.lines" (click)="onLineClick(line)">
         <td>{{ line.date | date:'dd MMM' }}</td>
         <td>{{ line.details }}</td>
         <td class="text-right" [class.text-danger]="isPayment(line)">{{ line.amount | number:'1.2-2' }}</td>

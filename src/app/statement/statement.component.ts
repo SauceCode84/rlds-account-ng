@@ -4,8 +4,10 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
-import { Statement, StatementLine } from "models";
+import { Statement, StatementLine, Student } from "models";
 import { StatementService } from "providers/statement.service";
+import { StudentFeeModalComponent } from "app/student-fee-modal/student-fee-modal.component";
+import { FirebaseObjectObservable } from "angularfire2/database";
 
 @Component({
   selector: "app-statement",
@@ -20,7 +22,9 @@ export class StatementComponent implements OnInit, OnChanges, OnDestroy {
   public statement: Statement;
   private statementSub: Subscription;
 
-  constructor(private statementService: StatementService) { }
+  constructor(
+    private statementService: StatementService,
+    private modalService: NgbModal) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (!changes.studentId.isFirstChange()) {
@@ -52,6 +56,22 @@ export class StatementComponent implements OnInit, OnChanges, OnDestroy {
     this.statementSub = this.statementService
       .statementForStudent(this.studentId)
       .subscribe(statement => this.statement = statement);
+  }
+
+  onLineClick(line: StatementLine) {
+    console.log(line);
+
+    if (!line.type) {
+      return;
+    }
+
+    if (line.type === "payment") {
+
+    } else {
+      let feeModalRef = this.modalService.open(StudentFeeModalComponent);
+      feeModalRef.componentInstance.studentId = this.studentId;
+      feeModalRef.componentInstance.viewModel = line;
+    }
   }
 
 }

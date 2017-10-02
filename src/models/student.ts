@@ -1,5 +1,6 @@
 
 export interface Student {
+  $key: string;
   firstName: string;
   lastName: string;
   grade: number;

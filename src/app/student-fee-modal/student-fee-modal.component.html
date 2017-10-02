@@ -1,5 +1,5 @@
 <div class="modal-header">  
-  <h4 class="modal-title"><small>Fee for </small>{{ student.firstName }} {{ student.lastName }}</h4>
+  <h4 class="modal-title"><small>Fee for </small>{{ student?.firstName }} {{ student?.lastName }}</h4>
   <button type="button" class="close" aria-label="Close" (click)="onDismiss()">
     <i class="fa fa-times" aria-hidden="true"></i>
   </button>
@@ -8,7 +8,7 @@
 <div class="modal-body">
   <form [formGroup]="feeForm" (ngSubmit)="onSubmit()" novalidate>
     
-    <div class="form-group row">
+    <div class="form-group row" *ngIf="isNew">
       <label class="col-sm-3 col-form-label">Fee</label>
       <div class="col-sm-9">
         <select class="form-control" formControlName="fee">
@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row" *ngIf="isNew">
       <label class="col-sm-3 col-form-label">Payment Options</label>
       <div class="col-sm-9">
         <select class="form-control" formControlName="paymentOption">
@@ -49,6 +49,8 @@
         <input type="date" class="form-control" formControlName="date">
       </div>
     </div>
+
+    <input type="hidden" formControlName="type"/>
 
   </form>
 </div>

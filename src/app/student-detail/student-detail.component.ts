@@ -29,8 +29,8 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
   
   public dateOfBirth;
   
-  public student: FirebaseObjectObservable<Student>;
   public studentId: string;
+  public student$: FirebaseObjectObservable<Student>;
   private studentSub: Subscription;
   
   public studentForm: FormGroup;
@@ -86,18 +86,18 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
         this.isNew = id === null;
         
         if (this.isNew) {
-          this.student = this.studentService.addStudent(<Student>{});
+          this.student$ = this.studentService.addStudent(<Student>{});
         } else {
-          this.student = this.studentService.getStudentById(id);
+          this.student$ = this.studentService.getStudentById(id);
         }
 
-        this.studentSub = this.student.subscribe(student => {
+        this.studentSub = this.student$.subscribe(student => {
           let title = "New Student - Students";
           
           if (!this.isNew) {
             title = student.firstName + " " + student.lastName + " - Students";
             this.studentForm.patchValue(student);
-            this.studentId = (student as any).$key;
+            this.studentId = student.$key;
           }
 
           this.title.setTitle(title);
@@ -115,26 +115,26 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
     }
 
     if (this.isNew) {
-      await this.student.set({ account: { balance: 0 } });
+      await this.student$.set({ account: { balance: 0 } });
     }
 
     this.isSaving = true;
     this.isNew = false;
 
     let data = this.studentForm.value;
-    await this.studentService.updateStudent(this.student, data);
+    await this.studentService.updateStudent(this.student$, data);
 
     this.isSaving = false;
   }
 
   onFeesClick() {
     let feeModalRef = this.modalService.open(StudentFeeModalComponent);
-    feeModalRef.componentInstance.student$ = this.student;
+    feeModalRef.componentInstance.studentId = this.studentId;
   }
 
   onPaymentClick() {
     let paymentModalRef = this.modalService.open(PaymentModalComponent);
-    paymentModalRef.componentInstance.student$ = this.student;
+    paymentModalRef.componentInstance.studentId = this.studentId;
   }
 
   onSubmit() {

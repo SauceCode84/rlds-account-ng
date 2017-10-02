@@ -65,6 +65,13 @@ export class StatementService {
     await this.db.object(`/transactions/${newKey}`).set(newFee);
   }
 
+  async updateFee(txId: string, fee: { details: string, amount: number, date: string, type: string }) {
+    let { details, date, type, amount } = fee;
+    let updatedFee = Object.assign({ details, date, type }, { debit: amount });
+
+    await this.db.object(`/transactions/${txId}`).update(updatedFee);
+  }
+
 }
 
 const createStatementLines = (txs: Transaction[], fromDate?: Date): StatementLine[] => {
@@ -102,6 +109,7 @@ const amountFromTx = (tx: Transaction): number => {
 
 const txToStatementLine = (tx: Transaction): StatementLine => {
   return {
+    $key: tx.$key,
     date: new Date(tx.date),
     details: tx.details,
     type: tx.type,
