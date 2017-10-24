@@ -203,7 +203,7 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
       let fee = this.feeForm.value;
 
       if (this.isNew) {
-        await this.statementService.addFee(this.student.$key, fee);
+        await this.statementService.addFee(this.student.id, fee);
       } else {
         await this.statementService.updateFee(this.viewModel.$key, fee);
       }

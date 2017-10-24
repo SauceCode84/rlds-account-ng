@@ -7,6 +7,7 @@
 <div *ngIf="!isLoading; else loading">
   <ngb-pagination
     [collectionSize]="totalCount"
+    [pageSize]="pageSize"
     [(page)]="page"
     (pageChange)="onPageChange($event)">
   </ngb-pagination>
@@ -27,10 +28,10 @@
         <tr *ngFor="let student of students">
           <td></td>
           <td>
-            <a [routerLink]="['student', student.$key]">{{ student.firstName }} {{ student.lastName }}</a>
+            <a [routerLink]="['student', student.id]">{{ student.firstName }} {{ student.lastName }}</a>
             <span class="badge badge-danger" *ngIf="student.account?.balance > 0">outstanding</span>
           </td>
-          <td class="text-center">{{ student.grade | displayGrade }}</td>
+          <td class="text-center">{{ student.grade.name }}</td>
           <td class="text-center"><span class="badge badge-primary">{{ student.paymentOption }}</span></td>
           <td class="text-center">{{ student.account?.lastPayment | naDate:'dd MMM yyyy' }}</td>
           <td class="text-right px-3">{{ student.account?.balance | number:'1.2-2' }}</td>

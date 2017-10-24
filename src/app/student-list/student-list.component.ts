@@ -22,9 +22,11 @@ export class StudentListComponent implements OnInit, OnDestroy {
 
   totalCount: number;
   page: number;
-  pageSize: number = 10;
+  pageSize: number = 5;
 
-  constructor(private title: Title, private studentService: StudentService) { }
+  constructor(
+    private title: Title,
+    private studentService: StudentService) { }
 
   ngOnInit() {
     this.title.setTitle("Students");
@@ -32,23 +34,29 @@ export class StudentListComponent implements OnInit, OnDestroy {
     this.page = 1;
     this.isLoading = true;
 
-    /*this.studentsSub = this.studentService
-      .getStudents()
-      .subscribe(students => {
+    this.populateStudents();
+  }
+
+  private populateStudents() {
+    this.studentsSub = this.studentService
+      .getAllStudents(this.page, this.pageSize)
+      .subscribe(pageResults => {
         this.isLoading = false;
 
-        this.students = students.sort(studentCompare);
-        this.totalCount = this.students.length;
-      });*/
+        this.students = pageResults.results;
+
+        this.page = pageResults.page;
+        this.totalCount = pageResults.totalCount;
+      });
   }
 
   ngOnDestroy() {
     this.studentsSub.unsubscribe();
   }
 
-  /*onPageChange(page: number) {
+  onPageChange(page: number) {
     this.populateStudents();
-  }*/
+  }
 
 }
 

@@ -20,7 +20,7 @@ const baseUrl: string = "http://localhost:3000";
 @Injectable()
 export class StudentService {
 
-  private url = `${baseUrl}/student`;
+  private url = `${baseUrl}/students`;
 
   constructor(private http: HttpClient/*, private db: AngularFireDatabase*/) { }
 
@@ -28,12 +28,18 @@ export class StudentService {
   public getAllStudents(page: number, pageSize: number): Observable<IPagedResults<Student>>;
   
   public getAllStudents(page?: number, pageSize?: number) {
-    if (page !== undefined && pageSize !== undefined) {
-      let params = new HttpParams()
-        .set("page", page.toString())
-        .set("pageSize", pageSize.toString());
-      
-      return this.http.get<IPagedResults<Student>>(this.url, { params: params });
+    let params = new HttpParams();
+
+    if (page) {
+      params = params.set("page", page.toString());
+    }
+    
+    if (pageSize) {
+      params = params.set("pageSize", pageSize.toString());
+    }
+
+    if (page || pageSize) {
+      return this.http.get<IPagedResults<Student>>(this.url, { params });
     }
 
     return this.http.get<Student[]>(this.url);
