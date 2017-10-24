@@ -21,9 +21,9 @@ export class SearchStudentComponent implements OnInit {
   constructor(private studentService: StudentService) { }
 
   ngOnInit() {
-    /*this.studentService
-      .getStudents()
-      .subscribe(students => this.students = students);*/
+    this.studentService
+      .getStudentNames()
+      .subscribe(students => this.students = students);
   }
 
   searchStudent = (text: Observable<string>) => {
@@ -55,7 +55,7 @@ export class SearchStudentComponent implements OnInit {
   }
 
   selectItem(e: NgbTypeaheadSelectItemEvent) {
-    this.studentSelected.emit(e.item.$key);
+    this.studentSelected.emit((e.item as Student).id);
   }
 
 }
