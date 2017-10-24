@@ -21,9 +21,9 @@ export class SearchStudentComponent implements OnInit {
   constructor(private studentService: StudentService) { }
 
   ngOnInit() {
-    this.studentService
+    /*this.studentService
       .getStudents()
-      .subscribe(students => this.students = students);
+      .subscribe(students => this.students = students);*/
   }
 
   searchStudent = (text: Observable<string>) => {

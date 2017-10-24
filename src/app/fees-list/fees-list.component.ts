@@ -30,13 +30,13 @@ export class FeesListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading = true;
 
-    this.feesListSub = this.feesService.getFees().subscribe(fees => {
+    /*this.feesListSub = this.feesService.getFees().subscribe(fees => {
       this.classFees = fees.filter(byFeeType("class"));
       this.privateFees = fees.filter(byFeeType("private"));
       this.preschoolFees = fees.filter(byFeeType("preschool"));
       
       this.isLoading = false;
-    });
+    });*/
   }
 
   ngOnDestroy() {

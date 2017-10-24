@@ -1,13 +1,14 @@
 import { Injectable } from "@angular/core";
-import { AngularFireDatabase, FirebaseObjectObservable } from "angularfire2/database";
+//import { AngularFireDatabase, FirebaseObjectObservable } from "angularfire2/database";
 
 @Injectable()
 export class SummaryService {
 
-  constructor(private db: AngularFireDatabase) { }
+  constructor(/*private db: AngularFireDatabase*/) { }
 
-  public getSummaryData(): FirebaseObjectObservable<SummaryData> {
-    return this.db.object("/stats");
+  public getSummaryData(): SummaryData {
+    return null;
+    //return this.db.object("/stats");
   }
 
 }

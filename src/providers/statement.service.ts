@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 
-import { AngularFireDatabase, FirebaseListObservable } from "angularfire2/database";
+//import { AngularFireDatabase, FirebaseListObservable } from "angularfire2/database";
 import { Observable } from "rxjs/Observable";
 import { Observer } from "rxjs/Observer";
 
@@ -10,7 +10,7 @@ import "rxjs/add/operator/toPromise";
 import * as moment from "moment";
 
 import { Statement, StatementLine, Transaction } from "models";
-import { AngularFireKeyService } from "providers/angular-fire-key.service";
+//import { AngularFireKeyService } from "providers/angular-fire-key.service";
 
 import "helpers/sum";
 import "helpers/last";
@@ -18,19 +18,20 @@ import "helpers/last";
 @Injectable()
 export class StatementService {
 
-  constructor(private db: AngularFireDatabase, private keyService: AngularFireKeyService) { }
+  constructor(/*private db: AngularFireDatabase, private keyService: AngularFireKeyService*/) { }
 
-  public txsByStudentId(studentId: string): FirebaseListObservable<Transaction[]> {
-    return this.db.list("/transactions", {
+  public txsByStudentId(studentId: string): Transaction[] {
+    /*return this.db.list("/transactions", {
       query: {
         orderByChild: "studentId",
         equalTo: studentId
       }
-    });
+    });*/
+    return [];
   }
 
   public statementForStudent(studentId: string, fromDate?: Date) {
-    return this.txsByStudentId(studentId)
+    /*return this.txsByStudentId(studentId)
       .map((txs: Transaction[]) => {
         let lines = createStatementLines(txs);
         
@@ -39,11 +40,11 @@ export class StatementService {
           currentBalance: lines.reduce(calculateBalance, 0),
           lastPayment: lastPaymentDate(lines)
         };
-    });
+    });*/
   }
 
   async addPayment(studentId: string, amount: number, date: string) {
-    let newKey = await this.keyService.nextKey("/transactions");
+    /*let newKey = await this.keyService.nextKey("/transactions");
 
     let newPayment = {
       studentId,
@@ -53,23 +54,23 @@ export class StatementService {
       type: "payment"
     };
 
-    await this.db.object(`/transactions/${newKey}`).set(newPayment);
+    await this.db.object(`/transactions/${newKey}`).set(newPayment);*/
   }
 
   async addFee(studentId: string, fee: { details: string, amount: number, date: string, type: string }) {
-    let newKey = await this.keyService.nextKey("/transactions");
+    /*let newKey = await this.keyService.nextKey("/transactions");
     let { details, date, type, amount } = fee;
 
     let newFee = Object.assign({ studentId }, { details, date, type }, { debit: amount });
 
-    await this.db.object(`/transactions/${newKey}`).set(newFee);
+    await this.db.object(`/transactions/${newKey}`).set(newFee);*/
   }
 
   async updateFee(txId: string, fee: { details: string, amount: number, date: string, type: string }) {
-    let { details, date, type, amount } = fee;
+    /*let { details, date, type, amount } = fee;
     let updatedFee = Object.assign({ details, date, type }, { debit: amount });
 
-    await this.db.object(`/transactions/${txId}`).update(updatedFee);
+    await this.db.object(`/transactions/${txId}`).update(updatedFee);*/
   }
 
 }

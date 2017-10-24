@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { FirebaseObjectObservable } from "angularfire2/database";
+//import { FirebaseObjectObservable } from "angularfire2/database";
 
 import { Student } from "models";
 import { StatementService } from "providers/statement.service";
@@ -21,8 +21,8 @@ const defaultValues = {
 })
 export class PaymentModalComponent implements OnInit {
 
-  @Input()
-  student$: FirebaseObjectObservable<Student>;
+  //@Input()
+  //student$: FirebaseObjectObservable<Student>;
   student: Student;
 
   paymentForm: FormGroup;
@@ -43,9 +43,9 @@ export class PaymentModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.student$.subscribe(student => {
+    /*this.student$.subscribe(student => {
       this.student = student;
-    });
+    });*/
   }
 
   async onSubmit() {

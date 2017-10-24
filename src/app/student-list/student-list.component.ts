@@ -32,14 +32,14 @@ export class StudentListComponent implements OnInit, OnDestroy {
     this.page = 1;
     this.isLoading = true;
 
-    this.studentsSub = this.studentService
+    /*this.studentsSub = this.studentService
       .getStudents()
       .subscribe(students => {
         this.isLoading = false;
 
         this.students = students.sort(studentCompare);
         this.totalCount = this.students.length;
-      });
+      });*/
   }
 
   ngOnDestroy() {

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
-import { FirebaseObjectObservable } from "angularfire2/database";
+//import { FirebaseObjectObservable } from "angularfire2/database";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 
 import { Subscription } from "rxjs/Subscription";
@@ -58,12 +58,12 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
     private feesService: FeesService,
     private statementService: StatementService
   ) {
-    this.feesService
+    /*this.feesService
       .getFees()
       .subscribe(fees => {
         this.fees = fees.filter(fee => fee.type !== "preschool");
         this.fees.unshift(customFee);
-      });
+      });*/
   }
 
   private getFormControl = (name: string) => this.feeForm.get(name) as FormControl;
@@ -133,8 +133,8 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.studentSub = this.studentService.getStudentById(this.studentId)
-      .subscribe(student => this.student = student);
+    /*this.studentSub = this.studentService.getStudentById(this.studentId)
+      .subscribe(student => this.student = student);*/
 
     this.buildForm();
     this.applyValue();

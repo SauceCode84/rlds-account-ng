@@ -4,15 +4,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule  } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
 
-import { AngularFireModule } from "angularfire2";
-import { AngularFireDatabaseModule } from "angularfire2/database";
-import { AngularFireAuthModule } from "angularfire2/auth";
+//import { AngularFireModule } from "angularfire2";
+//import { AngularFireDatabaseModule } from "angularfire2/database";
+//import { AngularFireAuthModule } from "angularfire2/auth";
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { 
   AlertService,
-  AngularFireKeyService,
+  //AngularFireKeyService,
   AuthService,
   FeesService,
   NotificationService,
@@ -79,15 +79,15 @@ import { SummaryChartComponent } from './summary-chart/summary-chart.component';
     ReactiveFormsModule,
     HttpClientModule,
 
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule,
-    AngularFireAuthModule,
+    //AngularFireModule.initializeApp(environment.firebase),
+    //AngularFireDatabaseModule,
+    //AngularFireAuthModule,
 
     AppRoutingModule,
     NgbModule.forRoot()
   ],
   providers: [
-    AngularFireKeyService,
+    //AngularFireKeyService,
 
     NotificationService,
     AuthService,

@@ -5,7 +5,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@ang
 
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
-import { FirebaseObjectObservable } from "angularfire2/database";
+//import { FirebaseObjectObservable } from "angularfire2/database";
 
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
@@ -30,7 +30,7 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
   public dateOfBirth;
   
   public studentId: string;
-  public student$: FirebaseObjectObservable<Student>;
+  //public student$: FirebaseObjectObservable<Student>;
   private studentSub: Subscription;
   
   public studentForm: FormGroup;
@@ -86,12 +86,12 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
         this.isNew = id === null;
         
         if (this.isNew) {
-          this.student$ = this.studentService.addStudent(<Student>{});
+          //this.student$ = this.studentService.addStudent(<Student>{});
         } else {
-          this.student$ = this.studentService.getStudentById(id);
+          //this.student$ = this.studentService.getStudentById(id);
         }
 
-        this.studentSub = this.student$.subscribe(student => {
+        /*this.studentSub = this.student$.subscribe(student => {
           let title = "New Student - Students";
           
           if (!this.isNew) {
@@ -101,7 +101,7 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
           }
 
           this.title.setTitle(title);
-        });
+        });*/
       });
   }
 
@@ -115,14 +115,14 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
     }
 
     if (this.isNew) {
-      await this.student$.set({ account: { balance: 0 } });
+      //await this.student$.set({ account: { balance: 0 } });
     }
 
     this.isSaving = true;
     this.isNew = false;
 
     let data = this.studentForm.value;
-    await this.studentService.updateStudent(this.student$, data);
+    //await this.studentService.updateStudent(this.student$, data);
 
     this.isSaving = false;
   }

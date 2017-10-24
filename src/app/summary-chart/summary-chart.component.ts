@@ -99,7 +99,7 @@ export class SummaryChartComponent implements OnInit {
   ngOnInit() {
     this.chart = new Chart(this.chartEl.nativeElement, this.chartConfig);
 
-    this.summaryService.getSummaryData().subscribe(summary => {
+    /*this.summaryService.getSummaryData().subscribe(summary => {
       this.classFeeDataSet.data = months.map(month => summary.class[2017][month]);
       this.privateFeeDataSet.data = months.map(month => summary.private[2017][month]);
       this.registrationDataSet.data = months.map(month => summary.registration[2017][month]);
@@ -110,7 +110,7 @@ export class SummaryChartComponent implements OnInit {
       this.paymentsDataSet.data = months.map(month => summary.payment[2017][month]);
 
       this.chart.update();
-    });
+    });*/
   }
 
 }
