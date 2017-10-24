@@ -6,7 +6,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/empty";
 
-import { Student } from "models";
+import { Student, Contact } from "models";
 
 interface IPagedResults<TModel> {
   totalCount: number;
@@ -28,17 +28,17 @@ export class StudentService {
   public getAllStudents(page: number, pageSize: number): Observable<IPagedResults<Student>>;
   
   public getAllStudents(page?: number, pageSize?: number) {
-    let params = new HttpParams();
-
-    if (page) {
-      params = params.set("page", page.toString());
-    }
-    
-    if (pageSize) {
-      params = params.set("pageSize", pageSize.toString());
-    }
-
     if (page || pageSize) {
+      let params = new HttpParams();
+
+      if (page) {
+        params = params.set("page", page.toString());
+      }
+      
+      if (pageSize) {
+        params = params.set("pageSize", pageSize.toString());
+      }
+
       return this.http.get<IPagedResults<Student>>(this.url, { params });
     }
 
@@ -51,6 +51,10 @@ export class StudentService {
 
   public getById(id: string): Observable<Student> {
     return this.http.get<Student>(this.url + "/" + id);
+  }
+
+  public getContacts(id: string): Observable<Contact[]> {
+    return this.http.get<Contact[]>(this.url + "/" + id + "/contacts");
   }
 
   /*public getStudents(): FirebaseListObservable<Student[]> {

@@ -13,7 +13,7 @@ import "rxjs/add/operator/switchMap";
 
 import { StudentService } from "providers/student.service";
 import { PaymentModalComponent } from "app/payment-modal/payment-modal.component";
-import { Student, Statement } from "models";
+import { Student, Statement, Contact } from "models";
 import { Grade, PaymentOption, PaymentOptions, getPaymentOptionDisplayValue, getPaymentOptionValue, getDisplayValueArray } from "models/student";
 import { StudentFeeModalComponent } from "app/student-fee-modal/student-fee-modal.component";
 
@@ -29,8 +29,10 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
   
   public dateOfBirth;
   
-  public studentId: string;
-  //public student$: FirebaseObjectObservable<Student>;
+  //public studentId: string;
+  public student: Student;
+  public contacts: Contact[] = [];
+
   private studentSub: Subscription;
   
   public studentForm: FormGroup;
@@ -82,26 +84,32 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.paramMap
       .subscribe((params: ParamMap) => {
+        let student$: Observable<Student>;
         let id = params.get("id");
         this.isNew = id === null;
         
         if (this.isNew) {
-          //this.student$ = this.studentService.addStudent(<Student>{});
+          student$ = Observable.of({} as Student);
         } else {
-          //this.student$ = this.studentService.getStudentById(id);
+          student$ = this.studentService.getById(id);
+
+          this.studentService
+            .getContacts(id)
+            .subscribe(contacts => this.contacts = contacts);
         }
 
-        /*this.studentSub = this.student$.subscribe(student => {
+        this.studentSub = student$.subscribe(student => {
+          this.student = student;
+          this.studentForm.patchValue(student);
+
           let title = "New Student - Students";
           
           if (!this.isNew) {
             title = student.firstName + " " + student.lastName + " - Students";
-            this.studentForm.patchValue(student);
-            this.studentId = student.$key;
           }
 
           this.title.setTitle(title);
-        });*/
+        });
       });
   }
 
@@ -122,6 +130,7 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
     this.isNew = false;
 
     let data = this.studentForm.value;
+    console.log(data);
     //await this.studentService.updateStudent(this.student$, data);
 
     this.isSaving = false;
@@ -129,12 +138,12 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
 
   onFeesClick() {
     let feeModalRef = this.modalService.open(StudentFeeModalComponent);
-    feeModalRef.componentInstance.studentId = this.studentId;
+    feeModalRef.componentInstance.studentId = this.student.id;
   }
 
   onPaymentClick() {
     let paymentModalRef = this.modalService.open(PaymentModalComponent);
-    paymentModalRef.componentInstance.studentId = this.studentId;
+    paymentModalRef.componentInstance.studentId = this.student.id;
   }
 
   onSubmit() {

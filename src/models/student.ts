@@ -1,6 +1,6 @@
 
 export interface Student {
-  id: string;
+  id?: string;
   firstName: string;
   lastName: string;
   grade: number;
@@ -10,6 +10,11 @@ export interface Student {
     balance: number;
     lastPayment: Date;
   }
+}
+
+export interface Contact {
+  id?: string;
+  
 }
 
 export const GradeOptions = {
