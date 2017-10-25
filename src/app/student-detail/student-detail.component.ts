@@ -11,11 +11,13 @@ import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/operator/switchMap";
 
-import { StudentService } from "providers/student.service";
+import { StudentService, GradesService } from "providers";
 import { PaymentModalComponent } from "app/payment-modal/payment-modal.component";
 import { Student, Statement, Contact } from "models";
 import { Grade, PaymentOption, PaymentOptions, getPaymentOptionDisplayValue, getPaymentOptionValue, getDisplayValueArray } from "models/student";
 import { StudentFeeModalComponent } from "app/student-fee-modal/student-fee-modal.component";
+
+import "../../helpers/first";
 
 @Component({
   selector: "app-student-detail",
@@ -37,9 +39,9 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
   
   public studentForm: FormGroup;
 
-  public grades = Object.keys(Grade)
+  public grades = [];/*Object.keys(Grade)
     .filter(grade => typeof Grade[grade] === "number")
-    .map(grade => Grade[grade]);
+    .map(grade => Grade[grade]);*/
 
   public paymentOptions;
   
@@ -48,6 +50,7 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private title: Title,
     private studentService: StudentService,
+    private gradesService: GradesService,
     private modalService: NgbModal,
     private fb: FormBuilder) {
 
@@ -60,6 +63,10 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
     });
 
     this.paymentOptions = getDisplayValueArray(PaymentOptions);
+
+    this.gradesService
+      .getGrades()
+      .subscribe(grades => this.grades = grades);
   }
 
   private createContactGroup() {
@@ -101,7 +108,10 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
         this.studentSub = student$.subscribe(student => {
           this.student = student;
           this.studentForm.patchValue(student);
-
+          
+          let grade = this.grades.first(grade => grade.id === student.grade.id);
+          this.studentForm.controls["grade"].setValue(grade, { onlySelf: true });
+          
           let title = "New Student - Students";
           
           if (!this.isNew) {
@@ -122,18 +132,22 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.isNew) {
-      //await this.student$.set({ account: { balance: 0 } });
+    try {
+      this.isSaving = true;
+      let studentData = this.studentForm.value;
+      
+      if (this.isNew) {
+        this.student = await this.studentService.createStudent(studentData);
+        this.router.navigate(["student", this.student.id]);
+        this.isNew = false;
+      } else {
+        await this.studentService.updateStudent(this.student.id, studentData);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      this.isSaving = false;
     }
-
-    this.isSaving = true;
-    this.isNew = false;
-
-    let data = this.studentForm.value;
-    console.log(data);
-    //await this.studentService.updateStudent(this.student$, data);
-
-    this.isSaving = false;
   }
 
   onFeesClick() {

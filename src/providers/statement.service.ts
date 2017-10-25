@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
 
-//import { AngularFireDatabase, FirebaseListObservable } from "angularfire2/database";
 import { Observable } from "rxjs/Observable";
 import { Observer } from "rxjs/Observer";
 
@@ -10,29 +10,32 @@ import "rxjs/add/operator/toPromise";
 import * as moment from "moment";
 
 import { Statement, StatementLine, Transaction } from "models";
-//import { AngularFireKeyService } from "providers/angular-fire-key.service";
 
 import "helpers/sum";
 import "helpers/last";
+import { environment } from "environments/environment";
 
 @Injectable()
 export class StatementService {
 
-  constructor(/*private db: AngularFireDatabase, private keyService: AngularFireKeyService*/) { }
+  private url = `${environment.apiUrl}/students`;
 
-  public txsByStudentId(studentId: string): Transaction[] {
+  constructor(private http: HttpClient) { }
+
+  public txsByStudentId(studentId: string): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(this.url + "/" + studentId + "/transactions");
+
     /*return this.db.list("/transactions", {
       query: {
         orderByChild: "studentId",
         equalTo: studentId
       }
     });*/
-    return [];
   }
 
   public statementForStudent(studentId: string, fromDate?: Date) {
-    /*return this.txsByStudentId(studentId)
-      .map((txs: Transaction[]) => {
+    return this.txsByStudentId(studentId)
+      .map(txs => {
         let lines = createStatementLines(txs);
         
         return <Statement>{
@@ -40,7 +43,7 @@ export class StatementService {
           currentBalance: lines.reduce(calculateBalance, 0),
           lastPayment: lastPaymentDate(lines)
         };
-    });*/
+    });
   }
 
   async addPayment(studentId: string, amount: number, date: string) {

@@ -22,7 +22,7 @@ export class StudentListComponent implements OnInit, OnDestroy {
 
   totalCount: number;
   page: number;
-  pageSize: number = 5;
+  pageSize: number = 10;
 
   constructor(
     private title: Title,

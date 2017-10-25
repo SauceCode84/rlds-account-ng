@@ -7,6 +7,7 @@ import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/empty";
 
 import { Student, Contact } from "models";
+import { environment } from "environments/environment";
 
 interface IPagedResults<TModel> {
   totalCount: number;
@@ -15,12 +16,12 @@ interface IPagedResults<TModel> {
   results: TModel[];
 };
 
-const baseUrl: string = "http://localhost:3000";
+//const baseUrl: string = "http://localhost:3000";
 
 @Injectable()
 export class StudentService {
 
-  private url = `${baseUrl}/students`;
+  private url = `${environment.apiUrl}/students`;
 
   constructor(private http: HttpClient/*, private db: AngularFireDatabase*/) { }
 
@@ -55,6 +56,14 @@ export class StudentService {
 
   public getContacts(id: string): Observable<Contact[]> {
     return this.http.get<Contact[]>(this.url + "/" + id + "/contacts");
+  }
+
+  public async createStudent(newStudent: any) {
+    return await this.http.post<Student>(this.url, newStudent).toPromise();
+  }
+
+  public async updateStudent(id: string, updatedStudent: any) {
+    await this.http.put(this.url + "/" + id, updatedStudent, { responseType: "text" }).toPromise();
   }
 
   /*public getStudents(): FirebaseListObservable<Student[]> {

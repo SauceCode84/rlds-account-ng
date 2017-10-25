@@ -17,7 +17,8 @@ import {
   FeesService,
   NotificationService,
   StatementService,
-  StudentService
+  StudentService,
+  GradesService
 } from "providers";
 
 import { AppComponent } from "./app.component";
@@ -95,6 +96,7 @@ import { SummaryChartComponent } from './summary-chart/summary-chart.component';
     StatementService,
     StudentService,
     FeesService,
+    GradesService,
     SummaryService
   ],
   entryComponents: [

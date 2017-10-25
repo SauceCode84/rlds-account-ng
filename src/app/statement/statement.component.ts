@@ -1,5 +1,4 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from "@angular/core";
-//import { FirebaseObjectObservable } from "angularfire2/database";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 import { Observable } from "rxjs/Observable";
@@ -54,9 +53,9 @@ export class StatementComponent implements OnInit, OnChanges, OnDestroy {
       this.statementSub.unsubscribe();
     }
     
-    /*this.statementSub = this.statementService
+    this.statementSub = this.statementService
       .statementForStudent(this.studentId)
-      .subscribe(statement => this.statement = statement);*/
+      .subscribe(statement => this.statement = statement);
   }
 
   onLineClick(line: StatementLine) {

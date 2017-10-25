@@ -12,5 +12,6 @@ export const environment = {
     projectId: "rlds-invoice",
     storageBucket: "rlds-invoice.appspot.com",
     messagingSenderId: "61007094691"
-  }
+  },
+  apiUrl: "http://localhost:3000"
 };

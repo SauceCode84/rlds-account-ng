@@ -3,7 +3,7 @@ export interface Student {
   id?: string;
   firstName: string;
   lastName: string;
-  grade: number;
+  grade: any;
   emails: string[];
   paymentOption: PaymentOption;
   account: {
