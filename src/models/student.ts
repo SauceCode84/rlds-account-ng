@@ -14,7 +14,10 @@ export interface Student {
 
 export interface Contact {
   id?: string;
-  
+  name: string;
+  relation: string;
+  email: string;
+  cellphone: string;
 }
 
 export const GradeOptions = {
