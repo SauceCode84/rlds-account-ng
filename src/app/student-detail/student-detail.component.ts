@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal, NgbTabset, NgbTabChangeEvent } from "@ng-bootstrap/ng-bootstrap";
 
 //import { FirebaseObjectObservable } from "angularfire2/database";
 
@@ -24,7 +24,7 @@ import "../../helpers/first";
   templateUrl: "./student-detail.component.html",
   styleUrls: ["./student-detail.component.scss"]
 })
-export class StudentDetailComponent implements OnInit, OnDestroy {
+export class StudentDetailComponent implements AfterViewInit, OnInit, OnDestroy {
   
   public isNew: boolean;
   public isSaving: boolean = false;
@@ -44,6 +44,9 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
     .map(grade => Grade[grade]);*/
 
   public paymentOptions;
+
+  @ViewChild(NgbTabset)
+  private mainTabSet: NgbTabset;
   
   constructor(
     private route: ActivatedRoute,
@@ -90,7 +93,7 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
   
   ngOnInit() {
     this.route.paramMap
-      .subscribe((params: ParamMap) => {
+      .subscribe(params => {
         let student$: Observable<Student>;
         let id = params.get("id");
         this.isNew = id === null;
@@ -121,6 +124,29 @@ export class StudentDetailComponent implements OnInit, OnDestroy {
           this.title.setTitle(title);
         });
       });
+    
+    this.mainTabSet.tabChange
+      .subscribe((e: NgbTabChangeEvent) => {
+        this.router.navigate([], { fragment: e.nextId });
+      });
+  }
+
+  ngAfterViewInit() {
+    this.route.fragment.subscribe(fragment => {
+      if (!fragment) {
+        return;
+      }
+
+      if (this.mainTabSet.activeId === fragment) {
+        return;
+      }
+
+      let tab = this.mainTabSet.tabs.find(tab => tab.id === fragment);
+      
+      if (tab) {
+        this.mainTabSet.select(tab.id);
+      }
+    });
   }
 
   ngOnDestroy() {

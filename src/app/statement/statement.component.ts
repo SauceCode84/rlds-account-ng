@@ -49,10 +49,14 @@ export class StatementComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private loadStatement() {
+    if (!this.studentId) {
+      return;
+    }
+
     if (this.statementSub) {
       this.statementSub.unsubscribe();
     }
-    
+
     this.statementSub = this.statementService
       .statementForStudent(this.studentId)
       .subscribe(statement => this.statement = statement);

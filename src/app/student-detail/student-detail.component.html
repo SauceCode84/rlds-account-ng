@@ -63,7 +63,7 @@
 </form>
 
 <ngb-tabset type="pills">
-  <ngb-tab>
+  <ngb-tab id="contacts">
     <ng-template ngbTabTitle><i class="fa fa-address-book" aria-hidden="true"></i> Contacts</ng-template>
     <ng-template ngbTabContent>
       <div class="card mt-3">
@@ -96,12 +96,12 @@
       </div>
     </ng-template>
   </ngb-tab>
-  <ngb-tab>
+  <ngb-tab id="statement">
     <ng-template ngbTabTitle><i class="fa fa-file-text-o" aria-hidden="true"></i> Statement</ng-template>
     <ng-template ngbTabContent>
       <div class="card mt-3">
         <div class="card-body">
-          <app-statement [studentId]="student.id"></app-statement>
+          <app-statement [studentId]="student?.id"></app-statement>
         </div>
       </div>
     </ng-template>
