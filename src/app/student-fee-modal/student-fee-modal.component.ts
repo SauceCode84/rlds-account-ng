@@ -14,7 +14,6 @@ import { isFeeAmounts } from "models/fee";
 import * as moment from "moment";
 
 const customFee: Fee = {
-  $key: "$custom",
   name: "Custom",
   amount: 0,
   type: "custom",
@@ -22,7 +21,7 @@ const customFee: Fee = {
 };
 
 interface FeeViewModel {
-  $key: string;
+  id: string;
   details: string;
   date: string;
   amount: number;
@@ -88,8 +87,8 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
     return this.getFormControl("type");
   }
 
-  private getFee(key: string) {
-    let index = this.fees.findIndex(fee => fee.$key === key);
+  private getFee(id: string) {
+    let index = this.fees.findIndex(fee => fee.id === id);
     return this.fees[index];
   }
 
@@ -205,7 +204,7 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
       if (this.isNew) {
         await this.statementService.addFee(this.student.id, fee);
       } else {
-        await this.statementService.updateFee(this.viewModel.$key, fee);
+        await this.statementService.updateFee(this.viewModel.id, fee);
       }
       this.activeModal.close();
     } catch (err) {

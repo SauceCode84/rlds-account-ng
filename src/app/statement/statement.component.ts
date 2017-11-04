@@ -72,6 +72,7 @@ export class StatementComponent implements OnInit, OnChanges, OnDestroy {
     if (line.type === "payment") {
       let paymentModalRef = this.modalService.open(PaymentModalComponent);
       paymentModalRef.componentInstance.studentId = this.studentId;
+      paymentModalRef.componentInstance.viewModel = line;
     } else {
       let feeModalRef = this.modalService.open(StudentFeeModalComponent);
       feeModalRef.componentInstance.studentId = this.studentId;

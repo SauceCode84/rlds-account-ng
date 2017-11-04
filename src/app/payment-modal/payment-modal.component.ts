@@ -1,18 +1,21 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, FormControl } from "@angular/forms";
 
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 //import { FirebaseObjectObservable } from "angularfire2/database";
 
 import { Student } from "models";
-import { StatementService } from "providers/statement.service";
+import { StudentService, StatementService } from "providers";
 
 import * as moment from "moment";
 
-const defaultValues = {
-  amount: 0,
-  date: moment().format("YYYY-MM-DD")
-};
+interface PaymentViewModel {
+  id: string;
+  details: string;
+  date: string;
+  amount: number;
+  type: string;
+}
 
 @Component({
   selector: "app-payment-modal",
@@ -23,7 +26,10 @@ export class PaymentModalComponent implements OnInit {
 
   //@Input()
   //student$: FirebaseObjectObservable<Student>;
+  studentId: string;
   student: Student;
+
+  viewModel: PaymentViewModel;
 
   paymentForm: FormGroup;
 
@@ -32,20 +38,45 @@ export class PaymentModalComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public activeModal: NgbActiveModal,
+    private studentService: StudentService,
     private statementService: StatementService
-  ) {
-    this.paymentForm = this.fb.group({
-      amount: "",
-      date: ""
-    });
-
-    this.paymentForm.setValue(defaultValues);
-  }
+  ) { }
 
   ngOnInit() {
-    /*this.student$.subscribe(student => {
-      this.student = student;
-    });*/
+    this.studentService
+      .getById(this.studentId)
+      .subscribe(student => this.student = student);
+    
+    this.buildForm();
+    this.applyValue();
+  }
+
+  private getFormControl = (name: string) => this.paymentForm.get(name) as FormControl;
+
+  get amount() {
+    return this.getFormControl("amount");
+  }
+
+  get isNew(): boolean {
+    return this.viewModel === undefined || this.viewModel === null;
+  }
+
+  private buildForm() {
+    this.paymentForm = this.fb.group({
+      amount: 0,
+      date: moment().format("YYYY-MM-DD")
+    });
+  }
+
+  private applyValue() {
+    if (!this.isNew) {
+      let patchedValue = {
+        amount: Math.abs(this.viewModel.amount),
+        date: moment(this.viewModel.date).format("YYYY-MM-DD")
+      };
+      
+      this.paymentForm.patchValue(patchedValue, { emitEvent: true, onlySelf: false });
+    }
   }
 
   async onSubmit() {
@@ -57,11 +88,17 @@ export class PaymentModalComponent implements OnInit {
     this.isSaving = true;
 
     try {
-      await this.statementService.addPayment((this.student as any).$key, amount, date);
+      if (this.isNew) {
+        await this.statementService.addPayment(this.studentId, { amount, date });
+      } else {
+        await this.statementService.updatePayment(this.viewModel.id, { amount, date });
+      }
+      
       this.activeModal.close();
     } catch (err) {
-      this.isSaving = false;
       console.log(err);
+    } finally {
+      this.isSaving = false;
     }
   }
 

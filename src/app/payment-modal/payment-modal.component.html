@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title"><small>Payment for </small>{{ student.firstName }} {{ student.lastName }}</h4>
+  <h4 class="modal-title"><small>Payment for </small>{{ student?.firstName }} {{ student?.lastName }}</h4>
   <button type="button" class="close" aria-label="Close" (click)="onDismiss()">
     <i class="fa fa-times" aria-hidden="true"></i>
   </button>
@@ -11,7 +11,7 @@
     <div class="form-group row">
       <label class="col-sm-2 col-form-label">Amount</label>
       <div class="col-sm-10">
-        <input type="number" class="form-control" formControlName="amount" formatNumber>
+        <input type="number" class="form-control" formControlName="amount" [formatNumber]="amount.value">
       </div>
     </div>
 

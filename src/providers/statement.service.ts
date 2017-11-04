@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 
 import { Observable } from "rxjs/Observable";
 import { Observer } from "rxjs/Observer";
@@ -15,22 +15,20 @@ import "helpers/sum";
 import "helpers/last";
 import { environment } from "environments/environment";
 
+type TxResult = { id: string };
+
 @Injectable()
 export class StatementService {
 
-  private url = `${environment.apiUrl}/students`;
+  private url = `${environment.apiUrl}/transactions`;
 
   constructor(private http: HttpClient) { }
 
   public txsByStudentId(studentId: string): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(this.url + "/" + studentId + "/transactions");
+    let params: HttpParams = new HttpParams()
+      .set("accountId", studentId);
 
-    /*return this.db.list("/transactions", {
-      query: {
-        orderByChild: "studentId",
-        equalTo: studentId
-      }
-    });*/
+    return this.http.get<Transaction[]>(this.url, { params });
   }
 
   public statementForStudent(studentId: string, fromDate?: Date) {
@@ -46,18 +44,26 @@ export class StatementService {
     });
   }
 
-  async addPayment(studentId: string, amount: number, date: string) {
-    /*let newKey = await this.keyService.nextKey("/transactions");
-
+  async addPayment(accountId: string, { amount, date }: { amount?: number, date?: string }) {
     let newPayment = {
-      studentId,
+      accountId,
       details: "Payment Received - Thank you!",
       credit: amount,
-      date: date,
+      date: moment(date).utc(true).toDate(),
       type: "payment"
     };
 
-    await this.db.object(`/transactions/${newKey}`).set(newPayment);*/
+    console.log(newPayment);
+
+    return this.http.post<TxResult>(this.url, newPayment).toPromise();
+  }
+
+  async updatePayment(id: string, { amount, date }: { amount?: number, date?: string }) {
+    await this.http.put(this.url + "/" + id, {
+      credit: amount,
+      date: moment(date).utc(true).toDate()
+    }, { responseType: "text" })
+    .toPromise();
   }
 
   async addFee(studentId: string, fee: { details: string, amount: number, date: string, type: string }) {
@@ -113,7 +119,7 @@ const amountFromTx = (tx: Transaction): number => {
 
 const txToStatementLine = (tx: Transaction): StatementLine => {
   return {
-    $key: tx.$key,
+    id: tx.id,
     date: new Date(tx.date),
     details: tx.details,
     type: tx.type,

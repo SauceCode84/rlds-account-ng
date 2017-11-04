@@ -2,7 +2,7 @@
 import { TransactionType } from "models/types";
 
 export interface Transaction {
-  $key?: string;
+  id?: string;
   date: Date;
   details: string;
   type?: TransactionType;

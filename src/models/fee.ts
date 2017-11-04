@@ -2,7 +2,7 @@
 import { CustomFeeType, FeeType, InterestType } from "models";
 
 export interface Fee {
-  $key?: string;
+  id?: string;
   name: string;
   amount: number | FeeAmounts;
   type: FeeType | InterestType | CustomFeeType;

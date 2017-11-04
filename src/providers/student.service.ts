@@ -16,8 +16,6 @@ interface IPagedResults<TModel> {
   results: TModel[];
 };
 
-//const baseUrl: string = "http://localhost:3000";
-
 @Injectable()
 export class StudentService {
 

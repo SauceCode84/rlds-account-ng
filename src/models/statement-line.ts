@@ -2,7 +2,7 @@
 import { TransactionType } from "models";
 
 export interface StatementLine {
-  $key?: string;
+  id?: string;
   date: Date;
   details: string;
   amount?: number;
