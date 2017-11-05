@@ -1,30 +1,29 @@
 import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
 
-//import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from "angularfire2/database";
+import "rxjs/add/operator/toPromise";
+
+import { environment } from "environments/environment";
 
 import { Fee } from "models";
 
 @Injectable()
 export class FeesService {
 
-  constructor(/*private db: AngularFireDatabase*/) { }
+  private url = `${environment.apiUrl}/fees`;
 
-  public getFees(): Fee[] {
-    return [];
-    //return this.db.list("fees", { query: { orderByChild: "sortOrder" } });
+  constructor(private http: HttpClient) { }
+
+  public getFees() {
+    return this.http.get<Fee[]>(this.url);
   }
 
-  public getFeeById(key: string): Fee {
-    return null;
-    //return this.db.object("/fees/" + key);
+  public getFeeById(id: string) {
+    return this.http.get<Fee>(this.url + "/" + id);
   }
 
-  public async upsertFee(key: string, data: any) {
-    /*if (!key) {
-      await this.getFees().push(data);
-    } else {
-      await this.getFeeById(key).update(data);
-    }*/
+  public async updateFee(id: string, fee: Partial<Fee>) {
+    await this.http.put(this.url + "/" + id, fee, { responseType: "text" }).toPromise();
   }
 
 }

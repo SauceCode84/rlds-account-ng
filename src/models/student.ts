@@ -41,6 +41,7 @@ export enum Grade {
 }
 
 export enum PaymentOption {
+  Single = "single",
   Monthly = "monthly",
   Termly = "termly",
   Annually = "annually"

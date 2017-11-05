@@ -7,7 +7,8 @@ import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/of";
 
 import { FeesService } from "providers/fees.service";
-import { Fee } from "models";
+import { Fee, FeeType } from "models";
+import { PaymentOption } from "models/student";
 
 const greaterThanZero = (input: FormControl) => {
   return Observable
@@ -16,6 +17,15 @@ const greaterThanZero = (input: FormControl) => {
       return !!result ? null : { greaterThanZero: true };
     });
 }
+
+type FeePaymentOptionType = { [K in FeeType]: PaymentOption[] };
+
+const feePaymentOptions: FeePaymentOptionType = {
+  "class": [PaymentOption.Monthly, PaymentOption.Termly, PaymentOption.Annually],
+  "private": [PaymentOption.Single, PaymentOption.Monthly, PaymentOption.Termly],
+  "preschool": [PaymentOption.Termly, PaymentOption.Annually],
+  "registration": []
+};
 
 @Component({
   selector: "app-fees-modal",
@@ -28,8 +38,6 @@ export class FeesModalComponent implements OnInit {
   isNew: boolean;
   
   fee: Fee;
-  notInclude: string[] = [];
-
   feeForm: FormGroup;
 
   constructor(
@@ -41,20 +49,24 @@ export class FeesModalComponent implements OnInit {
     return this.feeForm.get("name") as FormControl;
   }
 
+  get amountGroup() {
+    return this.feeForm.get("amount") as FormGroup;
+  }
+
   get single() {
-    return this.feeForm.get("single") as FormControl;
+    return this.amountGroup.get("single") as FormControl;
   }
 
   get monthly() {
-    return this.feeForm.get("monthly") as FormControl;
+    return this.amountGroup.get("monthly") as FormControl;
   }
 
   get termly() {
-    return this.feeForm.get("termly") as FormControl;
+    return this.amountGroup.get("termly") as FormControl;
   }
 
   get annually() {
-    return this.feeForm.get("annually") as FormControl;
+    return this.amountGroup.get("annually") as FormControl;
   }
 
   ngOnInit() {
@@ -62,42 +74,40 @@ export class FeesModalComponent implements OnInit {
     this.feeForm.patchValue(this.fee);
   }
 
+  private buildAmountGroup() {
+    let feeAmountType = feePaymentOptions[this.fee.type as FeeType];
+    let amountGroupDef = {};
+
+    feeAmountType.forEach(paymentOption => {
+      amountGroupDef[paymentOption] = [0, Validators.required, greaterThanZero];
+    })
+
+    return this.fb.group(amountGroupDef);
+  }
+
   private buildForm() {
     let formGroupDef = {
       name: ["", Validators.required],
-      monthly: [0, Validators.required, greaterThanZero],
-      termly: [0, Validators.required, greaterThanZero]
+      amount: this.buildAmountGroup()
     };
-
-    if (this.isClassFee || this.isPreschoolFee) {
-      formGroupDef["annually"] = [0, Validators.required, greaterThanZero];
-    }
-
-    if (this.isPrivateFee) {
-      formGroupDef["single"] = [0, Validators.required, greaterThanZero];
-    }
-
-    this.notInclude.forEach(key => {
-      delete formGroupDef[key];
-    });
 
     this.feeForm = this.fb.group(formGroupDef);
   }
 
   showFeeControl(name: string): boolean {
-    if (this.notInclude.indexOf(name) > -1) {
-      return false;
-    }
+    switch (name) {
+      case "single":
+        return this.isPrivateFee;
 
-    if (name === "annually" && !(this.isClassFee || this.isPreschoolFee)) {
-      return false;
-    }
+      case "monthly":
+        return !this.isPreschoolFee;
 
-    if (name === "single" && !this.isPrivateFee) {
-      return false;
+      case "annually":
+        return this.isClassFee || this.isPreschoolFee;
+      
+      default:
+        return true;
     }
-
-    return true;
   }
 
   get isClassFee() {
@@ -115,7 +125,9 @@ export class FeesModalComponent implements OnInit {
   async onSubmit() {
     try {
       this.isSaving = true;
-      await this.feesService.upsertFee((<any>this.fee).$key, this.feeForm.value);
+      
+      await this.feesService.updateFee(this.fee.id, this.feeForm.value);
+      
       this.isSaving = false;
       this.activeModal.close();
     } catch (err) {

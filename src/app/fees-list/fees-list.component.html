@@ -5,8 +5,8 @@
     <div class="card-header">
       <strong>Class Fees</strong>
     </div>
-    <div class="card-block">
-      <table class="table table-responsive table-sm table-striped table-hover">
+    <div class="card-block table-responsive">
+      <table class="table table-sm table-striped table-hover">
         <thead>
           <tr>
             <th></th>
@@ -19,9 +19,9 @@
           <tr *ngFor="let classFee of classFees">
             <td></td>
             <td><a href="javascript:void(0)" (click)="editFee(classFee)">{{ classFee.name }}</a></td>
-            <td class="text-right px-3">{{ classFee.monthly | number:'1.2-2' }}</td>
-            <td class="text-right px-3">{{ classFee.termly | number:'1.2-2' }}</td>
-            <td class="text-right px-3">{{ classFee.annually | number:'1.2-2' }}</td>
+            <td class="text-right px-3">{{ classFee.amount.monthly | number:'1.2-2' }}</td>
+            <td class="text-right px-3">{{ classFee.amount.termly | number:'1.2-2' }}</td>
+            <td class="text-right px-3">{{ classFee.amount.annually | number:'1.2-2' }}</td>
           </tr>
         </tbody>
       </table>
@@ -32,8 +32,8 @@
     <div class="card-header">
       <strong>Private Fees</strong>
     </div>
-    <div class="card-block">
-      <table class="table table-responsive table-sm table-striped table-hover">
+    <div class="card-block table-responsive">
+      <table class="table table-sm table-striped table-hover">
         <thead>
           <tr>
             <th></th>
@@ -46,9 +46,9 @@
           <tr *ngFor="let privateFee of privateFees">
             <td></td>
             <td><a href="javascript:void(0)" (click)="editFee(privateFee)">{{ privateFee.name }}</a></td>
-            <td class="text-right px-3">{{ privateFee.single | number:'1.2-2' }}</td>
-            <td class="text-right px-3">{{ privateFee.monthly | number:'1.2-2' }}</td>
-            <td class="text-right px-3">{{ privateFee.termly | number:'1.2-2' }}</td>
+            <td class="text-right px-3">{{ privateFee.amount.single | number:'1.2-2' }}</td>
+            <td class="text-right px-3">{{ privateFee.amount.monthly | number:'1.2-2' }}</td>
+            <td class="text-right px-3">{{ privateFee.amount.termly | number:'1.2-2' }}</td>
           </tr>
         </tbody>
       </table>
@@ -59,13 +59,12 @@
     <div class="card-header">
       <strong>Pre-school Fees</strong>
     </div>
-    <div class="card-block">
-      <table class="table table-responsive table-sm table-striped table-hover">
+    <div class="card-block table-responsive">
+      <table class="table table-sm table-striped table-hover">
         <thead>
           <tr>
             <th></th>
             <th class="text-center">Name</th>
-            <th class="text-center">Monthly</th>
             <th class="text-center">Termly</th>
             <th class="text-center">Annually</th>
         </thead>
@@ -73,9 +72,8 @@
           <tr *ngFor="let preschoolFee of preschoolFees">
             <td></td>
             <td><a href="javascript:void(0)" (click)="editFee(preschoolFee)">{{ preschoolFee.name }}</a></td>
-            <td class="text-right px-3">{{ preschoolFee.monthly | number:'1.2-2' }}</td>
-            <td class="text-right px-3">{{ preschoolFee.termly | number:'1.2-2' }}</td>
-            <td class="text-right px-3">{{ preschoolFee.annually | number:'1.2-2' }}</td>
+            <td class="text-right px-3">{{ preschoolFee.amount.termly | number:'1.2-2' }}</td>
+            <td class="text-right px-3">{{ preschoolFee.amount.annually | number:'1.2-2' }}</td>
           </tr>
         </tbody>
       </table>

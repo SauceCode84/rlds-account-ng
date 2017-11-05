@@ -27,16 +27,26 @@ export class FeesListComponent implements OnInit, OnDestroy {
 
   constructor(private feesService: FeesService, private modalService: NgbModal) { }
 
-  ngOnInit() {
+  private loadFees() {
     this.isLoading = true;
 
-    /*this.feesListSub = this.feesService.getFees().subscribe(fees => {
-      this.classFees = fees.filter(byFeeType("class"));
-      this.privateFees = fees.filter(byFeeType("private"));
-      this.preschoolFees = fees.filter(byFeeType("preschool"));
-      
-      this.isLoading = false;
-    });*/
+    this.feesListSub = this.feesService.getFees()
+      .subscribe(fees => {
+        this.classFees = fees.filter(byFeeType("class"));
+        this.privateFees = fees.filter(byFeeType("private"));
+        this.preschoolFees = fees.filter(byFeeType("preschool"));
+        
+        this.isLoading = false;
+      });
+  }
+
+  private reloadFees() {
+    this.feesListSub.unsubscribe();
+    this.loadFees();
+  }
+
+  ngOnInit() {
+    this.loadFees();
   }
 
   ngOnDestroy() {
@@ -48,13 +58,19 @@ export class FeesListComponent implements OnInit, OnDestroy {
     paymentModalRef.componentInstance.isNew = true;
   }
 
-  editFee(fee: Fee) {
+  async editFee(fee: Fee) {
     let paymentModalRef = this.modalService.open(FeesModalComponent);
     paymentModalRef.componentInstance.fee = fee;
 
-    if ((fee as any).$key === "curro") {
-      paymentModalRef.componentInstance.notInclude = ["monthly"];
-    }
+    paymentModalRef.result
+      .then(result => {
+        console.log(result);
+        this.reloadFees();
+      },
+      reason => {
+        console.log(reason);
+        this.reloadFees();
+      });
   }
 
 }
