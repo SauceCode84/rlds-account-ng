@@ -57,12 +57,12 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
     private feesService: FeesService,
     private statementService: StatementService
   ) {
-    /*this.feesService
+    this.feesService
       .getFees()
       .subscribe(fees => {
         this.fees = fees.filter(fee => fee.type !== "preschool");
         this.fees.unshift(customFee);
-      });*/
+      });
   }
 
   private getFormControl = (name: string) => this.feeForm.get(name) as FormControl;
@@ -132,8 +132,9 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    /*this.studentSub = this.studentService.getStudentById(this.studentId)
-      .subscribe(student => this.student = student);*/
+    this.studentSub = this.studentService
+      .getById(this.studentId)
+      .subscribe(student => this.student = student);
 
     this.buildForm();
     this.applyValue();

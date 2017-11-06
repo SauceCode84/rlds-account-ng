@@ -12,7 +12,7 @@
       <label class="col-sm-3 col-form-label">Fee</label>
       <div class="col-sm-9">
         <select class="form-control" formControlName="fee">
-          <option *ngFor="let fee of fees" [value]="fee.$key">{{ fee.name }}</option>
+          <option *ngFor="let fee of fees" [value]="fee.id">{{ fee.name }}</option>
         </select>
       </div>
     </div>

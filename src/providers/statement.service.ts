@@ -59,27 +59,28 @@ export class StatementService {
   }
 
   async updatePayment(id: string, { amount, date }: { amount?: number, date?: string }) {
-    await this.http.put(this.url + "/" + id, {
+    let updatedPayment = {
       credit: amount,
       date: moment(date).utc(true).toDate()
-    }, { responseType: "text" })
-    .toPromise();
+    };
+
+    await this.http.put(this.url + "/" + id, updatedPayment, { responseType: "text" }).toPromise();
   }
 
-  async addFee(studentId: string, fee: { details: string, amount: number, date: string, type: string }) {
-    /*let newKey = await this.keyService.nextKey("/transactions");
+  async addFee(accountId: string, fee: { details: string, amount: number, date: string, type: string }) {
     let { details, date, type, amount } = fee;
+    let newFee = Object.assign({ accountId }, { details, date: moment(date).utc(true).toDate(), type }, { debit: amount });
 
-    let newFee = Object.assign({ studentId }, { details, date, type }, { debit: amount });
+    console.log(newFee);
 
-    await this.db.object(`/transactions/${newKey}`).set(newFee);*/
+    return this.http.post<TxResult>(this.url, newFee).toPromise();
   }
 
-  async updateFee(txId: string, fee: { details: string, amount: number, date: string, type: string }) {
-    /*let { details, date, type, amount } = fee;
-    let updatedFee = Object.assign({ details, date, type }, { debit: amount });
+  async updateFee(id: string, fee: { details: string, amount: number, date: string, type: string }) {
+    let { details, date, type, amount } = fee;
+    let updatedFee = Object.assign({ details, date: moment(date).utc(true).toDate(), type }, { debit: amount });
 
-    await this.db.object(`/transactions/${txId}`).update(updatedFee);*/
+    await this.http.put(this.url + "/" + id, updatedFee, { responseType: "text" }).toPromise();
   }
 
 }
