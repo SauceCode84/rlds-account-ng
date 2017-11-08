@@ -37,6 +37,7 @@ import { PaymentModalComponent } from "./payment-modal/payment-modal.component";
 import { FeesListComponent } from './fees-list/fees-list.component';
 import { FeesModalComponent } from "./fees-modal/fees-modal.component";
 import { StudentFeeModalComponent } from "./student-fee-modal/student-fee-modal.component";
+import { AccountListComponent } from "./account-list/account-list.component";
 
 import { AppRoutingModule } from "app/app-routing.module";
 
@@ -67,13 +68,14 @@ import { SummaryChartComponent } from './summary-chart/summary-chart.component';
     FeesListComponent,
     FeesModalComponent,
     StudentFeeModalComponent,
+    AccountListComponent,
     
     DisplayGradePipe,
     NADatePipe,
     
     FormatNumberDirective,
     
-    SummaryChartComponent    
+    SummaryChartComponent
   ],
   imports: [
     BrowserModule,
