@@ -30,7 +30,7 @@ export class FeesListComponent implements OnInit, OnDestroy {
   private loadFees() {
     this.isLoading = true;
 
-    this.feesListSub = this.feesService.getFees()
+    this.feesListSub = this.feesService.getFees(true)
       .subscribe(fees => {
         this.classFees = fees.filter(byFeeType("class"));
         this.privateFees = fees.filter(byFeeType("private"));
