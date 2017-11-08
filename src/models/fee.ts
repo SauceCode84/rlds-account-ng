@@ -7,6 +7,8 @@ export interface Fee {
   amount: number | FeeAmounts;
   type: FeeType | InterestType | CustomFeeType;
   sortOrder?: number;
+  accountId?: string;
+  accountName?: string;
 }
 
 export interface FeeAmounts {

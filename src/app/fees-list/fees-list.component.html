@@ -11,6 +11,7 @@
           <tr>
             <th></th>
             <th class="text-center">Name</th>
+            <th class="text-center">Account</th>
             <th class="text-center">Monthly</th>
             <th class="text-center">Termly</th>
             <th class="text-center">Annually</th>
@@ -19,6 +20,7 @@
           <tr *ngFor="let classFee of classFees">
             <td></td>
             <td><a href="javascript:void(0)" (click)="editFee(classFee)">{{ classFee.name }}</a></td>
+            <td class="">{{ classFee.accountName }}</td>
             <td class="text-right px-3">{{ classFee.amount.monthly | number:'1.2-2' }}</td>
             <td class="text-right px-3">{{ classFee.amount.termly | number:'1.2-2' }}</td>
             <td class="text-right px-3">{{ classFee.amount.annually | number:'1.2-2' }}</td>

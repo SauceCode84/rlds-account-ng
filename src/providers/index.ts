@@ -7,3 +7,4 @@ export { GradesService } from "./grades.service";
 export { NotificationService } from "./notification.service";
 export { StatementService } from "./statement.service";
 export { StudentService } from "./student.service";
+export { AccountsService } from "./accounts.service";

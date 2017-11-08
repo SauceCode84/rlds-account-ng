@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 
 import "rxjs/add/operator/toPromise";
 
@@ -14,8 +14,14 @@ export class FeesService {
 
   constructor(private http: HttpClient) { }
 
-  public getFees() {
-    return this.http.get<Fee[]>(this.url);
+  public getFees(includeAccountName: boolean = false) {
+    let params = new HttpParams();
+
+    if (includeAccountName) {
+      params = params.set("includeAccountName", "true");
+    }
+
+    return this.http.get<Fee[]>(this.url, { params });
   }
 
   public getFeeById(id: string) {

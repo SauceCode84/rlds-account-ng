@@ -10,8 +10,8 @@
     <form [formGroup]="feeForm" (ngSubmit)="onSubmit()" novalidate>
       
       <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Name</label>
-        <div class="col-sm-10">
+        <label class="col-sm-3 col-form-label">Name</label>
+        <div class="col-sm-9">
           <input type="text" class="form-control" [class.is-invalid]="name.touched && name.invalid" formControlName="name">
           <div class="invalid-feedback" [hidden]="!(name.touched && name.hasError('required'))">
             Fee name is required.
@@ -19,11 +19,20 @@
         </div>
       </div>
 
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Account</label>
+        <div class="col-sm-9">
+          <select class="form-control" formControlName="accountId">
+            <option *ngFor="let account of accounts" [value]="account.id">{{ account.name }}</option>
+          </select>
+        </div>
+      </div>
+
       <fieldset formGroupName="amount">
 
         <div class="form-group row" *ngIf="showFeeControl('single')">
-          <label class="col-sm-2 col-form-label">Single</label>
-          <div class="col-sm-10">
+          <label class="col-sm-3 col-form-label">Single</label>
+          <div class="col-sm-9">
             <div class="input-group" [class.is-invalid]="single.touched && single.invalid">
               <span class="input-group-addon">R</span>
               <input type="number" class="form-control" [class.is-invalid]="single.touched && single.invalid" formControlName="single" />
@@ -39,8 +48,8 @@
         </div>
       
         <div class="form-group row" *ngIf="showFeeControl('monthly')">
-          <label class="col-sm-2 col-form-label">Monthly</label>
-          <div class="col-sm-10">
+          <label class="col-sm-3 col-form-label">Monthly</label>
+          <div class="col-sm-9">
             <div class="input-group" [class.is-invalid]="monthly.touched && monthly.invalid">
               <span class="input-group-addon">R</span>
               <input type="number" class="form-control" [class.is-invalid]="monthly.touched && monthly.invalid" formControlName="monthly" />
@@ -56,8 +65,8 @@
         </div>
 
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label">Termly</label>
-          <div class="col-sm-10">
+          <label class="col-sm-3 col-form-label">Termly</label>
+          <div class="col-sm-9">
             <div class="input-group" [class.is-invalid]="termly.touched && termly.invalid">
               <span class="input-group-addon">R</span>
               <input type="number" class="form-control" [class.is-invalid]="termly.touched && termly.invalid" formControlName="termly" />
@@ -73,8 +82,8 @@
         </div>
 
         <div class="form-group row" *ngIf="showFeeControl('annually')">
-          <label class="col-sm-2 col-form-label">Annually</label>
-          <div class="col-sm-10">
+          <label class="col-sm-3 col-form-label">Annually</label>
+          <div class="col-sm-9">
             <div class="input-group" [class.is-invalid]="annually.touched && annually.invalid">
               <span class="input-group-addon">R</span>
               <input type="number" class="form-control" [class.is-invalid]="annually.touched && annually.invalid" formControlName="annually" />

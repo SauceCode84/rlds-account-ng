@@ -6,9 +6,10 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/of";
 
-import { FeesService } from "providers/fees.service";
 import { Fee, FeeType } from "models";
+import { AccountName, AccountType } from "models/account";
 import { PaymentOption } from "models/student";
+import { FeesService, AccountsService } from "providers";
 
 const greaterThanZero = (input: FormControl) => {
   return Observable
@@ -40,13 +41,25 @@ export class FeesModalComponent implements OnInit {
   fee: Fee;
   feeForm: FormGroup;
 
+  accounts: AccountName[];
+
   constructor(
     private fb: FormBuilder,
     private activeModal: NgbActiveModal,
-    private feesService: FeesService) { }
+    private feesService: FeesService,
+    private accountsService: AccountsService) {
+    
+    this.accountsService
+      .getAccountNames(AccountType.Income)
+      .subscribe(accounts => this.accounts = accounts);
+  }
 
   get name() {
     return this.feeForm.get("name") as FormControl;
+  }
+
+  get accountId() {
+    return this.feeForm.get("account") as FormControl;
   }
 
   get amountGroup() {
@@ -88,6 +101,7 @@ export class FeesModalComponent implements OnInit {
   private buildForm() {
     let formGroupDef = {
       name: ["", Validators.required],
+      accountId: ["", Validators.required],
       amount: this.buildAmountGroup()
     };
 
