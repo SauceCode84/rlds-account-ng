@@ -38,4 +38,8 @@ export class AccountsService {
     await this.http.post(this.url, { name, type }, { responseType: "text" }).toPromise();
   }
 
+  async updateAccount(id: string, { name }: { name: string }) {
+    await this.http.put(this.url + "/" + id, { name }, { responseType: "text" }).toPromise();
+  }
+
 }

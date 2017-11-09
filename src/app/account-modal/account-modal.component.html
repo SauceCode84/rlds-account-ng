@@ -6,36 +6,39 @@
 </div>
 
 <div class="modal-body">
-    <form [formGroup]="accountForm" (ngSubmit)="onSubmit()" novalidate>
-        
-      <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Name</label>
-        <div class="col-sm-9">
-          <input type="text" class="form-control" [class.is-invalid]="name.touched && name.invalid" formControlName="name">
-          <div class="invalid-feedback" [hidden]="!(name.touched && name.hasError('required'))">
-            Account name is required.
-          </div>
+  <form [formGroup]="accountForm" (ngSubmit)="onSubmit()" novalidate>
+      
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Name</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" [class.is-invalid]="name.touched && name.invalid" formControlName="name">
+        <div class="invalid-feedback" [hidden]="!(name.touched && name.hasError('required'))">
+          Account name is required.
         </div>
       </div>
+    </div>
 
-      <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Type</label>
-        <div class="col-sm-9">
-          <select class="form-control" formControlName="type" [attr.disabled]="!isNew ? true : null">
-            <option *ngFor="let accountType of accountTypes" [value]="accountType">{{ getAccountTypeDisplay(accountType) }}</option>
-          </select>
-          <div class="invalid-feedback" [hidden]="!(type.touched && type.hasError('required'))">
-            Account type is required.
-          </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Type</label>
+      <div class="col-sm-9">
+        <select class="form-control" formControlName="type" [attr.disabled]="!isNew ? true : null">
+          <option *ngFor="let accountType of accountTypes" [value]="accountType">{{ getAccountTypeDisplay(accountType) }}</option>
+        </select>
+        <div class="invalid-feedback" [hidden]="!(type.touched && type.hasError('required'))">
+          Account type is required.
         </div>
       </div>
+    </div>
 
-    </form>
+  </form>
 </div>
 
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-danger" (click)="onDismiss()" [disabled]="isSaving">
     <i class="fa fa-times" aria-hidden="true"></i> Cancel
+  </button>
+  <button type="submit" class="btn btn-danger" (click)="onDelete()" [disabled]="!account?.deleteAllowed || isSaving">
+    <i class="fa fa-trash" aria-hidden="true"></i> Delete
   </button>
   <button type="submit" class="btn btn-success" (click)="onSubmit()" [disabled]="accountForm.invalid || isSaving">
     <i class="fa fa-check" aria-hidden="true"></i> Save
