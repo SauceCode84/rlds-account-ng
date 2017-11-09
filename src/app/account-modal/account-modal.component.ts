@@ -61,7 +61,11 @@ export class AccountModalComponent implements OnInit {
     try {
       this.isSaving = true;
       
-      await this.accountService.insertAccount(this.accountForm.value);
+      if (this.isNew) {
+        await this.accountService.insertAccount(this.accountForm.value);
+      } else {
+        await this.accountService.updateAccount(this.account.id, this.accountForm.value);
+      }
       
       this.isSaving = false;
       this.activeModal.close();

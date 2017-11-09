@@ -37,6 +37,9 @@
   <button type="button" class="btn btn-outline-danger" (click)="onDismiss()" [disabled]="isSaving">
     <i class="fa fa-times" aria-hidden="true"></i> Cancel
   </button>
+  <button type="submit" class="btn btn-danger" (click)="onDelete()" [disabled]="!account.deleteAllowed || isSaving">
+    <i class="fa fa-trash" aria-hidden="true"></i> Delete
+  </button>
   <button type="submit" class="btn btn-success" (click)="onSubmit()" [disabled]="accountForm.invalid || isSaving">
     <i class="fa fa-check" aria-hidden="true"></i> Save
   </button>
