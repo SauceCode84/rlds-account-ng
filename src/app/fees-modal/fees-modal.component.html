@@ -1,113 +1,108 @@
 <div class="modal-header">
-
-    <h4 class="modal-title">Fees</h4>
-    <button type="button" class="close" aria-label="Close" (click)="onDismiss()">
-      <i class="fa fa-times" aria-hidden="true"></i>
-    </button>
-  </div>
+  <h4 class="modal-title">Fees</h4>
+  <button type="button" class="close" aria-label="Close" (click)="onDismiss()">
+    <i class="fa fa-times" aria-hidden="true"></i>
+  </button>
+</div>
   
-  <div class="modal-body">
-    <form [formGroup]="feeForm" (ngSubmit)="onSubmit()" novalidate>
-      
-      <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Name</label>
+<div class="modal-body">
+  <form [formGroup]="feeForm" (ngSubmit)="onSubmit()" novalidate>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Name</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" [class.is-invalid]="name.touched && name.invalid" formControlName="name">
+        <div class="invalid-feedback" [hidden]="!(name.touched && name.hasError('required'))">
+          Fee name is required.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Account</label>
+      <div class="col-sm-9">
+        <select class="form-control" formControlName="accountId">
+          <option *ngFor="let account of accounts" [value]="account.id">{{ account.name }}</option>
+        </select>
+      </div>
+    </div>
+
+    <fieldset formGroupName="amount">
+      <div class="form-group row" *ngIf="showFeeControl('single')">
+        <label class="col-sm-3 col-form-label">Single</label>
         <div class="col-sm-9">
-          <input type="text" class="form-control" [class.is-invalid]="name.touched && name.invalid" formControlName="name">
-          <div class="invalid-feedback" [hidden]="!(name.touched && name.hasError('required'))">
-            Fee name is required.
+          <div class="input-group" [class.is-invalid]="single.touched && single.invalid">
+            <span class="input-group-addon">R</span>
+            <input type="number" class="form-control" [class.is-invalid]="single.touched && single.invalid" formControlName="single" />
+            <span class="input-group-addon">.00</span>
+          </div>
+          <div class="invalid-feedback" [hidden]="!(single.touched && single.hasError('required'))">
+            Single fee is required.
+          </div>
+          <div class="invalid-feedback" [hidden]="!(single.touched && single.hasError('greaterThanZero'))">
+            Single fee must be greater than zero.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row" *ngIf="showFeeControl('monthly')">
+        <label class="col-sm-3 col-form-label">Monthly</label>
+        <div class="col-sm-9">
+          <div class="input-group" [class.is-invalid]="monthly.touched && monthly.invalid">
+            <span class="input-group-addon">R</span>
+            <input type="number" class="form-control" [class.is-invalid]="monthly.touched && monthly.invalid" formControlName="monthly" />
+            <span class="input-group-addon">.00</span>
+          </div>
+          <div class="invalid-feedback" [hidden]="!(monthly.touched && monthly.hasError('required'))">
+            Monthly fee is required.
+          </div>
+          <div class="invalid-feedback" [hidden]="!(monthly.touched && monthly.hasError('greaterThanZero'))">
+            Monthly fee must be greater than zero.
           </div>
         </div>
       </div>
 
       <div class="form-group row">
-        <label class="col-sm-3 col-form-label">Account</label>
+        <label class="col-sm-3 col-form-label">Termly</label>
         <div class="col-sm-9">
-          <select class="form-control" formControlName="accountId">
-            <option *ngFor="let account of accounts" [value]="account.id">{{ account.name }}</option>
-          </select>
+          <div class="input-group" [class.is-invalid]="termly.touched && termly.invalid">
+            <span class="input-group-addon">R</span>
+            <input type="number" class="form-control" [class.is-invalid]="termly.touched && termly.invalid" formControlName="termly" />
+            <span class="input-group-addon">.00</span>
+          </div>
+          <div class="invalid-feedback" [hidden]="!(termly.touched && termly.hasError('required'))">
+            Termly fee is required.
+          </div>
+          <div class="invalid-feedback" [hidden]="!(termly.touched && termly.hasError('greaterThanZero'))">
+            Termly fee must be greater than zero.
+          </div>
         </div>
       </div>
 
-      <fieldset formGroupName="amount">
-
-        <div class="form-group row" *ngIf="showFeeControl('single')">
-          <label class="col-sm-3 col-form-label">Single</label>
-          <div class="col-sm-9">
-            <div class="input-group" [class.is-invalid]="single.touched && single.invalid">
-              <span class="input-group-addon">R</span>
-              <input type="number" class="form-control" [class.is-invalid]="single.touched && single.invalid" formControlName="single" />
-              <span class="input-group-addon">.00</span>
-            </div>
-            <div class="invalid-feedback" [hidden]="!(single.touched && single.hasError('required'))">
-              Single fee is required.
-            </div>
-            <div class="invalid-feedback" [hidden]="!(single.touched && single.hasError('greaterThanZero'))">
-              Single fee must be greater than zero.
-            </div>
+      <div class="form-group row" *ngIf="showFeeControl('annually')">
+        <label class="col-sm-3 col-form-label">Annually</label>
+        <div class="col-sm-9">
+          <div class="input-group" [class.is-invalid]="annually.touched && annually.invalid">
+            <span class="input-group-addon">R</span>
+            <input type="number" class="form-control" [class.is-invalid]="annually.touched && annually.invalid" formControlName="annually" />
+            <span class="input-group-addon">.00</span>
+          </div>
+          <div class="invalid-feedback" [hidden]="!(annually.touched && annually.hasError('required'))">
+            Annual fee is required.
+          </div>
+          <div class="invalid-feedback" [hidden]="!(annually.touched && annually.hasError('greaterThanZero'))">
+            Annual fee must be greater than zero.
           </div>
         </div>
-      
-        <div class="form-group row" *ngIf="showFeeControl('monthly')">
-          <label class="col-sm-3 col-form-label">Monthly</label>
-          <div class="col-sm-9">
-            <div class="input-group" [class.is-invalid]="monthly.touched && monthly.invalid">
-              <span class="input-group-addon">R</span>
-              <input type="number" class="form-control" [class.is-invalid]="monthly.touched && monthly.invalid" formControlName="monthly" />
-              <span class="input-group-addon">.00</span>
-            </div>
-            <div class="invalid-feedback" [hidden]="!(monthly.touched && monthly.hasError('required'))">
-              Monthly fee is required.
-            </div>
-            <div class="invalid-feedback" [hidden]="!(monthly.touched && monthly.hasError('greaterThanZero'))">
-              Monthly fee must be greater than zero.
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group row">
-          <label class="col-sm-3 col-form-label">Termly</label>
-          <div class="col-sm-9">
-            <div class="input-group" [class.is-invalid]="termly.touched && termly.invalid">
-              <span class="input-group-addon">R</span>
-              <input type="number" class="form-control" [class.is-invalid]="termly.touched && termly.invalid" formControlName="termly" />
-              <span class="input-group-addon">.00</span>
-            </div>
-            <div class="invalid-feedback" [hidden]="!(termly.touched && termly.hasError('required'))">
-              Termly fee is required.
-            </div>
-            <div class="invalid-feedback" [hidden]="!(termly.touched && termly.hasError('greaterThanZero'))">
-              Termly fee must be greater than zero.
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group row" *ngIf="showFeeControl('annually')">
-          <label class="col-sm-3 col-form-label">Annually</label>
-          <div class="col-sm-9">
-            <div class="input-group" [class.is-invalid]="annually.touched && annually.invalid">
-              <span class="input-group-addon">R</span>
-              <input type="number" class="form-control" [class.is-invalid]="annually.touched && annually.invalid" formControlName="annually" />
-              <span class="input-group-addon">.00</span>
-            </div>
-            <div class="invalid-feedback" [hidden]="!(annually.touched && annually.hasError('required'))">
-              Annual fee is required.
-            </div>
-            <div class="invalid-feedback" [hidden]="!(annually.touched && annually.hasError('greaterThanZero'))">
-              Annual fee must be greater than zero.
-            </div>
-          </div>
-        </div>
-
-      </fieldset>
+      </div>
+    </fieldset>
+  </form>
+</div>
   
-    </form>
-  </div>
-  
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-danger" (click)="onDismiss()" [disabled]="isSaving">
-      <i class="fa fa-times" aria-hidden="true"></i> Cancel
-    </button>
-    <button type="submit" class="btn btn-success" (click)="onSubmit()" [disabled]="feeForm.invalid || isSaving">
-      <i class="fa fa-check" aria-hidden="true"></i> Save
-    </button>
-  </div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-danger" (click)="onDismiss()" [disabled]="isSaving">
+    <i class="fa fa-times" aria-hidden="true"></i> Cancel
+  </button>
+  <button type="submit" class="btn btn-success" (click)="onSubmit()" [disabled]="feeForm.invalid || isSaving">
+    <i class="fa fa-check" aria-hidden="true"></i> Save
+  </button>
+</div>
