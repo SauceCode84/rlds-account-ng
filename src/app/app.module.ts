@@ -1,6 +1,6 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule  } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
 
@@ -34,10 +34,11 @@ import { SearchStudentComponent } from "app/search-student/search-student.compon
 import { UserLoginComponent } from "./user-login/user-login.component";
 import { LoginFormComponent } from "./login-form/login-form.component";
 import { PaymentModalComponent } from "./payment-modal/payment-modal.component";
-import { FeesListComponent } from './fees-list/fees-list.component';
+import { FeesListComponent } from "./fees-list/fees-list.component";
 import { FeesModalComponent } from "./fees-modal/fees-modal.component";
 import { StudentFeeModalComponent } from "./student-fee-modal/student-fee-modal.component";
 import { AccountListComponent } from "./account-list/account-list.component";
+import { AccountModalComponent } from "./account-modal/account-modal.component";
 
 import { AppRoutingModule } from "app/app-routing.module";
 
@@ -47,8 +48,8 @@ import { NADatePipe } from "pipes/na-date.pipe";
 import { FormatNumberDirective } from "../directives/format-number.directive";
 
 import { environment } from "environments/environment";
-import { SummaryService } from 'providers/summary.service';
-import { SummaryChartComponent } from './summary-chart/summary-chart.component';
+import { SummaryService } from "providers/summary.service";
+import { SummaryChartComponent } from "./summary-chart/summary-chart.component";
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { SummaryChartComponent } from './summary-chart/summary-chart.component';
     FeesModalComponent,
     StudentFeeModalComponent,
     AccountListComponent,
+    AccountModalComponent,
     
     DisplayGradePipe,
     NADatePipe,
@@ -106,7 +108,8 @@ import { SummaryChartComponent } from './summary-chart/summary-chart.component';
   entryComponents: [
     PaymentModalComponent,
     FeesModalComponent,
-    StudentFeeModalComponent
+    StudentFeeModalComponent,
+    AccountModalComponent
   ],
   bootstrap: [AppComponent]
 })

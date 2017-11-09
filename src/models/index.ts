@@ -1,4 +1,5 @@
 
+export { Account, AccountName, AccountType, accountTypeDisplay } from "./account";
 export { Fee } from "./fee";
 export { Statement } from "./statement";
 export { StatementLine } from "./statement-line";

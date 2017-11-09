@@ -34,4 +34,8 @@ export class AccountsService {
     return this.http.get<AccountName[]>(this.url + "/names", { params });
   }
 
+  async insertAccount({ name, type }: { name: string, type: AccountType }) {
+    await this.http.post(this.url, { name, type }, { responseType: "text" }).toPromise();
+  }
+
 }
