@@ -1,3 +1,37 @@
-<p>
-  account-list works!
-</p>
+<div *ngIf="!isLoading; else loading">
+  <button class="btn btn-primary" (click)="newAccount()"><i class="fa fa-plus" aria-hidden="true"></i> New</button>
+  <hr/>
+  <div *ngFor="let accountType of accountTypes">
+    <div class="card">
+      <div class="card-header">
+        <strong>{{ getAccountTypeDisplay(accountType) }}</strong>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-sm table-striped table-hover">
+          <thead>
+            <tr>
+              <th></th>
+              <th class="text-center">Name</th>
+              <th class="text-center">Debit</th>
+              <th class="text-center">Credit</th>
+              <th class="text-center">Balance</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let account of getAccountsByType(accountType)">
+              <td></td>
+              <td><a href="javascript:void(0)" (click)="editFee(account)">{{ account.name }}</a></td>
+              <td class="text-right px-3">{{ account.debit | number:'1.2-2' }}</td>
+              <td class="text-right px-3">{{ account.credit | number:'1.2-2' }}</td>
+              <td class="text-right px-3">{{ account.balance | number:'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <br/>
+  </div>  
+</div>
+
+<ng-template #loading>
+  Loading...
+</ng-template>

@@ -21,3 +21,13 @@ export interface AccountName {
   id: string;
   name: string;
 }
+
+type AccountTypeDisplay = { [K in AccountType]: string };
+
+export const accountTypeDisplay: AccountTypeDisplay = {
+  asset: "Assets",
+  equity: "Equity",
+  expense: "Expenses",
+  income: "Income",
+  liability: "Liability"
+}
