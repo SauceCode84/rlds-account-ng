@@ -42,7 +42,13 @@ export class AccountListComponent implements OnInit {
   }
 
   getAccountsByType(type: AccountType): Account[] {
-    return this.accounts.filter(account => account.type === type);
+    return this.accounts
+      .filter(account => account.type === type)
+      .sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
   }
 
   newAccount() {
