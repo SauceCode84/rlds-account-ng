@@ -17,9 +17,9 @@
               <th class="text-center">Balance</th>
           </thead>
           <tbody>
-            <tr *ngFor="let account of getAccountsByType(accountType)">
+            <tr *ngFor="let account of getAccountsByType(accountType)" class="accountRow">
               <td>
-                <a [routerLink]="[account.id]" class="btn btn-outline-primary btn-sm">
+                <a [routerLink]="[account.id]" class="btn btn-outline-primary btn-sm btn-tx">
                   <i class="fa fa-list" aria-hidden="true"></i>
                 </a>
               </td>
