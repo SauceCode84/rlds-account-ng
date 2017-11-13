@@ -18,12 +18,8 @@
           </thead>
           <tbody>
             <tr *ngFor="let account of getAccountsByType(accountType)" class="accountRow">
-              <td>
-                <a [routerLink]="[account.id]" class="btn btn-outline-primary btn-sm btn-tx">
-                  <i class="fa fa-list" aria-hidden="true"></i>
-                </a>
-              </td>
-              <td><a href="javascript:void(0)" (click)="editAccount(account)">{{ account.name }}</a></td>
+              <td></td>
+              <td><a [routerLink]="[account.id]">{{ account.name }}</a></td>
               <td class="text-right px-3">{{ account.debit | number:'1.2-2' }}</td>
               <td class="text-right px-3">{{ account.credit | number:'1.2-2' }}</td>
               <td class="text-right px-3">{{ account.balance | number:'1.2-2' }}</td>

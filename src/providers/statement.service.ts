@@ -24,15 +24,19 @@ export class StatementService {
 
   constructor(private http: HttpClient) { }
 
-  public txsByStudentId(studentId: string): Observable<Transaction[]> {
+  public txsByAccount(accountId: string, includeSubAccounts: boolean = false): Observable<Transaction[]> {
     let params: HttpParams = new HttpParams()
-      .set("accountId", studentId);
+      .set("accountId", accountId);
+
+    if (includeSubAccounts) {
+      params = params.set("includeSubAccounts", "true");
+    }
 
     return this.http.get<Transaction[]>(this.url, { params });
   }
 
   public statementForStudent(studentId: string, fromDate?: Date) {
-    return this.txsByStudentId(studentId)
+    return this.txsByAccount(studentId)
       .map(txs => {
         let lines = createStatementLines(txs);
         

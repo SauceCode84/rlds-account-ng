@@ -7,6 +7,8 @@ import { environment } from "environments/environment";
 
 import { Account, AccountName, AccountType } from "models/account";
 
+type Params = { [param: string]: string | string[] };
+
 @Injectable()
 export class AccountsService {
 
@@ -15,23 +17,27 @@ export class AccountsService {
   constructor(private http: HttpClient) { }
 
   getAccounts(type?: AccountType): Observable<Account[]> {
-    let params = new HttpParams();
+    let params: Params = {};
     
     if (type) {
-      params = params.set("type", type);
+      params.type = type;
     }
 
     return this.http.get<Account[]>(this.url, { params });
   }
 
   getAccountNames(type?: AccountType): Observable<AccountName[]> {
-    let params = new HttpParams();
+    let params: Params = {};
 
     if (type) {
-      params = params.set("type", type);
+      params.type = type;
     }
 
     return this.http.get<AccountName[]>(this.url + "/names", { params });
+  }
+
+  getAccount(id: string): Observable<Account> {
+    return this.http.get<Account>(this.url + "/" + id);
   }
 
   async insertAccount({ name, type }: { name: string, type: AccountType }) {
