@@ -5,7 +5,7 @@ import { StudentListComponent } from "app/student-list/student-list.component";
 import { StudentDetailComponent } from "app/student-detail/student-detail.component";
 import { FeesListComponent } from "app/fees-list/fees-list.component";
 import { AccountListComponent } from "app/account-list/account-list.component";
-import { AccountTransactionsComponent } from "app/account-transactions/account-transactions.component";
+import { AccountDetailComponent } from "app/account-detail/account-detail.component";
 
 export const routes: Routes = [
   {
@@ -26,7 +26,7 @@ export const routes: Routes = [
   },
   {
     path: "accounts/:id",
-    component: AccountTransactionsComponent
+    component: AccountDetailComponent
   },
   {
     path: "accounts",

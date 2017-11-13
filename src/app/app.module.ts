@@ -39,6 +39,7 @@ import { FeesModalComponent } from "./fees-modal/fees-modal.component";
 import { StudentFeeModalComponent } from "./student-fee-modal/student-fee-modal.component";
 import { AccountListComponent } from "./account-list/account-list.component";
 import { AccountModalComponent } from "./account-modal/account-modal.component";
+import { AccountDetailComponent } from "./account-detail/account-detail.component";
 import { AccountTransactionsComponent } from "./account-transactions/account-transactions.component";
 
 import { AppRoutingModule } from "app/app-routing.module";
@@ -79,7 +80,9 @@ import { SummaryChartComponent } from "./summary-chart/summary-chart.component";
     
     FormatNumberDirective,
     
-    SummaryChartComponent
+    SummaryChartComponent,
+    
+    AccountDetailComponent
   ],
   imports: [
     BrowserModule,
