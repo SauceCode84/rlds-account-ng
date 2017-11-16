@@ -40,6 +40,7 @@
           <tr>
             <th></th>
             <th class="text-center">Name</th>
+            <th class="text-center">Account</th>
             <th class="text-center">Single</th>
             <th class="text-center">Monthly</th>
             <th class="text-center">Termly</th>
@@ -48,6 +49,7 @@
           <tr *ngFor="let privateFee of privateFees">
             <td></td>
             <td><a href="javascript:void(0)" (click)="editFee(privateFee)">{{ privateFee.name }}</a></td>
+            <td class="">{{ privateFee.accountName }}</td>
             <td class="text-right px-3">{{ privateFee.amount.single | number:'1.2-2' }}</td>
             <td class="text-right px-3">{{ privateFee.amount.monthly | number:'1.2-2' }}</td>
             <td class="text-right px-3">{{ privateFee.amount.termly | number:'1.2-2' }}</td>
@@ -67,6 +69,7 @@
           <tr>
             <th></th>
             <th class="text-center">Name</th>
+            <th class="text-center">Account</th>
             <th class="text-center">Termly</th>
             <th class="text-center">Annually</th>
         </thead>
@@ -74,6 +77,7 @@
           <tr *ngFor="let preschoolFee of preschoolFees">
             <td></td>
             <td><a href="javascript:void(0)" (click)="editFee(preschoolFee)">{{ preschoolFee.name }}</a></td>
+            <td class="">{{ preschoolFee.accountName }}</td>
             <td class="text-right px-3">{{ preschoolFee.amount.termly | number:'1.2-2' }}</td>
             <td class="text-right px-3">{{ preschoolFee.amount.annually | number:'1.2-2' }}</td>
           </tr>
