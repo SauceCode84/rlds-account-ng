@@ -36,6 +36,10 @@ export class AccountsService {
     return this.http.get<AccountName[]>(this.url + "/names", { params });
   }
 
+  getSubAccounts(id: string): Observable<Account[]> {
+    return this.http.get<Account[]>(this.url + "/" + id + "/subAccounts");
+  }
+
   getAccount(id: string): Observable<Account> {
     return this.http.get<Account>(this.url + "/" + id);
   }

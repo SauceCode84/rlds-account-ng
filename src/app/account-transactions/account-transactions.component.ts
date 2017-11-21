@@ -26,7 +26,7 @@ export class AccountTransactionsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.paramMap
+    this.route.params
       .subscribe(params => {
         let id = params.get("id");
         let account$ = this.accountService.getAccount(id);
@@ -39,5 +39,5 @@ export class AccountTransactionsComponent implements OnInit {
         });
       });
   }
-
+  
 }

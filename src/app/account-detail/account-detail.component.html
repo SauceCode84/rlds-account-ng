@@ -1,3 +1,112 @@
-<p>
-  account-detaill works!
-</p>
+
+<div class="row">
+
+  <div class="col-6">
+    <div class="row">
+      <button class="btn btn-primary">Edit</button>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Name</label>
+      <div class="col-sm-9">
+        <input class="form-control-plaintext" readonly [value]="account?.name">
+      </div>
+    </div>
+  
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Type</label>
+      <div class="col-sm-9">
+        <input class="form-control-plaintext" readonly [value]="getAccountTypeDisplay(account?.type)">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div class="row pb-2">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title text-center">{{ account?.balance | number:'1.2-2' }}</h3>
+            <h5 class="card-subtitle mb-2 text-muted text-center">Balance</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">      
+      <div class="col-6">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title text-center">{{ account?.debit | number:'1.2-2' }}</h4>
+            <h6 class="card-subtitle mb-2 text-muted text-center">Debit</h6>
+          </div>
+        </div>
+      </div>      
+      <div class="col-6">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title text-center">{{ account?.credit | number:'1.2-2' }}</h4>
+            <h6 class="card-subtitle mb-2 text-muted text-center">Credit</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<ngb-tabset type="pills">
+  <ngb-tab id="subAccounts">
+    <ng-template ngbTabTitle><i class="fa fa-list" aria-hidden="true"></i> Sub-accounts</ng-template>
+    <ng-template ngbTabContent>
+      <div class="table-responsive">
+        <table class="table table-sm table-striped table-hover">
+          <thead>
+            <tr>
+              <th></th>
+              <th class="text-center">Name</th>
+              <th class="text-center">Debit</th>
+              <th class="text-center">Credit</th>
+              <th class="text-center">Balance</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let subAccount of subAccounts" class="accountRow">
+              <td></td>
+              <td><a [routerLink]="">{{ subAccount.name }}</a></td>
+              <td class="text-right px-3">{{ subAccount.debit | number:'1.2-2' }}</td>
+              <td class="text-right px-3">{{ subAccount.credit | number:'1.2-2' }}</td>
+              <td class="text-right px-3">{{ subAccount.balance | number:'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab id="transactions">
+    <ng-template ngbTabTitle><i class="fa fa-money" aria-hidden="true"></i> Transactions</ng-template>
+    <ng-template ngbTabContent>
+      <div class="table-responsive">
+        <table class="table table-sm table-striped table-hover">
+          <thead>
+            <tr>
+              <th class="text-center">Date</th>
+              <th class="text-center">Details</th>
+              <th class="text-center">Sub-account</th>
+              <th class="text-center">Debit</th>
+              <th class="text-center">Credit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let transaction of transactions">
+              <td>{{ transaction.date | date:'dd MMM' }}</td>
+              <td>{{ transaction.details }}</td>
+              <td><i>{{ transaction.subAccountName }}</i></td>
+              <td class="text-right">{{ transaction.debit | number:'1.2-2' }}</td>
+              <td class="text-right">{{ transaction.credit | number:'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>
