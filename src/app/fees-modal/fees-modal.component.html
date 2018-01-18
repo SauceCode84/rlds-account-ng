@@ -10,7 +10,7 @@
     <div class="form-group row">
       <label class="col-sm-3 col-form-label">Name</label>
       <div class="col-sm-9">
-        <input type="text" class="form-control" [class.is-invalid]="name.touched && name.invalid" formControlName="name">
+        <input type="text" class="form-control" [class.is-invalid]="name.touched && name.invalid" formControlName="name" />
         <div class="invalid-feedback" [hidden]="!(name.touched && name.hasError('required'))">
           Fee name is required.
         </div>
@@ -25,6 +25,8 @@
         </select>
       </div>
     </div>
+
+    <input type="hidden" formControlName="type" />
 
     <fieldset formGroupName="amount">
       <div class="form-group row" *ngIf="showFeeControl('single')">

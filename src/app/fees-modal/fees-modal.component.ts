@@ -35,8 +35,8 @@ const feePaymentOptions: FeePaymentOptionType = {
 })
 export class FeesModalComponent implements OnInit {
 
-  isSaving: boolean;
   isNew: boolean;
+  isSaving: boolean;
   
   fee: Fee;
   feeForm: FormGroup;
@@ -56,6 +56,10 @@ export class FeesModalComponent implements OnInit {
 
   get name() {
     return this.feeForm.get("name") as FormControl;
+  }
+
+  get type() {
+    return this.feeForm.get("type") as FormControl;
   }
 
   get accountId() {
@@ -101,6 +105,7 @@ export class FeesModalComponent implements OnInit {
   private buildForm() {
     let formGroupDef = {
       name: ["", Validators.required],
+      type: "",
       accountId: ["", Validators.required],
       amount: this.buildAmountGroup()
     };
@@ -139,9 +144,14 @@ export class FeesModalComponent implements OnInit {
   async onSubmit() {
     try {
       this.isSaving = true;
-      
-      await this.feesService.updateFee(this.fee.id, this.feeForm.value);
-      
+      console.log(this.feeForm.value);
+
+      if (this.isNew) {
+        await this.feesService.insertFee(this.feeForm.value);
+      } else {
+        await this.feesService.updateFee(this.fee.id, this.feeForm.value);
+      }
+
       this.isSaving = false;
       this.activeModal.close();
     } catch (err) {

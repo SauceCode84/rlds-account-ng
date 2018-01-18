@@ -53,13 +53,19 @@ export class FeesListComponent implements OnInit, OnDestroy {
     this.feesListSub.unsubscribe();
   }
   
-  newFee() {
-    let paymentModalRef = this.modalService.open(FeesModalComponent);
+  async newFee(type: FeeType) {
+    await this.showFeeModal({ type: type || "class" }, true);
+
+    /*let paymentModalRef = this.modalService.open(FeesModalComponent);
+    
     paymentModalRef.componentInstance.isNew = true;
+    paymentModalRef.componentInstance.fee = ;*/
   }
 
   async editFee(fee: Fee) {
-    let paymentModalRef = this.modalService.open(FeesModalComponent);
+    await this.showFeeModal(fee);
+
+    /*let paymentModalRef = this.modalService.open(FeesModalComponent);
     paymentModalRef.componentInstance.fee = fee;
 
     paymentModalRef.result
@@ -70,7 +76,23 @@ export class FeesListComponent implements OnInit, OnDestroy {
       reason => {
         console.log(reason);
         this.reloadFees();
-      });
+      });*/
+  }
+
+  private async showFeeModal(fee: Partial<Fee>, isNew?: boolean) {
+    let paymentModalRef = this.modalService.open(FeesModalComponent);
+    
+    paymentModalRef.componentInstance.fee = fee;
+    paymentModalRef.componentInstance.isNew = isNew;
+
+    try {
+      let result = await paymentModalRef.result;
+      console.log(result);
+    } catch (reason) {
+      console.error(reason);
+    } finally {
+      this.reloadFees();
+    }
   }
 
 }

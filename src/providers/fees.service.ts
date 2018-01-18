@@ -28,6 +28,12 @@ export class FeesService {
     return this.http.get<Fee>(this.url + "/" + id);
   }
 
+  public async insertFee(fee: Partial<Fee>) {
+    let id = await this.http.post(this.url, fee, { responseType: "text" }).toPromise();
+
+    return id;
+  }
+
   public async updateFee(id: string, fee: Partial<Fee>) {
     await this.http.put(this.url + "/" + id, fee, { responseType: "text" }).toPromise();
   }

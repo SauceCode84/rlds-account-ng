@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 
+import { environment } from "environments/environment";
+
 import { Observable } from "rxjs/Observable";
 import { Observer } from "rxjs/Observer";
 
@@ -9,13 +11,25 @@ import "rxjs/add/operator/toPromise";
 
 import * as moment from "moment";
 
-import { Statement, StatementLine, Transaction } from "models";
+import { Fee, Statement, StatementLine, Student, Transaction } from "models";
 
 import "helpers/sum";
 import "helpers/last";
-import { environment } from "environments/environment";
 
 type TxResult = { id: string };
+
+interface DoubleEntryTransaction {
+  date: Date;
+  amount: number;
+  debit: {
+    accountId: string;
+    details: string;
+  };
+  credit: {
+    accountId: string;
+    details: string;
+  };
+}
 
 @Injectable()
 export class StatementService {
@@ -69,6 +83,20 @@ export class StatementService {
     };
 
     await this.http.put(this.url + "/" + id, updatedPayment, { responseType: "text" }).toPromise();
+  }
+
+  private async postDoubleEntry(doubleEntry: DoubleEntryTransaction) {
+    let result = await this.http.post(this.url + "/post", doubleEntry).toPromise();
+    console.log(result);
+  }
+
+  async addStudentFee(student: Student, fee: Fee, feeViewModel: { date: Date, amount: number, details: string }) {
+    await this.postDoubleEntry({
+      date: feeViewModel.date,
+      amount: feeViewModel.amount,
+      debit: { accountId: student.id, details: feeViewModel.details },
+      credit: { accountId: fee.accountId, details: student.firstName + " " + student.lastName }
+    });
   }
 
   async addFee(accountId: string, fee: { details: string, amount: number, date: string, type: string }) {

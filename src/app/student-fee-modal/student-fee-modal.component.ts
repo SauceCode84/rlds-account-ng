@@ -87,7 +87,7 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
     return this.getFormControl("type");
   }
 
-  private getFee(id: string) {
+  private getFee(id: string): Fee {
     let index = this.fees.findIndex(fee => fee.id === id);
     return this.fees[index];
   }
@@ -200,13 +200,22 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
     this.isSaving = true;
 
     try {
-      let fee = this.feeForm.value;
+      let feeViewModel = this.feeForm.value;
+      console.log("fee:", feeViewModel);
+      
+      console.log("student:", this.student);
+      console.log("currentFee:", this.currentFee);
 
       if (this.isNew) {
+        await this.statementService.addStudentFee(this.student, this.currentFee, feeViewModel);
+      }
+
+      /*if (this.isNew) {
         await this.statementService.addFee(this.student.id, fee);
       } else {
         await this.statementService.updateFee(this.viewModel.id, fee);
-      }
+      }*/
+
       this.activeModal.close();
     } catch (err) {
       this.isSaving = false;
