@@ -26,6 +26,15 @@
       </div>
     </div>
 
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Type</label>
+      <div class="col-sm-9">
+        <select class="form-control" formControlName="type">
+          <option *ngFor="let feeType of feeTypes" [value]="feeType.id">{{ feeType.name }}</option>
+        </select>
+      </div>
+    </div>
+
     <input type="hidden" formControlName="type" />
 
     <fieldset formGroupName="amount">

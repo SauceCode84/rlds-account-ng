@@ -3,7 +3,7 @@ export type CustomFeeType = "custom";
 
 export type InterestType = "interest";
 
-export type FeeType = "class" | "registration" | "private" | "preschool";
+export type FeeType = "class" | "registration" | "private" | "preschool" | "festival";
 
 export type PaymentType = "payment";
 

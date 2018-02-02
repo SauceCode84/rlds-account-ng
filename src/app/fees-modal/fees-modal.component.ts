@@ -25,8 +25,16 @@ const feePaymentOptions: FeePaymentOptionType = {
   "class": [PaymentOption.Monthly, PaymentOption.Termly, PaymentOption.Annually],
   "private": [PaymentOption.Single, PaymentOption.Monthly, PaymentOption.Termly],
   "preschool": [PaymentOption.Termly, PaymentOption.Annually],
-  "registration": []
+  "registration": [],
+  "festival": []
 };
+
+const feeTypes: { id: FeeType | "custom", name: string }[] = [
+  { id: "class", name: "Class Fee" },
+  { id: "private", name: "Private Lesson Fee" },
+  { id: "registration", name: "Registration Fee" },
+  { id: "custom", name: "Custom" }
+]
 
 @Component({
   selector: "app-fees-modal",
@@ -130,15 +138,19 @@ export class FeesModalComponent implements OnInit {
   }
 
   get isClassFee() {
-    return this.fee.type === "class";
+    return this.type.value === "class";
   }
 
   get isPrivateFee() {
-    return this.fee.type === "private";
+    return this.type.value === "private";
   }
 
   get isPreschoolFee() {
-    return this.fee.type === "preschool";
+    return this.type.value === "preschool";
+  }
+
+  get feeTypes() {
+    return feeTypes;
   }
 
   async onSubmit() {
