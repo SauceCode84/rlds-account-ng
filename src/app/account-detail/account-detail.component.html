@@ -72,7 +72,7 @@
           <tbody>
             <tr *ngFor="let subAccount of subAccounts" class="accountRow">
               <td></td>
-              <td><a [routerLink]="">{{ subAccount.name }}</a></td>
+              <td><a [routerLink]="['/accounts', subAccount.id]">{{ subAccount.name }}</a></td>
               <td class="text-right px-3">{{ subAccount.debit | number:'1.2-2' }}</td>
               <td class="text-right px-3">{{ subAccount.credit | number:'1.2-2' }}</td>
               <td class="text-right px-3">{{ subAccount.balance | number:'1.2-2' }}</td>
