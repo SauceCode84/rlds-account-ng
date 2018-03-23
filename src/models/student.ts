@@ -64,7 +64,13 @@ interface SortableDisplayKeyValuePair<T> extends DisplayKeyValuePair<T> {
   [key: string]: SortableDisplayValuePair<T>;
 }
 
-export const PaymentOptions = {
+export interface PaymentOptionViewModel {
+  value: string;
+  displayValue: string;
+  sortOrder: number;
+}
+
+export const PaymentOptions: { [key: string]: PaymentOptionViewModel } = {
   single: {
     value: "single",
     displayValue: "Single",

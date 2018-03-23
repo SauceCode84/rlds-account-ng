@@ -7,6 +7,8 @@ import { FeesService } from "providers/fees.service";
 import { Fee, FeeType } from "models";
 
 import { Subscription } from "rxjs/Subscription";
+import { Observable } from "rxjs/Observable";
+import { PaymentOption, PaymentOptions } from "models/student";
 
 const byFeeType = (feeType: FeeType) => (fee: Fee) => fee.type === feeType;
 
@@ -17,6 +19,8 @@ const byFeeType = (feeType: FeeType) => (fee: Fee) => fee.type === feeType;
 })
 export class FeesListComponent implements OnInit, OnDestroy {
   
+  fees$: Observable<Fee[]>;
+
   classFees: Fee[] = [];
   privateFees: Fee[] = [];
   preschoolFees: Fee[] = [];
@@ -30,7 +34,9 @@ export class FeesListComponent implements OnInit, OnDestroy {
   private loadFees() {
     this.isLoading = true;
 
-    this.feesListSub = this.feesService.getFees(true)
+    this.fees$ = this.feesService.getFees({ includeAccountName: true, includeGradeName: true });
+    
+    this.feesListSub = this.fees$
       .subscribe(fees => {
         this.classFees = fees.filter(byFeeType("class"));
         this.privateFees = fees.filter(byFeeType("private"));
@@ -38,6 +44,22 @@ export class FeesListComponent implements OnInit, OnDestroy {
         
         this.isLoading = false;
       });
+  }
+
+  formatPaymentOption(paymentOption: PaymentOption) {
+    switch (paymentOption) {
+      case PaymentOption.Single:
+        return "Single";
+
+      case PaymentOption.Monthly:
+        return "Monthly";
+
+      case PaymentOption.Termly:
+        return "Termly";
+
+      case PaymentOption.Annually:
+        return "Annually";
+    }
   }
 
   private reloadFees() {
@@ -54,7 +76,7 @@ export class FeesListComponent implements OnInit, OnDestroy {
   }
   
   async newFee(type: FeeType) {
-    await this.showFeeModal({ type: type || "class" }, true);
+    await this.showFeeModal({ type }, true);
 
     /*let paymentModalRef = this.modalService.open(FeesModalComponent);
     

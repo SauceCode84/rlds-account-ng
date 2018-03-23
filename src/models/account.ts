@@ -15,6 +15,7 @@ export interface Account {
   debit?: number;
   credit?: number;
   balance?: number;
+  paymentOptions?: string[];
 }
 
 export interface AccountName {

@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 
 import { environment } from "environments/environment";
 
-interface Grade {
+export interface Grade {
   id: string;
   name: string;
   sortOrder: number;
