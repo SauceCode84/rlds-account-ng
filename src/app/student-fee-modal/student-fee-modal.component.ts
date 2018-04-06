@@ -1,15 +1,13 @@
 import { Component, Input, OnInit, OnDestroy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
-//import { FirebaseObjectObservable } from "angularfire2/database";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 
 import { Subscription } from "rxjs/Subscription";
 
-import { Student, Fee } from "models";
 import { FeesService, StatementService, StudentService } from "providers";
-import { getDisplayValueArray, Grade, getDisplayValuesForKeys, PaymentOptions, getSortedDisplayValuesForKeys } from "models/student";
+import { Student, Fee } from "models";
+import { PaymentOptions } from "models/student";
 import { FeeTypeOptions } from "models/fee-options";
-//import { isFeeAmounts } from "models/fee";
 
 import * as moment from "moment";
 
@@ -41,7 +39,7 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
   public studentSub: Subscription;
 
   public feeForm: FormGroup;
-  public paymentOptions;
+
   public fees: Fee[];
   public currentFee: Fee;
 
@@ -74,16 +72,18 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
     return this.getFormControl("fee");
   }
 
-  get paymentOption() {
-    return this.getFormControl("paymentOption");
-  }
-
   get amount() {
     return this.getFormControl("amount");
   }
 
-  get type() {
-    return this.getFormControl("type");
+  displayFee(fee: Fee) {
+    let value = fee.name;
+
+    if (fee.paymentOption) {
+      value += ` (${ PaymentOptions[fee.paymentOption].displayValue })`;
+    }
+
+    return value;
   }
 
   private getFee(id: string): Fee {
@@ -92,33 +92,36 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
   }
 
   private getFeeDetails(fee: Fee) {
-    switch (fee.type) {
-      case "custom":
-        return "";
-
-      case "class":
-        return "Class Fees - " + fee.name;
-        
-      default:
-        return fee.name;
+    if (!fee) {
+      return "";
     }
+
+    let feeDetails = fee.name;
+
+    if (fee.type === "class") {
+      feeDetails = `Class Fees - ${ feeDetails }`;
+    }
+
+    if (fee.paymentOption) {
+      feeDetails += ` (${ PaymentOptions[fee.paymentOption].displayValue })`;
+    }
+
+    return feeDetails;
   }
 
   get isNew() {
-    return this.viewModel === null || this.viewModel === undefined;
+    return !this.viewModel;
   }
 
   private buildForm() {
     let formGroupDef = {
       details: ["", Validators.required],
       amount: 0,
-      date: moment().format("YYYY-MM-DD"),
-      type: ""
+      date: moment().format("YYYY-MM-DD")
     };
 
     if (this.isNew) {
       formGroupDef["fee"] = [""];
-      formGroupDef["paymentOption"] = [""];
     }
 
     this.feeForm = this.fb.group(formGroupDef);
@@ -145,41 +148,16 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
 
   private setupValueChangeListeners() {
     this.fee.valueChanges.subscribe(value => {
-      this.currentFee = this.getFee(value);
-
-      this.paymentOption.enable();
-
-      //if (isFeeAmounts(this.currentFee.amount)) {
-        let keys = Object.keys(this.currentFee.amount);
-        this.paymentOptions = getSortedDisplayValuesForKeys(PaymentOptions, keys);
-        
-        this.paymentOption.setValue(this.student.paymentOption);
-      /*} else {
-        this.paymentOptions = [];
-        
-        this.paymentOption.setValue("");
-        this.paymentOption.disable();
-      }*/
-
-      if (this.currentFee && this.currentFee.type) {
-        this.type.setValue(this.currentFee.type);
-      }
-      
-      this.details.setValue(this.getFeeDetails(this.currentFee));
-    });
-
-    this.paymentOption.valueChanges.subscribe(value => {
       let amount: number = null;
 
+      this.currentFee = this.getFee(value);
+      
       if (this.currentFee) {
-        /*if (isFeeAmounts(this.currentFee.amount)) {
-          amount = this.currentFee.amount[value];
-        /*} else {*/
-          amount = this.currentFee.amount;
-        //}
+        amount = this.currentFee.amount;
       }
-
+      
       this.amount.setValue(amount);
+      this.details.setValue(this.getFeeDetails(this.currentFee));
     });
   }
 
