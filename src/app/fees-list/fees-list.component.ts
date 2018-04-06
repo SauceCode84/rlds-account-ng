@@ -6,8 +6,11 @@ import { FeesModalComponent } from "../fees-modal/fees-modal.component";
 import { FeesService } from "providers/fees.service";
 import { Fee, FeeType } from "models";
 
-import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Subscription } from "rxjs/Subscription";
+import "rxjs/add/operator/shareReplay";
+
 import { PaymentOption, PaymentOptions } from "models/student";
 
 const byFeeType = (feeType: FeeType) => (fee: Fee) => fee.type === feeType;
@@ -19,29 +22,21 @@ const byFeeType = (feeType: FeeType) => (fee: Fee) => fee.type === feeType;
 })
 export class FeesListComponent implements OnInit, OnDestroy {
   
-  fees$: Observable<Fee[]>;
-
-  classFees: Fee[] = [];
-  privateFees: Fee[] = [];
-  preschoolFees: Fee[] = [];
-
-  isLoading: boolean = false;
-
+  fees: Fee[];
   feesListSub: Subscription;
+  
+  isLoading: boolean = false;
 
   constructor(private feesService: FeesService, private modalService: NgbModal) { }
 
   private loadFees() {
+    let fees$ = this.feesService.getFees({ includeAccountName: true, includeGradeName: true });
+
     this.isLoading = true;
 
-    this.fees$ = this.feesService.getFees({ includeAccountName: true, includeGradeName: true });
-    
-    this.feesListSub = this.fees$
+    this.feesListSub = fees$
       .subscribe(fees => {
-        this.classFees = fees.filter(byFeeType("class"));
-        this.privateFees = fees.filter(byFeeType("private"));
-        this.preschoolFees = fees.filter(byFeeType("preschool"));
-        
+        this.fees = fees;        
         this.isLoading = false;
       });
   }
@@ -77,28 +72,10 @@ export class FeesListComponent implements OnInit, OnDestroy {
   
   async newFee(type: FeeType) {
     await this.showFeeModal({ type }, true);
-
-    /*let paymentModalRef = this.modalService.open(FeesModalComponent);
-    
-    paymentModalRef.componentInstance.isNew = true;
-    paymentModalRef.componentInstance.fee = ;*/
   }
 
   async editFee(fee: Fee) {
     await this.showFeeModal(fee);
-
-    /*let paymentModalRef = this.modalService.open(FeesModalComponent);
-    paymentModalRef.componentInstance.fee = fee;
-
-    paymentModalRef.result
-      .then(result => {
-        console.log(result);
-        this.reloadFees();
-      },
-      reason => {
-        console.log(reason);
-        this.reloadFees();
-      });*/
   }
 
   private async showFeeModal(fee: Partial<Fee>, isNew?: boolean) {
@@ -117,4 +94,16 @@ export class FeesListComponent implements OnInit, OnDestroy {
     }
   }
 
+}
+
+const loadingService = <T>(serviceCall: () => Observable<T>) => {
+  let isLoading$ = new BehaviorSubject(false);
+  
+  isLoading$.next(true);
+
+  let result$ = serviceCall();
+
+  result$.subscribe({ complete: () => isLoading$.next(false) });
+  
+  return { data: result$, isLoading: isLoading$.asObservable() };
 }

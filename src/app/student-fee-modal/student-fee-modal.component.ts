@@ -9,15 +9,14 @@ import { Student, Fee } from "models";
 import { FeesService, StatementService, StudentService } from "providers";
 import { getDisplayValueArray, Grade, getDisplayValuesForKeys, PaymentOptions, getSortedDisplayValuesForKeys } from "models/student";
 import { FeeTypeOptions } from "models/fee-options";
-import { isFeeAmounts } from "models/fee";
+//import { isFeeAmounts } from "models/fee";
 
 import * as moment from "moment";
 
 const customFee: Fee = {
   name: "Custom",
   amount: 0,
-  type: "custom",
-  sortOrder: -1
+  type: "custom"
 };
 
 interface FeeViewModel {
@@ -150,17 +149,17 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
 
       this.paymentOption.enable();
 
-      if (isFeeAmounts(this.currentFee.amount)) {
+      //if (isFeeAmounts(this.currentFee.amount)) {
         let keys = Object.keys(this.currentFee.amount);
         this.paymentOptions = getSortedDisplayValuesForKeys(PaymentOptions, keys);
         
         this.paymentOption.setValue(this.student.paymentOption);
-      } else {
+      /*} else {
         this.paymentOptions = [];
         
         this.paymentOption.setValue("");
         this.paymentOption.disable();
-      }
+      }*/
 
       if (this.currentFee && this.currentFee.type) {
         this.type.setValue(this.currentFee.type);
@@ -173,11 +172,11 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
       let amount: number = null;
 
       if (this.currentFee) {
-        if (isFeeAmounts(this.currentFee.amount)) {
+        /*if (isFeeAmounts(this.currentFee.amount)) {
           amount = this.currentFee.amount[value];
-        } else {
+        /*} else {*/
           amount = this.currentFee.amount;
-        }
+        //}
       }
 
       this.amount.setValue(amount);

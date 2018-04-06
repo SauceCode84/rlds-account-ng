@@ -7,7 +7,7 @@ import { environment } from "environments/environment";
 
 import { Fee } from "models";
 
-type GetFeesOptions = { includeAccountName: boolean, includeGradeName: boolean };
+type GetFeesOptions = { includeAccountName?: boolean, includeGradeName?: boolean };
 
 @Injectable()
 export class FeesService {
@@ -16,7 +16,7 @@ export class FeesService {
 
   constructor(private http: HttpClient) { }
 
-  public getFees({ includeAccountName = false, includeGradeName = false }: GetFeesOptions) {
+  public getFees({ includeAccountName = false, includeGradeName = false }: GetFeesOptions = {}) {
     let params = new HttpParams();
 
     if (includeAccountName) {
