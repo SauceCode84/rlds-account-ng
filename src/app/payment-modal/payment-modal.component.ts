@@ -58,7 +58,7 @@ export class PaymentModalComponent implements OnInit {
   }
 
   get isNew(): boolean {
-    return this.viewModel === undefined || this.viewModel === null;
+    return !this.viewModel;
   }
 
   private buildForm() {
@@ -89,7 +89,7 @@ export class PaymentModalComponent implements OnInit {
 
     try {
       if (this.isNew) {
-        await this.statementService.addPayment(this.studentId, { amount, date });
+        await this.statementService.addPayment(this.student, { amount, date });
       } else {
         await this.statementService.updatePayment(this.viewModel.id, { amount, date });
       }

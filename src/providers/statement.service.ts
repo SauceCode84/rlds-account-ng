@@ -31,12 +31,37 @@ interface DoubleEntryTransaction {
   };
 }
 
+interface ConfigResponse {
+  cashAccountId: string;
+}
+
+/*@Injectable()
+class ConfigService {
+
+  constructor() {
+
+  }
+
+  get cashAccountId() {
+  }
+
+}*/
+
 @Injectable()
 export class StatementService {
 
   private url = `${environment.apiUrl}/transactions`;
 
-  constructor(private http: HttpClient) { }
+  private cashAccountId: string;
+
+  constructor(private http: HttpClient) {
+    this.http
+      .get<ConfigResponse>(`${environment.apiUrl}/config`)
+      .subscribe(config => {
+        console.log(config);
+        this.cashAccountId = config.cashAccountId;
+      });
+  }
 
   public txsByAccount(accountId: string, includeSubAccounts: boolean = false): Observable<Transaction[]> {
     let params: HttpParams = new HttpParams()
@@ -62,8 +87,15 @@ export class StatementService {
     });
   }
 
-  async addPayment(accountId: string, { amount, date }: { amount?: number, date?: string }) {
-    let newPayment = {
+  async addPayment(student: Student, { amount, date }: { amount?: number, date?: Date }) {
+    await this.postDoubleEntry({
+      amount,
+      date,
+      debit: { accountId: this.cashAccountId, details: `Payment - ${ student.firstName } ${ student.lastName }` },
+      credit: { accountId: student.id, details: "Payment Received - Thank you!" }
+    });
+
+    /*let newPayment = {
       accountId,
       details: "Payment Received - Thank you!",
       credit: amount,
@@ -73,7 +105,7 @@ export class StatementService {
 
     console.log(newPayment);
 
-    return this.http.post<TxResult>(this.url, newPayment).toPromise();
+    return this.http.post<TxResult>(this.url, newPayment).toPromise();*/
   }
 
   async updatePayment(id: string, { amount, date }: { amount?: number, date?: string }) {
