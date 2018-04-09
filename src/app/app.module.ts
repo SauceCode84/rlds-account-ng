@@ -14,6 +14,7 @@ import {
   AlertService,
   //AngularFireKeyService,
   AuthService,
+  ConfigService,
   FeesService,
   NotificationService,
   StatementService,
@@ -52,7 +53,6 @@ import { FormatNumberDirective } from "../directives/format-number.directive";
 import { environment } from "environments/environment";
 import { SummaryService } from "providers/summary.service";
 import { SummaryChartComponent } from "./summary-chart/summary-chart.component";
-import { ConfigService } from "providers/config.service";
 
 @NgModule({
   declarations: [
