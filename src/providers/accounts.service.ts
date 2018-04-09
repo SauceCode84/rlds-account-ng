@@ -26,11 +26,15 @@ export class AccountsService {
     return this.http.get<Account[]>(this.url, { params });
   }
 
-  getAccountNames(type?: AccountType): Observable<AccountName[]> {
+  getAccountNames({ type, subType }: { type?: AccountType, subType?: string } = {}): Observable<AccountName[]> {
     let params: Params = {};
 
     if (type) {
       params.type = type;
+
+      if (subType) {
+        params.subType = subType;
+      }
     }
 
     return this.http.get<AccountName[]>(this.url + "/names", { params });
