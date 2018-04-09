@@ -4,17 +4,16 @@ import { FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 //import { FirebaseObjectObservable } from "angularfire2/database";
 
-import { Student } from "models";
-import { StudentService, StatementService } from "providers";
+import { Student, AccountType, AccountName } from "models";
+import { AccountsService, ConfigService, StudentService, StatementService } from "providers";
 
 import * as moment from "moment";
 
 interface PaymentViewModel {
   id: string;
-  details: string;
   date: string;
   amount: number;
-  type: string;
+  accountId: string;
 }
 
 @Component({
@@ -28,6 +27,7 @@ export class PaymentModalComponent implements OnInit {
   //student$: FirebaseObjectObservable<Student>;
   studentId: string;
   student: Student;
+  accounts: AccountName[];
 
   viewModel: PaymentViewModel;
 
@@ -38,17 +38,17 @@ export class PaymentModalComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public activeModal: NgbActiveModal,
+    private config: ConfigService,
     private studentService: StudentService,
+    private accountsService: AccountsService,
     private statementService: StatementService
   ) { }
 
-  ngOnInit() {
-    this.studentService
-      .getById(this.studentId)
-      .subscribe(student => this.student = student);
-    
+  async ngOnInit() {
     this.buildForm();
-    this.applyValue();
+    
+    await this.getData();
+    await this.applyValue();
   }
 
   private getFormControl = (name: string) => this.paymentForm.get(name) as FormControl;
@@ -57,18 +57,43 @@ export class PaymentModalComponent implements OnInit {
     return this.getFormControl("amount");
   }
 
+  get date() {
+    return this.getFormControl("date");
+  }
+
+  get accountId() {
+    return this.getFormControl("accountId");
+  }
+
   get isNew(): boolean {
     return !this.viewModel;
+  }
+
+  private async getData() {
+    this.student = await this.studentService
+      .getById(this.studentId)
+      .toPromise();
+
+    this.accounts = await this.accountsService
+      .getAccountNames({ type: AccountType.Asset, subType: "cash" })
+      .toPromise();
   }
 
   private buildForm() {
     this.paymentForm = this.fb.group({
       amount: 0,
-      date: moment().format("YYYY-MM-DD")
+      date: moment().format("YYYY-MM-DD"),
+      accountId: null
     });
   }
 
-  private applyValue() {
+  private async applyValue() {
+    if (this.student.account.balance > 0) {
+      this.amount.setValue(this.student.account.balance);
+    }
+
+    this.accountId.setValue(await this.config.cashAccountId);
+
     if (!this.isNew) {
       let patchedValue = {
         amount: Math.abs(this.viewModel.amount),
@@ -84,12 +109,12 @@ export class PaymentModalComponent implements OnInit {
       return;
     }
     
-    let { amount, date } = this.paymentForm.value;
+    let { amount, date, accountId } = this.paymentForm.value;
     this.isSaving = true;
 
     try {
       if (this.isNew) {
-        await this.statementService.addPayment(this.student, { amount, date });
+        await this.statementService.addPayment(this.student, { amount, date, cashAccountId: accountId });
       } else {
         await this.statementService.updatePayment(this.viewModel.id, { amount, date });
       }

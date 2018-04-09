@@ -11,7 +11,6 @@ import "rxjs/add/operator/toPromise";
 
 import * as moment from "moment";
 
-import { ConfigService } from "./config.service";
 import { Fee, Statement, StatementLine, Student, Transaction } from "models";
 
 import "helpers/sum";
@@ -37,7 +36,7 @@ export class StatementService {
 
   private url = `${environment.apiUrl}/transactions`;
 
-  constructor(private http: HttpClient, private config: ConfigService) { }
+  constructor(private http: HttpClient) { }
 
   public txsByAccount(accountId: string, includeSubAccounts: boolean = false): Observable<Transaction[]> {
     let params: HttpParams = new HttpParams()
@@ -63,12 +62,12 @@ export class StatementService {
     });
   }
 
-  async addPayment(student: Student, { amount, date }: { amount?: number, date?: Date }) {
+  async addPayment(student: Student, { amount, date, cashAccountId }: { amount?: number, date?: Date, cashAccountId?: string }) {
     await this.postDoubleEntry({
       amount,
       date,
       debit: {
-        accountId: this.config.cashAccountId,
+        accountId: cashAccountId,
         details: `Payment - ${ student.firstName } ${ student.lastName }`
       },
       credit: {
@@ -76,18 +75,6 @@ export class StatementService {
         details: "Payment Received - Thank you!"
       }
     });
-
-    /*let newPayment = {
-      accountId,
-      details: "Payment Received - Thank you!",
-      credit: amount,
-      date: moment(date).utc(true).toDate(),
-      type: "payment"
-    };
-
-    console.log(newPayment);
-
-    return this.http.post<TxResult>(this.url, newPayment).toPromise();*/
   }
 
   async updatePayment(id: string, { amount, date }: { amount?: number, date?: string }) {
