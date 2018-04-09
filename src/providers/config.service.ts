@@ -11,18 +11,18 @@ interface ConfigResponse {
 export class ConfigService {
 
   private url = `${environment.apiUrl}/config`;
-  private _cashAccountId: string;
+  
+  constructor(private http: HttpClient) { }
 
-  constructor(private http: HttpClient) {
-    this.http
-      .get<ConfigResponse>(this.url)
-      .subscribe(config => {
-        this._cashAccountId = config.cashAccountId;
-      });
+  private getConfig() {
+    return this.http
+    .get<ConfigResponse>(this.url)
+    .toPromise();
   }
 
-  get cashAccountId() {
-    return this._cashAccountId;
+  get cashAccountId(): Promise<string> {
+    return this.getConfig()
+      .then(config => config.cashAccountId);
   }
 
 }
