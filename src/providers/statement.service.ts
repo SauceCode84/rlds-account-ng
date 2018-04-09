@@ -11,6 +11,7 @@ import "rxjs/add/operator/toPromise";
 
 import * as moment from "moment";
 
+import { ConfigService } from "./config.service";
 import { Fee, Statement, StatementLine, Student, Transaction } from "models";
 
 import "helpers/sum";
@@ -31,37 +32,12 @@ interface DoubleEntryTransaction {
   };
 }
 
-interface ConfigResponse {
-  cashAccountId: string;
-}
-
-/*@Injectable()
-class ConfigService {
-
-  constructor() {
-
-  }
-
-  get cashAccountId() {
-  }
-
-}*/
-
 @Injectable()
 export class StatementService {
 
   private url = `${environment.apiUrl}/transactions`;
 
-  private cashAccountId: string;
-
-  constructor(private http: HttpClient) {
-    this.http
-      .get<ConfigResponse>(`${environment.apiUrl}/config`)
-      .subscribe(config => {
-        console.log(config);
-        this.cashAccountId = config.cashAccountId;
-      });
-  }
+  constructor(private http: HttpClient, private config: ConfigService) { }
 
   public txsByAccount(accountId: string, includeSubAccounts: boolean = false): Observable<Transaction[]> {
     let params: HttpParams = new HttpParams()
@@ -91,8 +67,14 @@ export class StatementService {
     await this.postDoubleEntry({
       amount,
       date,
-      debit: { accountId: this.cashAccountId, details: `Payment - ${ student.firstName } ${ student.lastName }` },
-      credit: { accountId: student.id, details: "Payment Received - Thank you!" }
+      debit: {
+        accountId: this.config.cashAccountId,
+        details: `Payment - ${ student.firstName } ${ student.lastName }`
+      },
+      credit: {
+        accountId: student.id,
+        details: "Payment Received - Thank you!"
+      }
     });
 
     /*let newPayment = {
