@@ -45,12 +45,11 @@ export class SearchStudentComponent implements OnInit {
 
   private filterByStudentName(search: string) {
     return (student: Student) => {
-      let fullName = student.firstName + " " + student.lastName;
-      return fullName.toLowerCase().indexOf(search.toLowerCase()) > -1;
+      return this.toFullName(student).toLowerCase().indexOf(search.toLowerCase()) > -1;
     }
   }
 
-  inputFormatter(student: Student): string {
+  toFullName(student: Student): string {
     return student.firstName + " " + student.lastName;
   }
 

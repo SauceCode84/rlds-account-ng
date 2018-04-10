@@ -10,6 +10,6 @@
     [(ngModel)]="selected"
     [ngbTypeahead]="searchStudent"
     [resultTemplate]="rt"
-    [inputFormatter]="inputFormatter"
+    [inputFormatter]="toFullName"
     (selectItem)="selectItem($event)">
 <!--</div>-->
