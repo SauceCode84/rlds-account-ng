@@ -13,6 +13,16 @@
   </ngb-pagination>
 
   <a [routerLink]="['student']" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
+  
+  <div class="form-check">
+    <input #includeInactiveCheckBox
+      id="includeInactiveCheckBox" 
+      type="checkbox" 
+      [checked]="includeInactive" 
+      (change)="onIncludeInactiveChanged(includeInactiveCheckBox.checked)" />
+    <label class="form-check-label">Show Inactive</label>
+  </div>
+
   <div class="table-responsive">
     <table class="table table-sm table-striped table-hover">
       <thead>
@@ -25,7 +35,7 @@
           <th class="text-center">Current Balance</th>
       </thead>
       <tbody>
-        <tr *ngFor="let student of students">
+        <tr *ngFor="let student of students" [class.table-danger]="!student.active">
           <td></td>
           <td>
             <a [routerLink]="['student', student.id]">{{ student.firstName }} {{ student.lastName }}</a>

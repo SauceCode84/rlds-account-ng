@@ -7,8 +7,6 @@ import { environment } from "environments/environment";
 
 import { Account, AccountName, AccountType } from "models/account";
 
-type Params = { [param: string]: string | string[] };
-
 @Injectable()
 export class AccountsService {
 
@@ -17,7 +15,7 @@ export class AccountsService {
   constructor(private http: HttpClient) { }
 
   getAccounts(type?: AccountType): Observable<Account[]> {
-    let params: Params = {};
+    let params: { [param: string]: string | string[] } = {};
     
     if (type) {
       params.type = type;
@@ -27,7 +25,7 @@ export class AccountsService {
   }
 
   getAccountNames({ type, subType }: { type?: AccountType, subType?: string } = {}): Observable<AccountName[]> {
-    let params: Params = {};
+    let params: { [param: string]: string | string[] } = {};
 
     if (type) {
       params.type = type;

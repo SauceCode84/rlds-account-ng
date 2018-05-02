@@ -109,6 +109,7 @@ export class StudentDetailComponent implements AfterViewInit, OnInit, OnDestroy 
         }
 
         this.studentSub = student$.subscribe(student => {
+          console.log(student);
           this.student = student;
           this.studentForm.patchValue(student);
           
@@ -184,6 +185,10 @@ export class StudentDetailComponent implements AfterViewInit, OnInit, OnDestroy 
   onPaymentClick() {
     let paymentModalRef = this.modalService.open(PaymentModalComponent);
     paymentModalRef.componentInstance.studentId = this.student.id;
+  }
+
+  toggleActive() {
+    this.student.active = !this.student.active;
   }
 
   onSubmit() {

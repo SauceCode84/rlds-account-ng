@@ -1,13 +1,26 @@
-
-<button type="submit" class="btn btn-primary" (click)="saveChanges()" [disabled]="studentForm.invalid || isSaving">
-    <i class="fa fa-check" aria-hidden="true"></i> Save
-</button>
-<button class="btn btn-outline-primary" (click)="onFeesClick()" [disabled]="isNew">
-  <i class="fa fa-pencil" aria-hidden="true"></i> Fees
-</button>
-<button class="btn btn-outline-primary" (click)="onPaymentClick()" [disabled]="isNew">
-    <i class="fa fa-money" aria-hidden="true"></i> Payment
-</button>
+<div class="d-flex">
+  <div>
+    <button type="submit" class="btn btn-primary" (click)="saveChanges()" [disabled]="studentForm.invalid || isSaving">
+      <i class="fa fa-check" aria-hidden="true"></i> Save
+    </button>
+    <button class="btn btn-outline-primary" (click)="onFeesClick()" [disabled]="isNew">
+      <i class="fa fa-pencil" aria-hidden="true"></i> Fees
+    </button>
+    <button class="btn btn-outline-primary" (click)="onPaymentClick()" [disabled]="isNew">
+      <i class="fa fa-money" aria-hidden="true"></i> Payment
+    </button>
+  </div>
+  <div class="ml-auto">
+    <button
+      type="submit"
+      class="btn"
+      [class.btn-success]="student?.active"
+      [class.btn-danger]="!student?.active"
+      (click)="toggleActive()">
+      {{ student?.active ? 'Active' : 'Not Active' }}
+    </button>
+  </div>
+</div>
 
 <hr/>
 

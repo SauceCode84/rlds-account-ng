@@ -23,19 +23,23 @@ export class StudentService {
 
   constructor(private http: HttpClient/*, private db: AngularFireDatabase*/) { }
 
-  public getAllStudents(): Observable<Student[]>;
-  public getAllStudents(page: number, pageSize: number): Observable<IPagedResults<Student>>;
+  public getAllStudents(includeInactive?: boolean): Observable<Student[]>;
+  public getAllStudents(includeInactive: boolean, page: number, pageSize: number): Observable<IPagedResults<Student>>;
   
-  public getAllStudents(page?: number, pageSize?: number) {
-    if (page || pageSize) {
-      let params = new HttpParams();
+  public getAllStudents(includeInactive: boolean = false, page?: number, pageSize?: number) {
+    let params: { [param: string]: string | string[] } = {};
 
+    if (includeInactive) {
+      params.includeInactive = includeInactive.toString();
+    }
+
+    if (page || pageSize) {
       if (page) {
-        params = params.set("page", page.toString());
+        params.page = page.toString();
       }
       
       if (pageSize) {
-        params = params.set("pageSize", pageSize.toString());
+        params.pageSize = pageSize.toString();
       }
 
       return this.http.get<IPagedResults<Student>>(this.url, { params });

@@ -20,6 +20,7 @@ export class StudentListComponent implements OnInit, OnDestroy {
 
   isLoading: boolean;
 
+  includeInactive: boolean = false;
   totalCount: number;
   page: number;
   pageSize: number = 10;
@@ -37,9 +38,14 @@ export class StudentListComponent implements OnInit, OnDestroy {
     this.populateStudents();
   }
 
+  onIncludeInactiveChanged(includeInactive: boolean) {
+    this.includeInactive = includeInactive;
+    this.populateStudents();
+  }
+
   private populateStudents() {
     this.studentsSub = this.studentService
-      .getAllStudents(this.page, this.pageSize)
+      .getAllStudents(this.includeInactive, this.page, this.pageSize)
       .subscribe(pageResults => {
         this.isLoading = false;
 

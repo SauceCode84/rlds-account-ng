@@ -3,6 +3,7 @@ export interface Student {
   id?: string;
   firstName: string;
   lastName: string;
+  active: boolean;
   grade: any;
   emails: string[];
   paymentOption: PaymentOption;
