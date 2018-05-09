@@ -2,7 +2,7 @@ import { Component, Input, OnInit, OnDestroy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 
 import { FeesService, StatementService, StudentService } from "providers";
 import { Student, Fee } from "models";

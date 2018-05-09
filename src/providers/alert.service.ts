@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
 import { NavigationStart, Router } from "@angular/router";
 
-import { Subject } from "rxjs/Subject";
-import { Observable } from "rxjs/Observable";
+import { Subject, Observable } from "rxjs";
 
 export interface AlertMessage {
   type: string;

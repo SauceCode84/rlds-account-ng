@@ -74,6 +74,10 @@ export class AccountModalComponent implements OnInit {
     }
   }
 
+  async onDelete() {
+    
+  }
+
   onDismiss() {
     this.activeModal.dismiss();
   }

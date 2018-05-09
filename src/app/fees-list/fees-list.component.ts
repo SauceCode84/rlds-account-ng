@@ -6,10 +6,7 @@ import { FeesModalComponent } from "../fees-modal/fees-modal.component";
 import { FeesService } from "providers/fees.service";
 import { Fee, FeeType } from "models";
 
-import { Observable } from "rxjs/Observable";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { Subscription } from "rxjs/Subscription";
-import "rxjs/add/operator/shareReplay";
+import { BehaviorSubject, Observable, Subscription } from "rxjs";
 
 import { PaymentOption, PaymentOptions } from "models/student";
 

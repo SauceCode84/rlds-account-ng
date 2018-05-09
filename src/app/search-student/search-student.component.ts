@@ -1,5 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import { Observable } from "rxjs/Observable";
+
+import { Observable } from "rxjs";
+import { debounceTime, distinctUntilChanged, map } from "rxjs/operators";
+
 import { NgbTypeaheadSelectItemEvent } from "@ng-bootstrap/ng-bootstrap";
 
 import { StudentService } from "providers/student.service";
@@ -28,19 +31,21 @@ export class SearchStudentComponent implements OnInit {
 
   searchStudent = (text: Observable<string>) => {
     return text
-      .debounceTime(200)
-      .distinctUntilChanged()
-      .map(value => {
-        let results: Student[] = [];
-        
-        if (value.length >= 2) {
-          results = this.students
-            .filter(this.filterByStudentName(value))
-            .slice(0, 10);
-        }
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        map(value => {
+          let results: Student[] = [];
+          
+          if (value.length >= 2) {
+            results = this.students
+              .filter(this.filterByStudentName(value))
+              .slice(0, 10);
+          }
 
-        return results;
-      });
+          return results;
+        })
+      );
   }
 
   private filterByStudentName(search: string) {

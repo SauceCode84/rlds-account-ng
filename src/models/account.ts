@@ -16,6 +16,8 @@ export interface Account {
   credit?: number;
   balance?: number;
   paymentOptions?: string[];
+
+  deleteAllowed?: boolean;
 }
 
 export interface AccountName {

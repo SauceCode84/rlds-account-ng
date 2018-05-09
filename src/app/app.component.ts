@@ -2,17 +2,13 @@ import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { Router } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 
-import { Observable } from "rxjs/Observable";
-import "rxjs/add/operator/debounceTime";
-import "rxjs/add/operator/distinctUntilChanged";
-import "rxjs/add/operator/map";
+import { Observable, BehaviorSubject } from "rxjs";
 
 import { AlertService } from "providers/alert.service";
 import { AuthService } from "providers/auth.service";
 import { NotificationService } from "providers/notification.service";
 
 import { NgbTypeaheadSelectItemEvent } from "@ng-bootstrap/ng-bootstrap";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 import { Chart } from "chart.js";
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 
 import { Account, AccountType, accountTypeDisplay, Transaction } from "../../models";
 import { AccountsService, StatementService } from "providers";

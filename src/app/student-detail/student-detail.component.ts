@@ -5,17 +5,14 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@ang
 
 import { NgbModal, NgbTabset, NgbTabChangeEvent } from "@ng-bootstrap/ng-bootstrap";
 
-//import { FirebaseObjectObservable } from "angularfire2/database";
+import { Observable, Subscription, of } from "rxjs";
 
-import { Observable } from "rxjs/Observable";
-import { Subscription } from "rxjs/Subscription";
-import "rxjs/add/operator/switchMap";
+import { PaymentModalComponent } from "../payment-modal/payment-modal.component";
+import { StudentFeeModalComponent } from "../student-fee-modal/student-fee-modal.component";
 
 import { StudentService, GradesService } from "providers";
-import { PaymentModalComponent } from "app/payment-modal/payment-modal.component";
 import { Student, Statement, Contact } from "models";
-import { Grade, PaymentOption, PaymentOptions, getPaymentOptionDisplayValue, getPaymentOptionValue, getDisplayValueArray } from "models/student";
-import { StudentFeeModalComponent } from "app/student-fee-modal/student-fee-modal.component";
+import { PaymentOptions, getDisplayValueArray } from "models/student";
 
 import "../../helpers/first";
 
@@ -99,7 +96,7 @@ export class StudentDetailComponent implements AfterViewInit, OnInit, OnDestroy 
         this.isNew = id === null;
         
         if (this.isNew) {
-          student$ = Observable.of({} as Student);
+          student$ = of({} as Student);
         } else {
           student$ = this.studentService.getById(id);
 

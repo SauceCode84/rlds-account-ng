@@ -1,11 +1,6 @@
 import { Injectable } from "@angular/core";
-//import { AngularFireDatabase } from "angularfire2/database";
-//import { AngularFireAuth } from "angularfire2/auth";
 
-//import * as firebase from "firebase";
-
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import "rxjs/add/operator/take";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable()
 export class NotificationService {

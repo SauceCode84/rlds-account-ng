@@ -1,8 +1,7 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from "@angular/core";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
-import { Observable } from "rxjs/Observable";
-import { Subscription } from "rxjs/Subscription";
+import { Observable, Subscription } from "rxjs";
 
 import { Statement, StatementLine, Student } from "models";
 import { StatementService } from "providers/statement.service";

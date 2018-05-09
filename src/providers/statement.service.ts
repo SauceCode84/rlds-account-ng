@@ -3,11 +3,8 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 
 import { environment } from "environments/environment";
 
-import { Observable } from "rxjs/Observable";
-import { Observer } from "rxjs/Observer";
-
-import "rxjs/add/operator/take";
-import "rxjs/add/operator/toPromise";
+import { Observable, Observer } from "rxjs";
+import { map } from "rxjs/operators";
 
 import * as moment from "moment";
 
@@ -51,15 +48,17 @@ export class StatementService {
 
   public statementForStudent(studentId: string, fromDate?: Date) {
     return this.txsByAccount(studentId)
-      .map(txs => {
-        let lines = createStatementLines(txs);
-        
-        return <Statement>{
-          lines: lines,
-          currentBalance: lines.reduce(calculateBalance, 0),
-          lastPayment: lastPaymentDate(lines)
-        };
-    });
+      .pipe(
+        map(txs => {
+          let lines = createStatementLines(txs);
+          
+          return <Statement>{
+            lines: lines,
+            currentBalance: lines.reduce(calculateBalance, 0),
+            lastPayment: lastPaymentDate(lines)
+          };
+        })
+      );
   }
 
   async addPayment(student: Student, { amount, date, cashAccountId }: { amount?: number, date?: Date, cashAccountId?: string }) {

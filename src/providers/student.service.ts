@@ -1,10 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 
-//import { AngularFireDatabase, FirebaseObjectObservable, FirebaseListObservable } from "angularfire2/database";
-
-import { Observable } from "rxjs/Observable";
-import "rxjs/add/observable/empty";
+import { Observable } from "rxjs";
 
 import { Student, Contact } from "models";
 import { environment } from "environments/environment";
@@ -21,7 +18,7 @@ export class StudentService {
 
   private url = `${environment.apiUrl}/students`;
 
-  constructor(private http: HttpClient/*, private db: AngularFireDatabase*/) { }
+  constructor(private http: HttpClient) { }
 
   public getAllStudents(includeInactive?: boolean): Observable<Student[]>;
   public getAllStudents(includeInactive: boolean, page: number, pageSize: number): Observable<IPagedResults<Student>>;
@@ -60,30 +57,12 @@ export class StudentService {
     return this.http.get<Contact[]>(this.url + "/" + id + "/contacts");
   }
 
-  public async createStudent(newStudent: any) {
+  public async createStudent(newStudent: Student) {
     return await this.http.post<Student>(this.url, newStudent).toPromise();
   }
 
-  public async updateStudent(id: string, updatedStudent: any) {
+  public async updateStudent(id: string, updatedStudent: Partial<Student>) {
     await this.http.put(this.url + "/" + id, updatedStudent, { responseType: "text" }).toPromise();
   }
-
-  /*public getStudents(): FirebaseListObservable<Student[]> {
-    return this.db.list("/students");
-  }
-
-  public getStudentById(key: string): FirebaseObjectObservable<Student> {
-    return this.db.object("/students/" + key);
-  }
-
-  public addStudent(student: Student): FirebaseObjectObservable<Student> {
-    let key = this.getStudents().push(student).key;
-    
-    return this.getStudentById(key);
-  }
-
-  public updateStudent(student: FirebaseObjectObservable<Student>, data: any) {
-    return student.update(data);
-  }*/
 
 }

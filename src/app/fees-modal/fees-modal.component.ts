@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators, FormControl, ValidatorFn } from "@a
 
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 
-import { Observable } from "rxjs/Observable";
-import "rxjs/add/observable/of";
+import { Observable, of } from "rxjs";
+import { map } from "rxjs/operators";
 
 import "../../helpers/first";
 
@@ -15,11 +15,10 @@ import { AccountsService, FeesService, GradesService } from "providers";
 import { Grade } from "../../providers/grades.service";
 
 const greaterThanZero = (input: FormControl) => {
-  return Observable
-    .of(parseInt(input.value) > 0)
-    .map(result => {
-      return !!result ? null : { greaterThanZero: true };
-    });
+  return of(parseInt(input.value) > 0)
+    .pipe(
+      map(result => !!result ? null : { greaterThanZero: true })
+    );
 }
 
 const validateOption = (hasPaymentOptions: FormControl, errorKey: string) => (input: FormControl) => {

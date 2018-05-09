@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 
-import { Observable } from "rxjs/Observable";
-import { Subscription } from "rxjs/Subscription";
+import { Observable, Subscription } from "rxjs";
 
 import { StudentService } from "providers/student.service";
 import { Student } from "models";
