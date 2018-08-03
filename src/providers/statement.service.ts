@@ -130,11 +130,11 @@ const createStatementLines = (txs: Transaction[], fromDate?: Date): StatementLin
   let balanceLine: StatementLine = {
     date: fromDate,
     details: "Balance Brought Forward",
-    balance: balance
+    amount: balance,
   };
 
   statementLines.unshift(balanceLine);
-
+  
   return statementLines;
 }
 

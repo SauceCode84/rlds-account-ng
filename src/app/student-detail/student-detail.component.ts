@@ -44,6 +44,7 @@ export class StudentDetailComponent implements AfterViewInit, OnInit, OnDestroy 
 
   @ViewChild(NgbTabset)
   private mainTabSet: NgbTabset;
+  activeSaving: boolean;
   
   constructor(
     private route: ActivatedRoute,
@@ -96,7 +97,7 @@ export class StudentDetailComponent implements AfterViewInit, OnInit, OnDestroy 
         this.isNew = id === null;
         
         if (this.isNew) {
-          student$ = of({} as Student);
+          student$ = of({ active: true } as Student);
         } else {
           student$ = this.studentService.getById(id);
 
@@ -184,8 +185,20 @@ export class StudentDetailComponent implements AfterViewInit, OnInit, OnDestroy 
     paymentModalRef.componentInstance.studentId = this.student.id;
   }
 
-  toggleActive() {
-    this.student.active = !this.student.active;
+  async toggleActive() {
+    let active = !this.student.active;
+
+    try {
+      this.activeSaving = true;
+
+      // update student
+      await this.studentService.updateStudent(this.student.id, { active });
+      this.student.active = active;
+
+      this.activeSaving = false;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   onSubmit() {

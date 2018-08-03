@@ -16,7 +16,8 @@
       class="btn"
       [class.btn-success]="student?.active"
       [class.btn-danger]="!student?.active"
-      (click)="toggleActive()">
+      (click)="toggleActive()"
+      [disabled]="activeSaving">
       {{ student?.active ? 'Active' : 'Not Active' }}
     </button>
   </div>
