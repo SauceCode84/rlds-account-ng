@@ -72,6 +72,14 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
     return this.getFormControl("fee");
   }
 
+  get price() {
+    return this.getFormControl("price");
+  }
+
+  get qty() {
+    return this.getFormControl("qty");
+  }
+
   get amount() {
     return this.getFormControl("amount");
   }
@@ -116,6 +124,8 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
   private buildForm() {
     let formGroupDef = {
       details: ["", Validators.required],
+      price: 0,
+      qty: 1,
       amount: 0,
       date: moment().format("YYYY-MM-DD")
     };
@@ -146,6 +156,14 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  private static calculateAmount(price: number, qty: number) {
+    if (!price || !qty) {
+      return null;
+    }
+
+    return price * qty;
+  }
+
   private setupValueChangeListeners() {
     this.fee.valueChanges.subscribe(value => {
       let amount: number = null;
@@ -159,6 +177,15 @@ export class StudentFeeModalComponent implements OnInit, OnDestroy {
       this.amount.setValue(amount);
       this.details.setValue(this.getFeeDetails(this.currentFee));
     });
+
+    const updateAmount = (price: number, qty: number) => {
+      let amount = StudentFeeModalComponent.calculateAmount(price, qty);
+
+      this.amount.setValue(amount);
+    }
+
+    this.price.valueChanges.subscribe(price => updateAmount(price, this.qty.value));
+    this.qty.valueChanges.subscribe(qty => updateAmount(this.price.value, qty));
   }
 
   ngOnDestroy() {

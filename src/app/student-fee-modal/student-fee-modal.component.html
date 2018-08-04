@@ -28,9 +28,20 @@
     </div>
 
     <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Price</label>
+      <div class="col-sm-4">
+        <input type="number" class="form-control" formControlName="price">
+      </div>
+      <label class="col-sm-2 col-form-label">Qty</label>
+      <div class="col-sm-3">
+        <input type="number" class="form-control" formControlName="qty">
+      </div>
+    </div>
+
+    <div class="form-group row">
       <label class="col-sm-3 col-form-label">Amount</label>
       <div class="col-sm-9">
-        <input type="number" class="form-control" formControlName="amount" [formatNumber]="amount.value">
+        <input type="number" class="form-control" formControlName="amount" [formatNumber]="amount.value" readonly>
       </div>
     </div>
 
