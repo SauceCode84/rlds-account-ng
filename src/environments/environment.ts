@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://api.rldancestudio.co.za"
+  apiUrl: "http://localhost:3000"
+  //apiUrl: "http://api.rldancestudio.co.za"
 };
